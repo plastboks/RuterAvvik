@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:id="@+id/line_wrapper"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="56dp"
+                android:layout_height="fill_parent"
+                android:textSize="18dp"
+                android:text="####"
+                android:id="@+id/line_num"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/color_space"
+                android:layout_alignBottom="@+id/color_space"
+                android:gravity="center_vertical|center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/item_title"
+                android:text="title - placeholder"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/line_num"/>
+
+            <RelativeLayout
+                android:id="@+id/subtitle_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_title"
+                android:layout_alignStart="@+id/item_title"
+                android:layout_toStartOf="@+id/mask_icon"
+                >
+
+                <TextView
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/item_platform"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/platform"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="##:##:##"
+                    android:id="@+id/item_departure"
+                    android:layout_marginLeft="4dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/item_platform"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+##:##"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/item_deviation"
+                    android:textColor="@color/red"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/item_departure"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/color_space"
+                android:padding="5dp"
+                android:text="  "
+                android:editable="false"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/subtitle_line"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/mask_icon"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/subtitle_line"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

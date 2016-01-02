@@ -1,0 +1,1862 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language norsk
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3.5cm
+\topmargin 2cm
+\rightmargin 3.5cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+\begin_inset Graphics
+	filename train_icon.png
+	scale 10
+
+\end_inset
+
+ RuterAvvik
+\end_layout
+
+\begin_layout Date
+2015-11-27
+\end_layout
+
+\begin_layout Author
+s114143 - Alexander Skjolden
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Til mappe 3 i faget DAVE3600 (Applikasjonsutvikling) 2015, ønsket jeg å
+ lage en app som melder fra om avvik i Ruter sine rutetider.
+ Eksempel på avvik kan være 
+\begin_inset Quotes fld
+\end_inset
+
+buss-for-tog
+\begin_inset Quotes frd
+\end_inset
+
+, forsinkelser m.m.
+ Som pendler fra Ski til Høyskolen ser jeg ikke behov for en app som bare
+ forteller meg når toget skulle gå.
+ Dette er informasjon jeg mener enhver pendler lærer utenat i løpet av veldig
+ kort tid (uansett reiserute).
+ En slik app kan dermed fort bli liggende ubrukt.
+\end_layout
+
+\begin_layout Abstract
+En app som derimot kan gi et konsentrert oversiktsbilde av nåværende avvik
+ vil kunne brukes daglig.
+ Jeg ser for meg muligheten til å abonnere på steder (holdeplasser) og liner
+ (tog, trikk, buss m.m).
+ Et slik abonnement vil kunne brukes som snarveier (favoritter) for å hente
+ ut informasjon som er relevant for brukeren raskere.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Prebetingelser
+\end_layout
+
+\begin_layout Section
+Google Maps
+\end_layout
+
+\begin_layout Subsection
+Emulator
+\end_layout
+
+\begin_layout Standard
+Standard emulatoren 
+\begin_inset Quotes fld
+\end_inset
+
+Nexus S - API 19
+\begin_inset Quotes frd
+\end_inset
+
+ vil ikke uten videre fungere med Google Maps funksjonaliteten til applikasjoen,
+ så mye så at den ikke engang lar seg installere.
+ Løsningen på dette vil være å sette opp en ny emulator.
+ Under utviklingen av applikasjonen har jeg hatt gode erfaringer med 
+\begin_inset Quotes fld
+\end_inset
+
+Nexus 5 - API 21 (Google APIs)
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Alle skjermbildene i dette dokumentet er tatt med nevnte oppsett.
+ Nexus 5 emulatoren har jeg velykket kjørt på både en kraftig stasjonær
+ arbeidsstasjon, såvel som en svakere bærbar datamaskin fra 2012.
+ Det bør med andre ord ikke by på store utfordringer.
+ Kravet for dette er såklart at 
+\begin_inset Quotes fld
+\end_inset
+
+x86
+\begin_inset Quotes frd
+\end_inset
+
+ eller 
+\begin_inset Quotes fld
+\end_inset
+
+x86_64
+\begin_inset Quotes frd
+\end_inset
+
+ bildene velges, og ikke 
+\begin_inset Quotes fld
+\end_inset
+
+
+\noun on
+ARM
+\noun default
+
+\begin_inset Quotes frd
+\end_inset
+
+ bildene.
+\end_layout
+
+\begin_layout Subsection
+API nøkkelen
+\end_layout
+
+\begin_layout Standard
+Siden API nøkkelen som er satt i AndroidManifest.xml
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+meta-data android:name="com.google.android.maps.v2.API_KEY"
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ ikke lar seg overføre grunnet tilhørligheten til den lokale 
+\begin_inset listings
+lstparams "basicstyle={\ttfamily}"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+~/.android/debug.keystore
+\end_layout
+
+\end_inset
+
+ filen, bør en ny nøkkel genereres.
+ Alternativt kan en laste opp den ferdigkompilerte pakken ruteravvik.1.0.apk
+ til emulator instansen.
+\end_layout
+
+\begin_layout Itemize
+Generere en ny Google Maps Api nøkkel, og legge den inn i AndroidManifest.xml
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+pakke strukturen er 
+\begin_inset Quotes fld
+\end_inset
+
+net.plastboks.s114143.ruteravvik
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Eller; installere vedlagt apk pakke:
+\begin_inset listings
+lstparams "basicstyle={\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ adb install app/app-release.apk
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Brukermanual
+\end_layout
+
+\begin_layout Standard
+Under er applikasjonen beskrevet funksjon for funksjon med skjermbilder.
+ Alle skjermbildene er tatt med engelsk språk aktivert på enheten.
+\end_layout
+
+\begin_layout Standard
+Når applikasjonen starter for første gang vil den gjøre to kall på 
+\begin_inset Quotes fld
+\end_inset
+
+Ruters Reise Api
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Det første er 
+\begin_inset Quotes fld
+\end_inset
+
+GetRuterStops
+\begin_inset Quotes frd
+\end_inset
+
+ og det andre er 
+\begin_inset Quotes fld
+\end_inset
+
+GetLines
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Dataene fra disse kallene lagres så i et 
+\begin_inset Quotes fld
+\end_inset
+
+mellomlagringssystem
+\begin_inset Quotes frd
+\end_inset
+
+ slik at de er tilgjengelig raskere for brukeren neste gang det er behov
+ for dem.
+ Grunnen til dette er at begge kallene returnerer datasett på over 1500
+ objekter.
+ Denne lastingen av data vises på en 
+\begin_inset Quotes fld
+\end_inset
+
+Load Screen
+\begin_inset Quotes frd
+\end_inset
+
+, men med rask internett kan denne load screenen forsvinne raskt.
+\end_layout
+
+\begin_layout Section
+Navigasjonsskuff
+\end_layout
+
+\begin_layout Standard
+Navigasjonsskuffen kan aktiveres ved å dra den inn fra venstre, eller trykke
+ på ikonet til venstre i actionbaren.
+ Dette er hovednavigasjonsmetoden til applikasjonene.
+ Den er valgt framfor en stor ActionBarMeny.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/navigationDrawer.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Søk
+\end_layout
+
+\begin_layout Subsection
+Linjenummer
+\end_layout
+
+\begin_layout Standard
+Søkesiden for linjenummer er standard landingside for applikasjonen (dette
+ kan endres i 
+\begin_inset Quotes fld
+\end_inset
+
+Instillinger
+\begin_inset Quotes frd
+\end_inset
+
+).
+ Her kan brukeren søke etter ønsket linjenummer (f.esk 18 trikken som vist
+ under).
+ Alle elementene i denne listen er mellomlagret, og hentes ikke direkte
+ fra Ruter hver gang de benyttes.
+ Alle elementene i listen kan trykkes på for å føre brukeren til en visning
+ over alle stoppene til linjen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/searchByLine.blank.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/searchByLine.18.edited.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Lokasjon
+\end_layout
+
+\begin_layout Standard
+Lokasjonssøket er et søk i Ruters 
+\begin_inset Quotes fld
+\end_inset
+
+GetRuterStops
+\begin_inset Quotes frd
+\end_inset
+
+ database, elementene i dette søket er mellomlagret og hentes ikke direkte
+ fra Ruter hver gang det benyttes.
+ Søkefeltet søker etter 
+\begin_inset Quotes fld
+\end_inset
+
+tittel
+\begin_inset Quotes frd
+\end_inset
+
+ til elementene.
+ I denne listen kan hjertene trykkes for å sette lokasjonen som favoritt,
+ og elementene kan velges for å føre brukeren til informasjon over alle
+ linjene som går fra den stasjonen nå.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/searchByLoc.Oslo.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/searchByLoc.Oslo.fav.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Kart
+\end_layout
+
+\begin_layout Standard
+Det er mulig å søke i kart ved å navigere rundt i et Google Maps.
+ Det er ikke implementert noe tekstsøk i dette fragmentet, og standardlokasjonen
+ er Oslo sentrum.
+ Alle markørene kan trykkes på for å vise stasjonsnavn.
+ Infovinduet som så dukker opp kan videre trykkes på for å føre brukeren
+ til stasjonen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/searchByMap.basic.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/searchByMap.clicked.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+ClusterManager
+\end_layout
+
+\begin_layout Standard
+Når brukeren zoomer ut vil nærtliggende markører gruppes sammen i 
+\begin_inset Quotes fld
+\end_inset
+
+clustere
+\begin_inset Quotes frd
+\end_inset
+
+ for å lette rendringsarbeidet til enheten.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/searchByMap.cluster.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/searchByMap.cluster2.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Favoritter
+\end_layout
+
+\begin_layout Standard
+Favorittene i applikasjonen kan enkelt vises ved å navigere til 
+\begin_inset Quotes fld
+\end_inset
+
+Favoritter
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/favorites.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Stasjonsvisning
+\end_layout
+
+\begin_layout Standard
+Stasjonsvisnigen inneholder en del data om de forsjellige linjene som stopper
+ på stasjonen.
+ Fra høyre mot venstre er; linjens farge tegnet opp, deretter er linjenummeret
+ vist sentrert.
+ I den grå boksen under linjetittelen er platformnummeret, og til høyre
+ for den er forventet avgangstid samt eventuell forsinkelse i rødt.
+ Alle dataene i denne visningen er sortert på stigende avgangstid fra nåværene
+ tidspunkt.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/stopVists.holbergsplass.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/stopVisits.stortorvet.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/stopVisits.stortorvet.deviation.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Stasjonsfilter
+\end_layout
+
+\begin_layout Standard
+Enkelte holdeplasser/stasjoner har veldig mange forskjellige linjer og platforme
+r.
+ For en pendler som til daglig ønsker å skjekke en slik holdeplass kan det
+ fort bli mye uninteressant data.
+ Et filter er derfor implementert for å sjule linjer som er uinteressante.
+ Dette filteret er holdeplassbestemt, og vil dermed ikke påvirke andre stasjoner.
+ En kan f.eks sjule 18 trikken på 
+\begin_inset Quotes fld
+\end_inset
+
+Holbergs plass
+\begin_inset Quotes frd
+\end_inset
+
+, men ikke på andre stasjoner.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/stopVisits.filterToggle.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/stopVisits.filterToggle2.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/stopVisits.filterToogle3.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Stasjonsstatistikk
+\end_layout
+
+\begin_layout Standard
+Om stasjonsstatistikk er valgt i 
+\begin_inset Quotes fld
+\end_inset
+
+Instillinger
+\begin_inset Quotes frd
+\end_inset
+
+, vil et ekstra grått felt over listen dukke opp, med informasjon om forsikelsen
+e på den stasjonen i det datasettet.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/stats.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/stats2.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Instillinger
+\end_layout
+
+\begin_layout Standard
+Det er benyttet en tolagstopologi for instillinger funksjonalitetene til
+ applikasjonen.
+ Denne topologien er tiltenkt for ekspansjon med flere instillinger (videre
+ utvikling).
+ Det første laget representerer hovedgruppene.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/settings.base.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Generelt
+\end_layout
+
+\begin_layout Standard
+Her kan landingssiden settes for applikasjonen.
+ Det er denne siden som vil vises når applikasjonen startes.
+ Kartvisningen er tatt ut av denne listen da den er såpass ressurskrevende
+ at det virke som noe er galt når en starter applikasjonen med den som landingss
+ide.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/settings.general.png
+	width 25text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Stasjonsvisning
+\end_layout
+
+\begin_layout Standard
+Her kan brukeren sette et 
+\begin_inset Quotes fld
+\end_inset
+
+fram i tid / tidsbegrensning
+\begin_inset Quotes frd
+\end_inset
+
+ filter.
+ Ruters Reise Api leverer vanligvis ut 3-4 timer med data fram i tid.
+ Dette filteret er ment for å begrense datamengden som blir presentert i
+ stasjonsvisnigen.
+ Brukeren kan og sette et 
+\begin_inset Quotes fld
+\end_inset
+
+offset
+\begin_inset Quotes frd
+\end_inset
+
+ for å manipulere datasettet fram og bakover i tid.
+ Dette filteret samkjører med 
+\begin_inset Quotes fld
+\end_inset
+
+fram i tid
+\begin_inset Quotes frd
+\end_inset
+
+ filteret, slik at man f.eks kan se data to timer fram i tid, og deretter
+ kun i 30 minutter.
+ Her settes og stasjonsstatestikken av eller på.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/settings.stationview.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/settings.stationview2.png
+	width 25text%
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename screenshots/settings.stationview3.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Om
+\end_layout
+
+\begin_layout Standard
+En enkel om side som beskriver diverse hjelpebiblioteker og ikoner.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/about.png
+	width 25text%
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+Mellomlagring
+\end_layout
+
+\begin_layout Standard
+Det er implementert et lite 
+\begin_inset Quotes fld
+\end_inset
+
+påskeegg
+\begin_inset Quotes frd
+\end_inset
+
+ i applikasjonen.
+ Siden dataene fra Ruter mellomlagres (så langt det lar seg gjøre), og siden
+ disse dataene ikke har noe rutine for å oppdatere seg selv, er det implementert
+ en manuell løsning for å slette de mellomlagrede dataene.
+ Ved å trykke fem ganger på ikonet vil en dialogboks dukke opp og spørre
+ om en ønsker å tømme cache.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename screenshots/about.cache.png
+	width 25text%
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+SwipeRefreshLayout
+\end_layout
+
+\begin_layout Standard
+Sider som ikke har et søkefelt (søke sidene) kan oppdateres via å 
+\begin_inset Quotes fld
+\end_inset
+
+dra
+\begin_inset Quotes frd
+\end_inset
+
+ ned listen til et 
+\begin_inset Quotes fld
+\end_inset
+
+loader
+\begin_inset Quotes frd
+\end_inset
+
+ ikon dukker opp.
+ Alternativt kan oppdaterings ikonet i actionbaren benyttes for samme funksjonal
+itet.
+ Mer om SwipeRefreshLayout her: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.google.com/design/spec/patterns/swipe-to-refresh.html#swipe-to-refresh-
+swipe-to-refresh
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Autocomplete
+\end_layout
+
+\begin_layout Standard
+Søkesidene 
+\begin_inset Quotes fld
+\end_inset
+
+Linjenummer
+\begin_inset Quotes frd
+\end_inset
+
+ og 
+\begin_inset Quotes fld
+\end_inset
+
+Lokasjonssøk
+\begin_inset Quotes frd
+\end_inset
+
+ benytter er seg av 
+\begin_inset Quotes fld
+\end_inset
+
+Autocomplete
+\begin_inset Quotes frd
+\end_inset
+
+ funksjonalitet.
+ Det betyr at listen dynamisk oppdateres så fort brukeren har tastet inn
+ over to karakterer i søkefeltet.
+ Søkefunksjonen fungerer som en 
+\begin_inset Quotes fld
+\end_inset
+
+inneholder
+\begin_inset Quotes frd
+\end_inset
+
+ metode (type `like %string%` sql søk).
+ Mer om dette her: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.google.com/design/spec/components/text-fields.html#text-fields-auto-com
+plete-text-field
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Part
+Bruksmønster
+\end_layout
+
+\begin_layout Standard
+Under utviklingen av applikasjonen har bruksmønsteret sklidd litt til siden
+ av hva som var opprinnelig tiltenkt.
+ Applikasjonen er nå blitt mer generell i den forstand at den kan brukes
+ som et oppslagsverk for bruk ved behov, og som daglig oversikt over forsinkelse
+r m.m
+\end_layout
+
+\begin_layout Section
+Daglig bruk
+\end_layout
+
+\begin_layout Standard
+Til daglig bruk ser jeg for meg at 
+\begin_inset Quotes fld
+\end_inset
+
+Favorittsiden
+\begin_inset Quotes frd
+\end_inset
+
+ vil være brukt mest som en veiviser til de lokasjonene man ønsker.
+ Videre vil dataene pr lokasjon kunne gi en rask og enkel tilbakemelding
+ over forsinkelser m.m.
+ Dermed vil applikasjonen ikke kreve mer enn ett intraksjonsklikk fra brukeren
+ (gitt at favoritter er satt til standard landingsside).
+\end_layout
+
+\begin_layout Section
+Engang reise
+\end_layout
+
+\begin_layout Standard
+Kartdelen, og Linjeoversiktssidene kan bedre benyttes som oppslagsverk og
+ oversikt over nye reisemål.
+ Tanken bak disse visningene har vært å skape et brukervennlig overblikk
+ og raskt kunne se hvor diverse linjer stopper, og hvor enkelte stop er.
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Teknisk del
+\end_layout
+
+\begin_layout Section
+Ruter Reis API
+\end_layout
+
+\begin_layout Standard
+Som datakilde til applikasjonen ble Ruters Reise API valgt.
+ I forprosjektrapporten skrev jeg om 
+\begin_inset Quotes fld
+\end_inset
+
+Dit.no
+\begin_inset Quotes frd
+\end_inset
+
+ som et alternativ, men det ble raskt valgt bort.
+ Jernbaneverket har og et data API som kunne vært aktuelt, men dette APIet
+ gir kun informasjon om togtider.
+ For å gi applikasjonen en bedre brukeropplevelse kunne det vært interessant
+ å samkjørt disse APIene (Ruter Reise og Jernbaneverket), men det ga tidsrammene
+ ikke mulighet for.
+\end_layout
+
+\begin_layout Subsection
+Dokumentasjon
+\end_layout
+
+\begin_layout Standard
+All dokumentasjon for Ruter Reise API har vært å finne på denne siden: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://reisapi.ruter.no/help
+\end_layout
+
+\end_inset
+
+.
+ Ut i fra den siden har jeg manuelt bygget opp klasser som matcher for forskjell
+ige typene Ruter opererer med (
+\begin_inset Quotes fld
+\end_inset
+
+Place
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+Stop
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+MonitoredStopVisit
+\begin_inset Quotes frd
+\end_inset
+
+, m.m).
+ Se RuterSugar under.
+\end_layout
+
+\begin_layout Subsection
+Utfordringer
+\end_layout
+
+\begin_layout Standard
+Under utviklingen av applikasjonen har jeg til stadighet opplevd nedetid
+ på Reise APIet.
+ Dette har vært nedetid fra få minutter til lengre tider.
+ Utfordringen har da vært å få applikasjoen til å oppføre seg forutsigbart,
+ og ikke minst unngå å 
+\begin_inset Quotes fld
+\end_inset
+
+kræsje
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Jeg tror jeg har klart å 
+\begin_inset Quotes fld
+\end_inset
+
+hoppe bukk
+\begin_inset Quotes frd
+\end_inset
+
+ over de fleste av disse problemene, men slik feilsøking er svært tidskrevene
+ og vanskelig å få til skikkelig.
+\end_layout
+
+\begin_layout Section
+RuterSugar
+\end_layout
+
+\begin_layout Standard
+I forbindelse med forprosjektet til mappe 3 valgte jeg å utviklet et selvstendig
+ (wrapper) biliotek for å gjøre kommunikasjonen med Ruters Reise Api så
+ strømlinjeformet og uforstyrrende som mulig.
+ I dette biblioteket valgte jeg å benytte meg av 
+\begin_inset Quotes fld
+\end_inset
+
+Gson
+\begin_inset Quotes frd
+\end_inset
+
+ og 
+\begin_inset Quotes fld
+\end_inset
+
+Retrofit
+\begin_inset Quotes frd
+\end_inset
+
+ som avhengigheter.
+ Biblioteket er åpent og tilgjengelig på 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/plastboks/rutersugar
+\end_layout
+
+\end_inset
+
+ og kan pakkes ned enkelt med 
+\begin_inset listings
+lstparams "basicstyle={\ttfamily}"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+`gradle build`
+\end_layout
+
+\end_inset
+
+.
+ Dette skaper en jar fil som er lagt ved i 
+\begin_inset Quotes fld
+\end_inset
+
+app/libs
+\begin_inset Quotes frd
+\end_inset
+
+ i android prosjektet.
+ Hele kildekoden ligger og med som en referanse, men det er jar filen som
+ brukes i classpathen under kompilering av applikasjonen.
+\end_layout
+
+\begin_layout Standard
+RuterSugar er bygget opp med tanke om å dekke mesteparten av funksjonaliteten
+ til Ruters Reise API.
+ Dette innebærer å dekke funksjonalitet som 
+\begin_inset Quotes fld
+\end_inset
+
+RuterAvvik
+\begin_inset Quotes frd
+\end_inset
+
+ ikke benytter.
+\end_layout
+
+\begin_layout Subsection
+Gson
+\end_layout
+
+\begin_layout Standard
+Json parser utviklet av Google: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/google/gson
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Retrofit
+\end_layout
+
+\begin_layout Standard
+Http client for android og java: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://square.github.io/retrofit/
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Callback vs AsyncTask
+\end_layout
+
+\begin_layout Standard
+Under utviklingen og testing av applikasjonen ble det fort oppdaget at Ruters
+ Reise API til tider kan være nede.
+ For å gi en optimal brukeropplevelse må disse nedetidene presenteres og
+ gi en forutsigbar tilbakemelding.
+ Den store utfordringen med AsyncTask og direkte forespørsler til Ruter
+ Reise Apiet i den forbindelse var nettopp å kunne fange disse nedetidene
+ på en ryddig måte.
+ En typisk try/catch blokk kunne nok ha gjort jobben, men kodebasen ville
+ blitt unødvendig kompleks og forurenset.
+ En nedetid hos Ruters Reise Api trenger nødvendigvis ikke være en 408 (Request
+ Timeout), men kan godt være en 404, 500 osv error.
+ Retrofits Callback grensesnitt syr dette sammen på en smidig og pen måte,
+ og gjør at hele AsyncTask objektet kan omgåes.
+\end_layout
+
+\begin_layout Standard
+Begge eksemplene under oppnår samme resultat (thread'er ut en job, og kaller
+ på 
+\begin_inset Quotes fld
+\end_inset
+
+update()
+\begin_inset Quotes frd
+\end_inset
+
+ når den er ferdig), men Callback eksempelet er vesentlig mer fleksibelt.
+\end_layout
+
+\begin_layout Subsubsection
+AsyncTask eksempel:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java,basicstyle={\ttfamily},breaklines=true,tabsize=2"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+private class FetchStops extends AsyncTask
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+	protected void onPostExecute(Object o)
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+		super.onPostExecute(o);
+\end_layout
+
+\begin_layout Plain Layout
+
+		update();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+	protected Object doInBackground(Object[] params)
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+		stops = MainActivity.ruter.fetch().getStopsRuter();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Callback eksempel:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java,basicstyle={\ttfamily},breaklines=true,tabsize=2,extendedchars=true"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+private void fetchStops()
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	MainActivity.ruter.callback()
+\end_layout
+
+\begin_layout Plain Layout
+
+			.getStopsRuter(new Callback<List<Stop>>()
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+		@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+		public void success(List<Stop> s, Response response) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			stops = s;
+\end_layout
+
+\begin_layout Plain Layout
+
+			update();
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+		public void failure(RetrofitError error) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			// Send ut en toast f.eks.
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	});
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+ClusterManager
+\end_layout
+
+\begin_layout Standard
+Siden det eksisterer ca to tusen stop i ruter sin database på østlandet,
+ ble det en betydelig utfordring å tegne alle på kartet samtidig.
+ I diverse forsøk på dette ville telefonen eller emulatoren stoppe fullstendig
+ opp til tider.
+ Etter litt research dukket en løsning opp fra Google selv; ClusterManager
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://developers.google.com/maps/articles/toomanymarkers#distancebasedclustering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Dette biblioteket ble lastet ned og lagt til applikasjonen.
+ ClusterManager er heller ikke en perfekt løsning, da det er veldig ressurskreve
+nde å tegne om, og 
+\begin_inset Quotes fld
+\end_inset
+
+clustre
+\begin_inset Quotes frd
+\end_inset
+
+ sammen markører ettersom brukeren zoomer ut, og splitte de opp når brukeren
+ zoomer inn.
+\end_layout
+
+\begin_layout Standard
+Med tanke på tidsrammene til prosjektet falt valget på å beholde ClusterManager,
+ da alternativet ville være å droppe Maps funksjonaliteten fullstendig.
+\end_layout
+
+\begin_layout Section
+Feature Creep
+\end_layout
+
+\begin_layout Standard
+En av de vanskelige utfordringene med utvikling av en applikasjon som dette
+ er å sette ned foten for hva en har lyst til å gjøre, og hva en kan gjøre.
+ Siden jeg har utviklet denne applikasjonen til personlig bruk, og siden
+ jeg har brukt applikasjonen daglig den siste måneden, har mange ønsker
+ og tanker dukket opp om hvordan den kan forbedres.
+ Mange av disse funksjonene har blitt implementert (som: stasjonsfiltere,
+ statistikk, tidsberesningner m.m), men mange har dessverre og måtte bli
+ utelatt.
+\end_layout
+
+\begin_layout Standard
+Eksempler på dette er:
+\end_layout
+
+\begin_layout Itemize
+Tekstsøk i kart.
+\end_layout
+
+\begin_layout Itemize
+Hvor er jeg i kart (via GPS og eller GSM)
+\end_layout
+
+\begin_layout Itemize
+Notifikasjoner basert på tidspunkt og favoritter (melding om forsinkeler
+ m.m).
+\end_layout
+
+\begin_layout Itemize
+Widgets for utlisting av kritisk informasjon, som f.eks store forsinkelser
+ på gitt reise rute m.m.
+\end_layout
+
+\begin_layout Itemize
+Lagring av data over tid for å sammenlige forsinkelsesgrad med historiske
+ forsinkelser (f.eks når var siste store togstans på Oslo S).
+\end_layout
+
+\begin_layout Itemize
+Mer ikoner for å visuelt skille bus, trikk, tog, båt m.m.
+\end_layout
+
+\begin_layout Itemize
+Integrasjon av Jernbaneverket sine data for mer presise togdata (og for
+ større dekningsradius over østlandet/Norge).
+\end_layout
+
+\begin_layout Part
+Koden
+\end_layout
+
+\begin_layout Section
+Fragmenter
+\end_layout
+
+\begin_layout Standard
+Til denne oppgaven har jeg valgt å bruke fragmenter for mesteparten av visningss
+idene.
+ Nesten alle visningene kjøres fra MainActivity.java som og er hovedaktiviteten
+ til applikasjonen.
+ På den måten vil data kunne møtes i MainActivity.java og sendes videre som
+ i et Mediator pattern.
+ Skulle applikasjonene bygges større kan det være at dette designet ikke
+ skalerer godt nok opp.
+ Måten 
+\begin_inset Quotes fld
+\end_inset
+
+EventCallback
+\begin_inset Quotes frd
+\end_inset
+
+ designet til alle fragmentene mot MainActivity.java er implementert er en
+ del av Goolge rettningslinjer
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://developer.android.com/guide/components/fragments.html#EventCallbacks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Navigasjonsbaren
+\end_layout
+
+\begin_layout Standard
+Navigasjonsbaren som står for presentasjon av de sentrale navigasjonspunktene
+ er i seg selv og et fragment.
+ Dette designet er et velkjent og anbefalt design fra Googles Android
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.google.com/design/spec/patterns/navigation-drawer.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\lang norsk
+ team i samspill med Material Design
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.google.com/design/spec/material-design/introduction.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Adapterene
+\end_layout
+
+\begin_layout Standard
+Alle listefragmentene bruker spesiallagede adaptere for visning av data.
+ Dette for å kunne skape helt egne visninger som oppfylte de ønskene jeg
+ måtte ha, og som standard adapterene ikke kunne gi.
+ Alle adapterene er samlet i 
+\begin_inset Quotes fld
+\end_inset
+
+adapter
+\begin_inset Quotes frd
+\end_inset
+
+ pakken, og deres stilark er samlet i 
+\begin_inset Quotes fld
+\end_inset
+
+res/layout/list_item_*
+\begin_inset Quotes frd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Datalagring
+\end_layout
+
+\begin_layout Standard
+Datalagring til applikasjonen er gjort alene igjennom 
+\begin_inset Quotes fld
+\end_inset
+
+SharedPreferences
+\begin_inset Quotes frd
+\end_inset
+
+ biblioteket til Android.
+ En SQLite database hadde kanskje kunne vært litt mer spennende, men hadde
+ ikke gitt noen praktiske fordeler framfor SharedPreferences.
+ Siden SharedPreferences ikke har støtte for komplekse objekter, er Gson
+ (som nevnt tidligere en avhengighet til RuterSugar) benyttet for å enkode
+ dataobjektene ned til JSON strenger ved lagring, og dekode de tilbake til
+ Java objekter ved uthenting.
+\end_layout
+
+\begin_layout Subsection
+Settings
+\end_layout
+
+\begin_layout Standard
+I denne klassen 
+\begin_inset Quotes fld
+\end_inset
+
+Settings.java
+\begin_inset Quotes frd
+\end_inset
+
+ lagres små informasjon som favoritter og filtermasker (stasjonsfilter)
+ m.m.
+\end_layout
+
+\begin_layout Subsection
+PersistentCache
+\end_layout
+
+\begin_layout Standard
+Dette er lagringsklassen til Ruter dataene som blir mellomlagret.
+\end_layout
+
+\begin_layout Section
+Helper pakken
+\end_layout
+
+\begin_layout Subsection
+UTM vs Lat/Lng
+\end_layout
+
+\begin_layout Standard
+En utfordring jeg støtte på med dataene fra Ruter var deres valg av koordinatpro
+jeksjon: UTM
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Som kjent bruker Google Maps et 
+\begin_inset Quotes fld
+\end_inset
+
+Geografisk koordinat system
+\begin_inset Quotes frd
+\end_inset
+
+ (Lat / Lng)
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Geographic_coordinate_system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ og det skulle vise seg at det å konvertere mellom disse systemene ikke
+ nødvendigvis var enkelt.
+ Etter endel research på området falt valget på å 
+\begin_inset Quotes fld
+\end_inset
+
+låne
+\begin_inset Quotes frd
+\end_inset
+
+ IBMs kode (hvis lisens ikke var veldig tydelig).
+ Klasse 
+\begin_inset Quotes fld
+\end_inset
+
+CoordinateConversion.java
+\begin_inset Quotes frd
+\end_inset
+
+ er en privat klasse i hjelpepakken og er klassen som er kopiert fra IBMs
+ nettsider.
+ Klassen 
+\begin_inset Quotes fld
+\end_inset
+
+Coordinates.java
+\begin_inset Quotes frd
+\end_inset
+
+ står forran som et abstrasjonslag for å forenkle koden ute i adapterene.
+\end_layout
+
+\begin_layout Section
+Cluster pakken
+\end_layout
+
+\begin_layout Subsection
+CustomClusterRenderer
+\end_layout
+
+\begin_layout Standard
+Som en liten bakside av ClusterManager
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://developers.google.com/maps/documentation/android-api/utility/marker-cluste
+ring
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ integrasjonen gjort i kartfragmentet, var kompleksiteten rundt det å tilpasse
+ markørene.
+ Måten å gjøre det på var å skrive en ClusterRenderer klasse som tok hånd
+ om de ønskede endringene.
+\end_layout
+
+\end_body
+\end_document

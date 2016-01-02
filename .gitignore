@@ -1,0 +1,38 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+AndroidManifest.xml
+gradlew.bat
+gradlew
+gradle
+
+*.iws
+workspace.xml
+tasks.xml
+vcs.xml
+gradlew.bat
+gradlew
+uiDesigner.xml
+checkstyle-idea.xml
+codeStyleSettings.xml
+dbnavigator.xml
+
+
+# vim files
+*.swp
+# java files
+*.class
+# lyx files
+*~
+*.lyx#
+# movies files
+*.mp4
+# gradle dotfiles
+*.gradle
+build
+!build.gradle
+
