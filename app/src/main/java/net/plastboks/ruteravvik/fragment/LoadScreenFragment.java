@@ -8,21 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.Line;
-import net.plastboks.rutersugar.type.Stop;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.App;
+import net.plastboks.rutersugar.domain.Line;
+import net.plastboks.rutersugar.domain.Stop;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.storage.PersistentCache;
+import net.plastboks.rutersugar.service.LineService;
+import net.plastboks.rutersugar.service.StopService;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class LoadScreenFragment extends Fragment
 {
     private OnLoadScreenDoneListener mListener;
+
+    @Inject public StopService stopService;
+    @Inject public LineService lineService;
 
     public static LoadScreenFragment newInstance()
     {
@@ -38,6 +46,8 @@ public class LoadScreenFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {}
     }
@@ -55,30 +65,31 @@ public class LoadScreenFragment extends Fragment
 
     private void fetchData()
     {
-        MainActivity.ruter.callback().getStopsRuter(new Callback<List<Stop>>()
+        stopService.getStopsRuter().enqueue(new Callback<List<Stop>>()
         {
             @Override
-            public void success(List<Stop> stops, Response response)
+            public void onResponse(Response<List<Stop>> response, Retrofit retrofit)
             {
-                PersistentCache.setStops(stops);
-                MainActivity.ruter.callback().getLines(new Callback<List<Line>>()
+                PersistentCache.setStops(response.body());
+                lineService.getLines().enqueue(new Callback<List<Line>>()
                 {
                     @Override
-                    public void success(List<Line> lines, Response response)
+                    public void onResponse(Response<List<Line>> response, Retrofit retrofit)
                     {
-                        PersistentCache.setLines(lines);
+                        PersistentCache.setLines(response.body());
                         onFetchFinish();
                     }
 
                     @Override
-                    public void failure(RetrofitError error)
+                    public void onFailure(Throwable t)
                     {
                         MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
                     }
                 });
             }
+
             @Override
-            public void failure(RetrofitError error)
+            public void onFailure(Throwable t)
             {
                 MainActivity.pushToast(R.string.failed_stops, Toast.LENGTH_SHORT);
             }

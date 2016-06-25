@@ -11,19 +11,23 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.Line;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.App;
+import net.plastboks.rutersugar.domain.Line;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.adapter.LineAdapter;
 import net.plastboks.ruteravvik.storage.PersistentCache;
+import net.plastboks.rutersugar.service.LineService;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class LinesBySearchFragment extends ListFragment
 {
@@ -41,6 +45,8 @@ public class LinesBySearchFragment extends ListFragment
 
     private ProgressBar progressBar;
 
+    @Inject public LineService lineService;
+
     public static LinesBySearchFragment newInstance(String title)
     {
         LinesBySearchFragment fragment = new LinesBySearchFragment();
@@ -56,6 +62,8 @@ public class LinesBySearchFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {
             title = getArguments().getString(ARG_TITLE);
@@ -83,18 +91,18 @@ public class LinesBySearchFragment extends ListFragment
     private void fetchLines()
     {
         if (!PersistentCache.hasLines()) {
-            MainActivity.ruter.callback().getLines(new Callback<List<Line>>()
+            lineService.getLines().enqueue(new Callback<List<Line>>()
             {
                 @Override
-                public void success(List<Line> l, Response response)
+                public void onResponse(Response<List<Line>> response, Retrofit retrofit)
                 {
-                    lines = l;
+                    lines = response.body();
                     PersistentCache.setLines(lines);
                     update();
                 }
 
                 @Override
-                public void failure(RetrofitError error)
+                public void onFailure(Throwable t)
                 {
                     MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
                             Toast.LENGTH_SHORT);

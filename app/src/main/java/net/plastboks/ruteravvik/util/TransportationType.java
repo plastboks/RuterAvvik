@@ -1,6 +1,6 @@
 package net.plastboks.ruteravvik.util;
 
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 
 /**

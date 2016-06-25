@@ -15,22 +15,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.MonitoredStopVisit;
-import net.plastboks.rutersugar.type.MonitoredVehicleJourney;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.App;
+import net.plastboks.rutersugar.domain.MonitoredStopVisit;
+import net.plastboks.rutersugar.domain.MonitoredVehicleJourney;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.util.Mask;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.adapter.StopVisitAdapter;
 import net.plastboks.ruteravvik.util.Datehelper;
 import net.plastboks.ruteravvik.storage.Settings;
+import net.plastboks.rutersugar.service.MonitoredStopVisitService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class StopVisitFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener
@@ -51,6 +55,8 @@ public class StopVisitFragment extends ListFragment
     private TextView detailLeft, detailMiddle, detailRight, empty;
     private RelativeLayout detailContainer;
 
+    @Inject public MonitoredStopVisitService monitoredStopVisitService;
+
     public static StopVisitFragment newInstance(String title, int id)
     {
         StopVisitFragment fragment = new StopVisitFragment();
@@ -68,6 +74,8 @@ public class StopVisitFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {
             title = getArguments().getString(ARG_TITLE);
@@ -104,25 +112,24 @@ public class StopVisitFragment extends ListFragment
 
     private void fetchDepartures()
     {
-        MainActivity.ruter.callback().getDepartures(stationID,
-                Datehelper.getDateTime(Settings.getInt("departure_offset")),
-                new Callback<List<MonitoredStopVisit>>()
+        monitoredStopVisitService
+                .getDepartures(stationID,
+                        Datehelper.getDateTime(Settings.getInt("departure_offset")))
+                .enqueue(new Callback<List<MonitoredStopVisit>>()
+        {
+            @Override
+            public void onResponse(Response<List<MonitoredStopVisit>> response, Retrofit retrofit)
             {
-                @Override
-                public void success(List<MonitoredStopVisit> monitoredStopVisits,
-                                    Response response)
-                {
-                    stopVisits = monitoredStopVisits;
-                    update();
-                }
-
-                @Override
-                public void failure(RetrofitError error)
-                {
-                    MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
-                }
+                stopVisits = response.body();
+                update();
             }
-        );
+
+            @Override
+            public void onFailure(Throwable t)
+            {
+                MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     private void showSpinner(final boolean bool)

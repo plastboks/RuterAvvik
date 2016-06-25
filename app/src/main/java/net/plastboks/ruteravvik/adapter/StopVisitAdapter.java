@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.Deviation;
-import net.plastboks.rutersugar.type.MonitoredStopVisit;
-import net.plastboks.rutersugar.type.MonitoredVehicleJourney;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.rutersugar.domain.Deviation;
+import net.plastboks.rutersugar.domain.MonitoredStopVisit;
+import net.plastboks.rutersugar.domain.MonitoredVehicleJourney;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.util.Mask;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.util.Datehelper;

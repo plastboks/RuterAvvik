@@ -55,6 +55,10 @@
     <string name="empty_list">Empty list</string>
     <string name="unable_to_connect_to_ruter">Unable to connect to Ruter</string>
 
+    <string name="ruter_api_scheme">https</string>
+    <string name="ruter_api_host">reisapi.ruter.no</string>
+    <string name="ruter_api_port">80</string>
+
 
     <!-- Strings related to Settings -->
 

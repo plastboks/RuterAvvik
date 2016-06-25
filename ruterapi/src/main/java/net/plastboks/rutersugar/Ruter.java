@@ -1,5 +1,6 @@
 package net.plastboks.rutersugar;
 
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -17,8 +18,10 @@ public class Ruter
                 .addConverterFactory(GsonConverterFactory.create());
     }
 
-    public <S> S createService(Class<S> serviceClass)
+    public <S> S createService(Class<S> serviceClass, Cache cache)
     {
+        httpClient.cache(cache);
+
         return builder.client(httpClient.build())
                 .build()
                 .create(serviceClass);

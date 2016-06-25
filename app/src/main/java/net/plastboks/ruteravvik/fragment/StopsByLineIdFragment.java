@@ -13,18 +13,22 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.Stop;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.App;
+import net.plastboks.rutersugar.domain.Stop;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.adapter.StopAdapter;
 import net.plastboks.ruteravvik.storage.Settings;
+import net.plastboks.rutersugar.service.StopService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class StopsByLineIdFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener
@@ -41,6 +45,8 @@ public class StopsByLineIdFragment extends ListFragment
     private List<Stop> stops;
     private View rootView;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    @Inject protected StopService stopService;
 
     public static StopsByLineIdFragment newInstance(String title, int id)
     {
@@ -59,6 +65,8 @@ public class StopsByLineIdFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {
             id = getArguments().getInt(ARG_ID);
@@ -84,17 +92,17 @@ public class StopsByLineIdFragment extends ListFragment
 
     private void fetchStops()
     {
-        MainActivity.ruter.callback().getStopsByLineID(id, new Callback<List<Stop>>()
+        stopService.getStopsByLineID(id).enqueue(new Callback<List<Stop>>()
         {
             @Override
-            public void success(List<Stop> s, Response response)
+            public void onResponse(Response<List<Stop>> response, Retrofit retrofit)
             {
-                stops = s;
+                stops = response.body();
                 update();
             }
 
             @Override
-            public void failure(RetrofitError error)
+            public void onFailure(Throwable t)
             {
                 MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
                         Toast.LENGTH_SHORT);

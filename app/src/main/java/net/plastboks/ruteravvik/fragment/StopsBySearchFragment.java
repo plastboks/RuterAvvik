@@ -11,19 +11,23 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import net.plastboks.rutersugar.type.Stop;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.ruteravvik.App;
+import net.plastboks.rutersugar.domain.Stop;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.adapter.StopAdapter;
 import net.plastboks.ruteravvik.storage.PersistentCache;
 import net.plastboks.ruteravvik.storage.Settings;
+import net.plastboks.rutersugar.service.StopService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class StopsBySearchFragment extends ListFragment
 {
@@ -38,6 +42,8 @@ public class StopsBySearchFragment extends ListFragment
     private AutoCompleteTextView autoCompleteTextView;
 
     private ProgressBar progressBar;
+
+    @Inject public StopService stopService;
 
     public static StopsBySearchFragment newInstance(String title)
     {
@@ -54,6 +60,8 @@ public class StopsBySearchFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {
             title = getArguments().getString(ARG_TITLE);
@@ -81,18 +89,18 @@ public class StopsBySearchFragment extends ListFragment
     {
         if (!PersistentCache.hasStops()) {
 
-            MainActivity.ruter.callback().getStopsRuter(new Callback<List<Stop>>()
+            stopService.getStopsRuter().enqueue(new Callback<List<Stop>>()
             {
                 @Override
-                public void success(List<Stop> s, Response response)
+                public void onResponse(Response<List<Stop>> response, Retrofit retrofit)
                 {
-                    stops = s;
+                    stops = response.body();
                     PersistentCache.setStops(stops);
                     update();
                 }
 
                 @Override
-                public void failure(RetrofitError error)
+                public void onFailure(Throwable t)
                 {
                     MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
                             Toast.LENGTH_SHORT);

@@ -1,4 +1,4 @@
-package net.plastboks.ruteravvik;
+package net.plastboks.ruteravvik.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -15,9 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import net.plastboks.ruteravvik.activity.AboutActivity;
-import net.plastboks.ruteravvik.activity.SettingsActivity;
-import net.plastboks.rutersugar.Ruter;
+import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.fragment.*;
 import net.plastboks.ruteravvik.storage.PersistentCache;
 import net.plastboks.ruteravvik.storage.Settings;
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements
             StopsByFavoriteFragment.OnStopByFavoriteInteraction
 {
 
-    public static final Ruter ruter = new Ruter("https://reisapi.ruter.no");
     private static Context mContext;
 
     @Override

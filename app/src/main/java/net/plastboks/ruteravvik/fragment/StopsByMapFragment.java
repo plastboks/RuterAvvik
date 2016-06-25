@@ -16,8 +16,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
-import net.plastboks.rutersugar.type.Stop;
-import net.plastboks.ruteravvik.MainActivity;
+import net.plastboks.rutersugar.domain.Stop;
+import net.plastboks.ruteravvik.activity.MainActivity;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.util.CustomClusterRenderer;
 import net.plastboks.ruteravvik.util.Coordinates;

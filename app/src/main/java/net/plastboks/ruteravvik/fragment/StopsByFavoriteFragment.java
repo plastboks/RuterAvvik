@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import net.plastboks.rutersugar.type.Stop;
+import net.plastboks.rutersugar.domain.Stop;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.adapter.StopAdapter;
 import net.plastboks.ruteravvik.storage.Settings;
