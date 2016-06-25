@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "net.plastboks.s114143.ruteravvik"
+        applicationId "net.plastboks.ruteravvik"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -22,12 +22,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile files('libs/rutersugar-0.0.1-alpha.jar')
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
-    compile 'com.squareup.retrofit:retrofit:1.9.+'
-    compile 'com.google.code.gson:gson:2.3.+'
     compile 'com.android.support:support-v4:23.1.0'
     compile 'com.google.android.gms:play-services-maps:8.1.0'
     compile project(':library')
+    compile project(':ruterapi')
 }

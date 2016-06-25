@@ -5,7 +5,6 @@
 .DS_Store
 /build
 /captures
-AndroidManifest.xml
 gradlew.bat
 gradlew
 gradle
