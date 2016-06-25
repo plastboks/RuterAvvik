@@ -25,6 +25,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -39,11 +41,14 @@ public class LinesBySearchFragment extends ListFragment
     private List<LineAdapter.ListViewLine> mLines;
     private List<Line> lines = new LinkedList<>();
     private OnLineInteraction mListener;
-    private AutoCompleteTextView autoCompleteTextView;
     private View rootView;
     private LineAdapter lineAdapter;
 
-    private ProgressBar progressBar;
+    @BindView(R.id.autocomplete)
+    protected AutoCompleteTextView autoCompleteTextView;
+
+    @BindView(R.id.progressBar)
+    protected ProgressBar progressBar;
 
     @Inject public LineService lineService;
 
@@ -65,6 +70,7 @@ public class LinesBySearchFragment extends ListFragment
 
         App.getInstance().getDiComponent().inject(this);
 
+
         if (getArguments() != null) {
             title = getArguments().getString(ARG_TITLE);
         }
@@ -75,9 +81,8 @@ public class LinesBySearchFragment extends ListFragment
     {
         rootView = inflater.inflate(R.layout.fragment_line_autocomp, container, false);
 
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
+        ButterKnife.bind(this, rootView);
 
-        autoCompleteTextView = (AutoCompleteTextView)rootView.findViewById(R.id.autocomplete);
         autoCompleteTextView.setThreshold(2);
         autoCompleteTextView.setDropDownHeight(0);
 

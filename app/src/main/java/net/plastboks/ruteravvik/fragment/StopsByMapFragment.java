@@ -36,8 +36,8 @@ public class StopsByMapFragment extends Fragment implements OnMapReadyCallback
 
     private static View view;
 
-    List<Stop> stops = PersistentCache.getStops();
-    HashMap<String, Integer> refTable = new HashMap<>();
+    private List<Stop> stops = PersistentCache.getStops();
+    private HashMap<String, Integer> refTable = new HashMap<>();
 
     public class RuterItem implements ClusterItem
     {

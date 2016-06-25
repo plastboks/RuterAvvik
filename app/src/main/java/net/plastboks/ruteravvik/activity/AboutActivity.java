@@ -11,9 +11,15 @@ import android.widget.Toast;
 import net.plastboks.ruteravvik.R;
 import net.plastboks.ruteravvik.storage.PersistentCache;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class AboutActivity extends AppCompatActivity
 {
-    private ImageView logo;
+    @BindView(R.id.logo)
+    protected ImageView logo;
+
     private int clicks = 0;
 
     @Override
@@ -22,16 +28,11 @@ public class AboutActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        logo = (ImageView)findViewById(R.id.logo);
-
-        logo.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) { onImageClick(); }
-        });
+        ButterKnife.bind(this);
     }
 
-    private void onImageClick()
+    @OnClick(R.id.logo)
+    protected void onImageClick()
     {
         if (clicks++ > 5) {
             clicks = 0;

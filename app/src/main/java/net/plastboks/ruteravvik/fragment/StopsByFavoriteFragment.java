@@ -18,6 +18,9 @@ import net.plastboks.ruteravvik.storage.Settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StopsByFavoriteFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener
 {
@@ -29,9 +32,12 @@ public class StopsByFavoriteFragment extends ListFragment
     private List<StopAdapter.ListViewStop> mStops;
     private OnStopByFavoriteInteraction mListener;
     private View rootView;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private List<Stop> favorites;
-    private TextView empty;
+
+    @BindView(R.id.swipe_container)
+    protected SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(android.R.id.empty)
+    protected TextView empty;
 
     public static StopsByFavoriteFragment newInstance(String title)
     {
@@ -59,9 +65,8 @@ public class StopsByFavoriteFragment extends ListFragment
     {
         rootView = inflater.inflate(R.layout.fragment_line_swipe, container, false);
 
-        empty = (TextView)rootView.findViewById(android.R.id.empty);
+        ButterKnife.bind(this, rootView);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         getActivity().setTitle(title);

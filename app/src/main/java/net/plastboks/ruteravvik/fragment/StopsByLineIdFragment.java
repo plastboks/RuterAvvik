@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -44,7 +46,9 @@ public class StopsByLineIdFragment extends ListFragment
     private OnStopByLineInteraction mListener;
     private List<Stop> stops;
     private View rootView;
-    private SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.swipe_container)
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject protected StopService stopService;
 
@@ -79,7 +83,8 @@ public class StopsByLineIdFragment extends ListFragment
     {
         rootView = inflater.inflate(R.layout.fragment_line_swipe, container, false);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
+        ButterKnife.bind(this, rootView);
+
         swipeRefreshLayout.setOnRefreshListener(this);
 
         getActivity().setTitle(title);

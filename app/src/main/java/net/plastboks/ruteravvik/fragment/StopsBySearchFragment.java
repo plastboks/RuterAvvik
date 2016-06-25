@@ -25,6 +25,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -39,9 +41,11 @@ public class StopsBySearchFragment extends ListFragment
     private List<StopAdapter.ListViewStop> mStops;
     private List<Stop> stops;
     private OnStopBySearchInteraction mListener;
-    private AutoCompleteTextView autoCompleteTextView;
 
-    private ProgressBar progressBar;
+    @BindView(R.id.autocomplete)
+    protected AutoCompleteTextView autoCompleteTextView;
+    @BindView(R.id.progressBar)
+    protected ProgressBar progressBar;
 
     @Inject public StopService stopService;
 
@@ -73,9 +77,8 @@ public class StopsBySearchFragment extends ListFragment
     {
         View view = inflater.inflate(R.layout.fragment_line_autocomp, container, false);
 
-        progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
+        ButterKnife.bind(this, view);
 
-        autoCompleteTextView = (AutoCompleteTextView)view.findViewById(R.id.autocomplete);
         autoCompleteTextView.setDropDownHeight(0);
 
         getActivity().setTitle(title);

@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -50,10 +52,20 @@ public class StopVisitFragment extends ListFragment
     private OnStopVisitInteraction mListener;
     private List<MonitoredStopVisit> stopVisits;
     private View rootView;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
-    private TextView detailLeft, detailMiddle, detailRight, empty;
-    private RelativeLayout detailContainer;
+    @BindView(R.id.swipe_container)
+    protected SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.detail_left)
+    protected TextView detailLeft;
+    @BindView(R.id.detail_middle)
+    protected TextView detailMiddle;
+    @BindView(R.id.detail_right)
+    protected TextView detailRight;
+    @BindView(android.R.id.empty)
+    protected TextView empty;
+    @BindView(R.id.detail_container)
+    protected RelativeLayout detailContainer;
 
     @Inject public MonitoredStopVisitService monitoredStopVisitService;
 
@@ -90,15 +102,11 @@ public class StopVisitFragment extends ListFragment
     {
         rootView = inflater.inflate(R.layout.fragment_line_detailswipe, container, false);
 
+        ButterKnife.bind(this, rootView);
+
         empty = (TextView)rootView.findViewById(android.R.id.empty);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
-
-        detailContainer = (RelativeLayout)rootView.findViewById(R.id.detail_container);
-        detailLeft = (TextView)rootView.findViewById(R.id.detail_left);
-        detailMiddle = (TextView)rootView.findViewById(R.id.detail_middle);
-        detailRight = (TextView)rootView.findViewById(R.id.detail_right);
 
         if (!Settings.getBool("show_stats")) detailContainer.setVisibility(View.GONE);
 

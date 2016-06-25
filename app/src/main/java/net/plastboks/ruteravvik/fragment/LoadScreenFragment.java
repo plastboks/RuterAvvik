@@ -48,8 +48,6 @@ public class LoadScreenFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         App.getInstance().getDiComponent().inject(this);
-
-        if (getArguments() != null) {}
     }
 
     @Override
