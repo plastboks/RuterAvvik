@@ -12,13 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.repository.StopsRepository;
 import net.plastboks.java.rutersugar.domain.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.StopAdapter;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
 import net.plastboks.android.ruteravvik.storage.Settings;
-import net.plastboks.java.rutersugar.service.StopService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class StopsBySearchFragment extends ListFragment
 {
@@ -47,7 +44,7 @@ public class StopsBySearchFragment extends ListFragment
     @BindView(R.id.progressBar)
     protected ProgressBar progressBar;
 
-    @Inject public StopService stopService;
+    @Inject protected StopsRepository stopsRepository;
 
     public static StopsBySearchFragment newInstance(String title)
     {
@@ -92,23 +89,17 @@ public class StopsBySearchFragment extends ListFragment
     {
         if (!PersistentCache.hasStops()) {
 
-            stopService.getStopsRuter().enqueue(new Callback<List<Stop>>()
-            {
-                @Override
-                public void onResponse(Response<List<Stop>> response, Retrofit retrofit)
-                {
-                    stops = response.body();
-                    PersistentCache.setStops(stops);
-                    update();
-                }
-
-                @Override
-                public void onFailure(Throwable t)
-                {
-                    MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
-                            Toast.LENGTH_SHORT);
-                }
-            });
+            stopsRepository.getStopsRuterRx()
+                    .doOnCompleted(() -> {})
+                    .doOnError(throwable -> {
+                        MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
+                                Toast.LENGTH_SHORT);
+                    })
+                    .subscribe(stops -> {
+                        this.stops = stops;
+                        PersistentCache.setStops(stops);
+                        update();
+                    });
         } else {
             stops = PersistentCache.getStops();
             update();

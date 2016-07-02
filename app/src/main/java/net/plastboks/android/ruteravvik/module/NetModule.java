@@ -2,6 +2,9 @@ package net.plastboks.android.ruteravvik.module;
 
 import android.app.Application;
 
+import net.plastboks.android.ruteravvik.repository.LinesRepository;
+import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
+import net.plastboks.android.ruteravvik.repository.StopsRepository;
 import net.plastboks.java.rutersugar.Ruter;
 import net.plastboks.java.rutersugar.service.LineService;
 import net.plastboks.java.rutersugar.service.MonitoredStopVisitService;
@@ -48,9 +51,23 @@ public class NetModule
 
     @Provides
     @Singleton
+    public LinesRepository providesLinesRepository()
+    {
+        return new LinesRepository();
+    }
+
+    @Provides
+    @Singleton
     public MonitoredStopVisitService providesMonitoredStopVisitService(Cache cache)
     {
         return ruter.createService(MonitoredStopVisitService.class, cache);
+    }
+
+    @Provides
+    @Singleton
+    public MonitoredStopVisitsRepository monitoredStopVisitsRepository()
+    {
+        return new MonitoredStopVisitsRepository();
     }
 
     @Provides
@@ -74,4 +91,10 @@ public class NetModule
         return ruter.createService(StopService.class, cache);
     }
 
+    @Provides
+    @Singleton
+    public StopsRepository providesStopsRepository()
+    {
+        return new StopsRepository();
+    }
 }

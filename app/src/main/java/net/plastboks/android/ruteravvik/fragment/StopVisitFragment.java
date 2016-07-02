@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
 import net.plastboks.java.rutersugar.domain.MonitoredStopVisit;
 import net.plastboks.java.rutersugar.domain.MonitoredVehicleJourney;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
@@ -24,7 +25,6 @@ import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.StopVisitAdapter;
 import net.plastboks.android.ruteravvik.util.Datehelper;
 import net.plastboks.android.ruteravvik.storage.Settings;
-import net.plastboks.java.rutersugar.service.MonitoredStopVisitService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,9 +34,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class StopVisitFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener
@@ -67,7 +64,7 @@ public class StopVisitFragment extends ListFragment
     @BindView(R.id.detail_container)
     protected RelativeLayout detailContainer;
 
-    @Inject public MonitoredStopVisitService monitoredStopVisitService;
+    @Inject public MonitoredStopVisitsRepository repository;
 
     public static StopVisitFragment newInstance(String title, int id)
     {
@@ -120,24 +117,14 @@ public class StopVisitFragment extends ListFragment
 
     private void fetchDepartures()
     {
-        monitoredStopVisitService
-                .getDepartures(stationID,
-                        Datehelper.getDateTime(Settings.getInt("departure_offset")))
-                .enqueue(new Callback<List<MonitoredStopVisit>>()
-        {
-            @Override
-            public void onResponse(Response<List<MonitoredStopVisit>> response, Retrofit retrofit)
-            {
-                stopVisits = response.body();
-                update();
-            }
-
-            @Override
-            public void onFailure(Throwable t)
-            {
-                MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
-            }
-        });
+        repository.getDeparturesRx(stationID)
+                .doOnError(throwable -> {
+                    MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
+                })
+                .subscribe(stopVisits -> {
+                    this.stopVisits = stopVisits;
+                    update();
+                });
     }
 
     private void showSpinner(final boolean bool)

@@ -12,12 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.repository.LinesRepository;
 import net.plastboks.java.rutersugar.domain.Line;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.LineAdapter;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
-import net.plastboks.java.rutersugar.service.LineService;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,9 +27,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class LinesBySearchFragment extends ListFragment
 {
@@ -50,7 +47,7 @@ public class LinesBySearchFragment extends ListFragment
     @BindView(R.id.progressBar)
     protected ProgressBar progressBar;
 
-    @Inject public LineService lineService;
+    @Inject protected LinesRepository linesRepository;
 
     public static LinesBySearchFragment newInstance(String title)
     {
@@ -96,23 +93,17 @@ public class LinesBySearchFragment extends ListFragment
     private void fetchLines()
     {
         if (!PersistentCache.hasLines()) {
-            lineService.getLines().enqueue(new Callback<List<Line>>()
-            {
-                @Override
-                public void onResponse(Response<List<Line>> response, Retrofit retrofit)
-                {
-                    lines = response.body();
-                    PersistentCache.setLines(lines);
-                    update();
-                }
-
-                @Override
-                public void onFailure(Throwable t)
-                {
+            linesRepository.getLinesRx()
+                .doOnCompleted(() -> {})
+                .doOnError(throwable -> {
                     MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
                             Toast.LENGTH_SHORT);
-                }
-            });
+                })
+                .subscribe(lines -> {
+                    this.lines = lines;
+                    PersistentCache.setLines(lines);
+                    update();
+                });
         } else {
             lines = PersistentCache.getLines();
             update();

@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.repository.StopsRepository;
 import net.plastboks.java.rutersugar.domain.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.schedulers.Schedulers;
 
 public class StopsByLineIdFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener
@@ -50,7 +52,7 @@ public class StopsByLineIdFragment extends ListFragment
     @BindView(R.id.swipe_container)
     protected SwipeRefreshLayout swipeRefreshLayout;
 
-    @Inject protected StopService stopService;
+    @Inject protected StopsRepository stopsRepository;
 
     public static StopsByLineIdFragment newInstance(String title, int id)
     {
@@ -97,22 +99,16 @@ public class StopsByLineIdFragment extends ListFragment
 
     private void fetchStops()
     {
-        stopService.getStopsByLineID(id).enqueue(new Callback<List<Stop>>()
-        {
-            @Override
-            public void onResponse(Response<List<Stop>> response, Retrofit retrofit)
-            {
-                stops = response.body();
-                update();
-            }
-
-            @Override
-            public void onFailure(Throwable t)
-            {
-                MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
-                        Toast.LENGTH_SHORT);
-            }
-        });
+        stopsRepository.getStopsByLineIdRx(id)
+                .doOnCompleted(() -> {})
+                .doOnError(throwable -> {
+                    MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
+                            Toast.LENGTH_SHORT);
+                })
+                .subscribe(stops -> {
+                    this.stops = stops;
+                    update();
+                });
     }
 
     private void showSpinner()
