@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="net.plastboks.s114143.ruteravvik.MainActivity">
+    tools:context="net.plastboks.android.ruteravvik.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"

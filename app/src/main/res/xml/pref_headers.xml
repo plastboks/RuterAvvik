@@ -3,12 +3,12 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="net.plastboks.s114143.ruteravvik.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="net.plastboks.android.ruteravvik.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"
         android:icon="@drawable/ic_info_black_24dp"/>
 
     <header
-        android:fragment="net.plastboks.s114143.ruteravvik.SettingsActivity$StationPreferenceFragment"
+        android:fragment="net.plastboks.android.ruteravvik.SettingsActivity$StationPreferenceFragment"
         android:title="@string/station_view"
         android:icon="@drawable/ic_info_black_24dp"/>
 

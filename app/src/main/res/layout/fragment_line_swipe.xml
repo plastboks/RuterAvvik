@@ -3,7 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="net.plastboks.s114143.ruteravvik.fragment.LinesBySearchFragment">
+             tools:context="net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="wrap_content"
