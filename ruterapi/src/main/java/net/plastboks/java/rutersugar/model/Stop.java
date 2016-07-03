@@ -1,36 +1,51 @@
-package net.plastboks.java.rutersugar.domain;
+package net.plastboks.java.rutersugar.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
+@DatabaseTable(tableName = "stops")
 public class Stop
 {
-    @SerializedName("ID")
+    @DatabaseField(id = true) @SerializedName("ID")
     private int id;
-    @SerializedName("X")
+
+    @DatabaseField @SerializedName("X")
     private int x;
-    @SerializedName("Y")
+
+    @DatabaseField @SerializedName("Y")
     private int y;
-    @SerializedName("Zone")
+
+    @DatabaseField @SerializedName("Zone")
     private String zone;
-    @SerializedName("ShortName")
+
+    @DatabaseField @SerializedName("ShortName")
     private String shortName;
-    @SerializedName("IsHub")
+
+    @DatabaseField @SerializedName("IsHub")
     private boolean isHub;
-    @SerializedName("Name")
+
+    @DatabaseField @SerializedName("Name")
     private String name;
-    @SerializedName("District")
+
+    @DatabaseField @SerializedName("District")
     private String district;
-    @SerializedName("PlaceType")
+
+    @DatabaseField @SerializedName("PlaceType")
     private String placeType;
-    @SerializedName("AlightingAllowed")
+
+    @DatabaseField @SerializedName("AlightingAllowed")
     private boolean alightingAllowed;
-    @SerializedName("BoardingAllowed")
+
+    @DatabaseField @SerializedName("BoardingAllowed")
     private boolean boardingAllowed;
-    @SerializedName("ArrivalTime")
+
+    @DatabaseField @SerializedName("ArrivalTime")
     private String arrivalTime;
-    @SerializedName("DepartureTime")
+
+    @DatabaseField @SerializedName("DepartureTime")
     private String departureTime;
 
     public int getId()

@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.plastboks.java.rutersugar.domain.Deviation;
-import net.plastboks.java.rutersugar.domain.MonitoredStopVisit;
-import net.plastboks.java.rutersugar.domain.MonitoredVehicleJourney;
+import net.plastboks.java.rutersugar.model.Deviation;
+import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
+import net.plastboks.java.rutersugar.model.MonitoredVehicleJourney;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.util.Mask;
 import net.plastboks.android.ruteravvik.R;

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.repository.LinesRepository;
-import net.plastboks.java.rutersugar.domain.Line;
+import net.plastboks.java.rutersugar.model.Line;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.LineAdapter;

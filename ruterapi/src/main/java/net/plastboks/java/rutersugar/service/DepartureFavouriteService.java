@@ -1,6 +1,6 @@
 package net.plastboks.java.rutersugar.service;
 
-import net.plastboks.java.rutersugar.domain.DepartureFavourite;
+import net.plastboks.java.rutersugar.model.DepartureFavourite;
 
 import java.util.List;
 

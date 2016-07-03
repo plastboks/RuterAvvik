@@ -12,11 +12,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
-import net.plastboks.java.rutersugar.domain.Stop;
+import net.plastboks.java.rutersugar.model.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.util.CustomClusterRenderer;

@@ -1,7 +1,7 @@
 package net.plastboks.android.ruteravvik.repository;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.java.rutersugar.domain.Stop;
+import net.plastboks.java.rutersugar.model.Stop;
 import net.plastboks.java.rutersugar.service.StopService;
 
 import java.util.List;

@@ -15,12 +15,11 @@ import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.repository.StopsRepository;
-import net.plastboks.java.rutersugar.domain.Stop;
+import net.plastboks.java.rutersugar.model.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.StopAdapter;
 import net.plastboks.android.ruteravvik.storage.Settings;
-import net.plastboks.java.rutersugar.service.StopService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
-import rx.schedulers.Schedulers;
 
 public class StopsByLineIdFragment extends ListFragment
         implements SwipeRefreshLayout.OnRefreshListener

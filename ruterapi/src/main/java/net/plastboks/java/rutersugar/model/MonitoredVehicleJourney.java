@@ -1,4 +1,4 @@
-package net.plastboks.java.rutersugar.domain;
+package net.plastboks.java.rutersugar.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -37,7 +37,7 @@ public class MonitoredVehicleJourney
     @SerializedName("Delay")
     private String delay;
     @SerializedName("TrainBlockPart")
-    private TrainBlockPart trainBlockPart;
+    private net.plastboks.java.rutersugar.model.TrainBlockPart trainBlockPart;
     @SerializedName("BlockRef")
     private String blockRef;
     @SerializedName("VehicleRef")
@@ -47,7 +47,7 @@ public class MonitoredVehicleJourney
     @SerializedName("VehicleJourneyName")
     private String vehicleJourneyName;
     @SerializedName("MonitoredCall")
-    private MonitoredCall monitoredCall;
+    private net.plastboks.java.rutersugar.model.MonitoredCall monitoredCall;
     @SerializedName("VehicleFeatureRef")
     private String vehicleFeatureRef;
 
@@ -126,7 +126,7 @@ public class MonitoredVehicleJourney
         return delay;
     }
 
-    public TrainBlockPart getTrainBlockPart()
+    public net.plastboks.java.rutersugar.model.TrainBlockPart getTrainBlockPart()
     {
         return trainBlockPart;
     }
@@ -151,7 +151,7 @@ public class MonitoredVehicleJourney
         return vehicleJourneyName;
     }
 
-    public MonitoredCall getMonitoredCall()
+    public net.plastboks.java.rutersugar.model.MonitoredCall getMonitoredCall()
     {
         return monitoredCall;
     }

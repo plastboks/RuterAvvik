@@ -1,7 +1,7 @@
 package net.plastboks.java.ruterapi;
 
 
-import net.plastboks.java.rutersugar.domain.Line;
+import net.plastboks.java.rutersugar.model.Line;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package net.plastboks.android.ruteravvik.repository;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.java.rutersugar.domain.Line;
+import net.plastboks.java.rutersugar.model.Line;
 import net.plastboks.java.rutersugar.service.LineService;
 
 import java.util.List;

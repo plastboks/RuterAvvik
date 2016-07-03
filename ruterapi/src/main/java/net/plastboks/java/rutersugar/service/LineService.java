@@ -1,6 +1,6 @@
 package net.plastboks.java.rutersugar.service;
 
-import net.plastboks.java.rutersugar.domain.Line;
+import net.plastboks.java.rutersugar.model.Line;
 
 import java.util.List;
 

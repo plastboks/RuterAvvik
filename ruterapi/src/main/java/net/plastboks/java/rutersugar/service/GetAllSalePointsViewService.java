@@ -1,6 +1,6 @@
 package net.plastboks.java.rutersugar.service;
 
-import net.plastboks.java.rutersugar.domain.GetAllSalePointsView;
+import net.plastboks.java.rutersugar.model.GetAllSalePointsView;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package net.plastboks.java.rutersugar.domain;
+package net.plastboks.java.rutersugar.model;
 
 import com.google.gson.annotations.SerializedName;
 

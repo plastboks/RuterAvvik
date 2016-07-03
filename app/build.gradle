@@ -42,28 +42,21 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
     androidTestCompile 'com.android.support:support-annotations:24.0.0'
-
     compile project(':library')
     compile project(':ruterapi')
-
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-
     compile 'com.google.android.gms:play-services-maps:9.2.0'
-
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.google.code.gson:gson:2.7'
-
     apt 'com.google.dagger:dagger-compiler:2.5'
     compile 'com.google.dagger:dagger:2.5'
     provided 'javax.annotation:jsr250-api:1.0'
-
     compile 'com.jakewharton:butterknife:8.1.0'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
-
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.1.6'
-
+    compile 'com.j256.ormlite:ormlite-android:4.48'
 }

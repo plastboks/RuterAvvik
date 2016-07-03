@@ -1,6 +1,6 @@
 package net.plastboks.java.rutersugar.service;
 
-import net.plastboks.java.rutersugar.domain.MonitoredStopVisit;
+import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
 
 import java.util.List;
 

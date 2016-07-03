@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.plastboks.java.rutersugar.domain.Line;
-import net.plastboks.java.rutersugar.domain.Stop;
+import net.plastboks.java.rutersugar.model.Line;
+import net.plastboks.java.rutersugar.model.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 

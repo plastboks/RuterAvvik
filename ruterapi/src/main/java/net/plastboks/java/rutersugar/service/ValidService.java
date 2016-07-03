@@ -1,6 +1,6 @@
 package net.plastboks.java.rutersugar.service;
 
-import net.plastboks.java.rutersugar.domain.Valid;
+import net.plastboks.java.rutersugar.model.Valid;
 
 import retrofit.Call;
 import retrofit.http.GET;

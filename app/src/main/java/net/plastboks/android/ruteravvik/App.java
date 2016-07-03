@@ -5,6 +5,7 @@ import android.util.Log;
 
 import net.plastboks.android.ruteravvik.module.AppModule;
 import net.plastboks.android.ruteravvik.module.DaggerDiComponent;
+import net.plastboks.android.ruteravvik.module.DatabaseModule;
 import net.plastboks.android.ruteravvik.module.DiComponent;
 import net.plastboks.android.ruteravvik.module.NetModule;
 
@@ -34,6 +35,7 @@ public class App extends Application
                         .host(getString(R.string.ruter_api_host))
                         .port(Integer.parseInt(getString(R.string.ruter_api_port)))
                         .build()))
+                .databaseModule(new DatabaseModule(this))
                 .build();
 
         Log.d("APP", "Main app class");

@@ -14,7 +14,9 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules={AppModule.class, NetModule.class})
+@Component(modules={AppModule.class,
+                    NetModule.class,
+                    DatabaseModule.class})
 public interface DiComponent
 {
     /**

@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.java.rutersugar.domain.Line;
-import net.plastboks.java.rutersugar.domain.Stop;
+import net.plastboks.java.rutersugar.model.Line;
+import net.plastboks.java.rutersugar.model.Stop;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;

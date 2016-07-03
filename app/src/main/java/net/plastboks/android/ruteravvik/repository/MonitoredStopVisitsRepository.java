@@ -3,7 +3,7 @@ package net.plastboks.android.ruteravvik.repository;
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.storage.Settings;
 import net.plastboks.android.ruteravvik.util.Datehelper;
-import net.plastboks.java.rutersugar.domain.MonitoredStopVisit;
+import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
 import net.plastboks.java.rutersugar.service.MonitoredStopVisitService;
 
 import java.util.List;
