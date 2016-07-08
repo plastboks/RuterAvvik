@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
+repositories {
+    maven { url "https://clojars.org/repo/" }
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
@@ -25,6 +29,22 @@ android {
     packagingOptions {
         exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
         exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+        exclude 'META-INF/maven/joda-time/joda-time/pom.properties'
+        exclude 'META-INF/maven/joda-time/joda-time/pom.xml'
+        pickFirst 'org/joda/time/format/messages.properties'
+        pickFirst 'org/joda/time/format/messages_cs.properties'
+        pickFirst 'org/joda/time/format/messages_da.properties'
+        pickFirst 'org/joda/time/format/messages_de.properties'
+        pickFirst 'org/joda/time/format/messages_en.properties'
+        pickFirst 'org/joda/time/format/messages_es.properties'
+        pickFirst 'org/joda/time/format/messages_fr.properties'
+        pickFirst 'org/joda/time/format/messages_it.properties'
+        pickFirst 'org/joda/time/format/messages_ja.properties'
+        pickFirst 'org/joda/time/format/messages_nl.properties'
+        pickFirst 'org/joda/time/format/messages_pl.properties'
+        pickFirst 'org/joda/time/format/messages_pt.properties'
+        pickFirst 'org/joda/time/format/messages_ru.properties'
+        pickFirst 'org/joda/time/format/messages_tr.properties'
     }
 
     compileOptions {
@@ -57,6 +77,8 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.1.6'
+    compile 'frankiesardo:icepick:3.2.0'
+    compile 'net.danlew:android.joda:2.9.4'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:retrofit-adapters:2.1.0'
@@ -66,4 +88,8 @@ dependencies {
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.j256.ormlite:ormlite-jdbc:4.48'
     compile 'com.j256.ormlite:ormlite-core:4.48'
+
+    compile 'info.android15.nucleus:nucleus:2.0.6'
+    compile 'info.android15.nucleus:nucleus-support-v4:2.0.6'
+    compile 'info.android15.nucleus:nucleus-support-v7:2.0.6'
 }
