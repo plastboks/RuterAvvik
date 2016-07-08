@@ -2,15 +2,15 @@ package net.plastboks.android.ruteravvik.module;
 
 import android.app.Application;
 
+import net.plastboks.android.ruteravvik.api.Ruter;
+import net.plastboks.android.ruteravvik.api.service.LineService;
+import net.plastboks.android.ruteravvik.api.service.MonitoredStopVisitService;
+import net.plastboks.android.ruteravvik.api.service.PlaceService;
+import net.plastboks.android.ruteravvik.api.service.StopService;
+import net.plastboks.android.ruteravvik.api.service.StreetService;
 import net.plastboks.android.ruteravvik.repository.LinesRepository;
 import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
 import net.plastboks.android.ruteravvik.repository.StopsRepository;
-import net.plastboks.java.rutersugar.Ruter;
-import net.plastboks.java.rutersugar.service.LineService;
-import net.plastboks.java.rutersugar.service.MonitoredStopVisitService;
-import net.plastboks.java.rutersugar.service.PlaceService;
-import net.plastboks.java.rutersugar.service.StopService;
-import net.plastboks.java.rutersugar.service.StreetService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

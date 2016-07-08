@@ -13,15 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.plastboks.java.rutersugar.model.Deviation;
-import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
-import net.plastboks.java.rutersugar.model.MonitoredVehicleJourney;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
-import net.plastboks.android.ruteravvik.util.Mask;
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.util.Datehelper;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
+import net.plastboks.android.ruteravvik.model.Deviation;
+import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
+import net.plastboks.android.ruteravvik.model.MonitoredVehicleJourney;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
 import net.plastboks.android.ruteravvik.storage.Settings;
+import net.plastboks.android.ruteravvik.util.Datehelper;
+import net.plastboks.android.ruteravvik.util.Mask;
 
 import java.util.ArrayList;
 import java.util.HashMap;

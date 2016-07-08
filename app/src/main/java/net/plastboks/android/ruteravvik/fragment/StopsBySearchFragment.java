@@ -1,8 +1,8 @@
 package net.plastboks.android.ruteravvik.fragment;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.ListFragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.android.ruteravvik.repository.StopsRepository;
-import net.plastboks.java.rutersugar.model.Stop;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.adapter.StopAdapter;
+import net.plastboks.android.ruteravvik.model.Stop;
+import net.plastboks.android.ruteravvik.repository.StopsRepository;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
 import net.plastboks.android.ruteravvik.storage.Settings;
 

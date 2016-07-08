@@ -1,8 +1,8 @@
 package net.plastboks.android.ruteravvik.fragment;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +15,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
-import net.plastboks.java.rutersugar.model.Stop;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.util.CustomClusterRenderer;
-import net.plastboks.android.ruteravvik.util.Coordinates;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
+import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
+import net.plastboks.android.ruteravvik.util.Coordinates;
+import net.plastboks.android.ruteravvik.util.CustomClusterRenderer;
 
 import java.util.HashMap;
 import java.util.List;

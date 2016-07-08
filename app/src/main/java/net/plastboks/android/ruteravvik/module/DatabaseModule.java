@@ -9,9 +9,9 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import net.plastboks.java.rutersugar.model.Line;
-import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
-import net.plastboks.java.rutersugar.model.Stop;
+import net.plastboks.android.ruteravvik.model.Line;
+import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
+import net.plastboks.android.ruteravvik.model.Stop;
 
 import java.sql.SQLException;
 import java.util.Arrays;

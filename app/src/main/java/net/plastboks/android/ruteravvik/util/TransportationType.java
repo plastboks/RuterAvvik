@@ -1,7 +1,7 @@
 package net.plastboks.android.ruteravvik.util;
 
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
 
 /**
  * Created by alex on 11/7/15.

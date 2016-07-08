@@ -16,7 +16,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.fragment.*;
+import net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment;
+import net.plastboks.android.ruteravvik.fragment.LoadScreenFragment;
+import net.plastboks.android.ruteravvik.fragment.StopVisitFragment;
+import net.plastboks.android.ruteravvik.fragment.StopsByFavoriteFragment;
+import net.plastboks.android.ruteravvik.fragment.StopsByLineIdFragment;
+import net.plastboks.android.ruteravvik.fragment.StopsByMapFragment;
+import net.plastboks.android.ruteravvik.fragment.StopsBySearchFragment;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
 import net.plastboks.android.ruteravvik.storage.Settings;
 

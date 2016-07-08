@@ -8,9 +8,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.plastboks.java.rutersugar.model.Stop;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
+import net.plastboks.android.ruteravvik.model.Stop;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

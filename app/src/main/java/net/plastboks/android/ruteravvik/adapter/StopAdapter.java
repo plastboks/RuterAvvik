@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.plastboks.java.rutersugar.model.Stop;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
+import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.storage.Settings;
 
 import java.util.ArrayList;

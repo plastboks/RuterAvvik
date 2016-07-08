@@ -2,7 +2,7 @@ package net.plastboks.android.ruteravvik.util;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import net.plastboks.java.rutersugar.model.Stop;
+import net.plastboks.android.ruteravvik.model.Stop;
 
 public class Coordinates
 {

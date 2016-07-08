@@ -1,21 +1,21 @@
 package net.plastboks.android.ruteravvik.fragment;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.java.rutersugar.model.Line;
-import net.plastboks.java.rutersugar.model.Stop;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
+import net.plastboks.android.ruteravvik.api.service.LineService;
+import net.plastboks.android.ruteravvik.api.service.StopService;
+import net.plastboks.android.ruteravvik.model.Line;
+import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.storage.PersistentCache;
-import net.plastboks.java.rutersugar.service.LineService;
-import net.plastboks.java.rutersugar.service.StopService;
 
 import java.util.List;
 

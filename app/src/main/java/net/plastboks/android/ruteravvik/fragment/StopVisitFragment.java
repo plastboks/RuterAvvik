@@ -1,8 +1,8 @@
 package net.plastboks.android.ruteravvik.fragment;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.ListFragment;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,15 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
-import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
-import net.plastboks.java.rutersugar.model.MonitoredStopVisit;
-import net.plastboks.java.rutersugar.model.MonitoredVehicleJourney;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
-import net.plastboks.android.ruteravvik.util.Mask;
 import net.plastboks.android.ruteravvik.R;
+import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.adapter.StopVisitAdapter;
-import net.plastboks.android.ruteravvik.util.Datehelper;
+import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
+import net.plastboks.android.ruteravvik.model.MonitoredVehicleJourney;
+import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
 import net.plastboks.android.ruteravvik.storage.Settings;
+import net.plastboks.android.ruteravvik.util.Datehelper;
+import net.plastboks.android.ruteravvik.util.Mask;
 
 import java.util.ArrayList;
 import java.util.Date;
