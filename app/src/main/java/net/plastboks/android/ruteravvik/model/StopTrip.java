@@ -1,5 +1,8 @@
 package net.plastboks.android.ruteravvik.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import net.plastboks.android.ruteravvik.api.util.RuterDateParser;
@@ -7,7 +10,7 @@ import net.plastboks.android.ruteravvik.api.util.RuterDateParser;
 import java.util.Date;
 import java.util.List;
 
-public class StopTrip
+public class StopTrip implements Parcelable
 {
     @SerializedName("ID")
     private int id;
@@ -107,4 +110,66 @@ public class StopTrip
     {
         return lines;
     }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.id);
+        dest.writeString(this.district);
+        dest.writeString(this.name);
+        dest.writeString(this.placeType);
+        dest.writeByte(this.isHub ? (byte) 1 : (byte) 0);
+        dest.writeString(this.shortName);
+        dest.writeInt(this.x);
+        dest.writeInt(this.y);
+        dest.writeString(this.zone);
+        dest.writeByte(this.alightingAllowed ? (byte) 1 : (byte) 0);
+        dest.writeString(this.arrivalTime);
+        dest.writeByte(this.boardingAllowed ? (byte) 1 : (byte) 0);
+        dest.writeString(this.departureTime);
+        dest.writeTypedList(this.lines);
+    }
+
+    public StopTrip()
+    {
+    }
+
+    protected StopTrip(Parcel in)
+    {
+        this.id = in.readInt();
+        this.district = in.readString();
+        this.name = in.readString();
+        this.placeType = in.readString();
+        this.isHub = in.readByte() != 0;
+        this.shortName = in.readString();
+        this.x = in.readInt();
+        this.y = in.readInt();
+        this.zone = in.readString();
+        this.alightingAllowed = in.readByte() != 0;
+        this.arrivalTime = in.readString();
+        this.boardingAllowed = in.readByte() != 0;
+        this.departureTime = in.readString();
+        this.lines = in.createTypedArrayList(Line.CREATOR);
+    }
+
+    public static final Parcelable.Creator<StopTrip> CREATOR = new Parcelable.Creator<StopTrip>()
+    {
+        @Override
+        public StopTrip createFromParcel(Parcel source)
+        {
+            return new StopTrip(source);
+        }
+
+        @Override
+        public StopTrip[] newArray(int size)
+        {
+            return new StopTrip[size];
+        }
+    };
 }
