@@ -2,7 +2,6 @@ package net.plastboks.android.ruteravvik.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,23 +12,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment;
-import net.plastboks.android.ruteravvik.fragment.LoadScreenFragment;
+import net.plastboks.android.ruteravvik.fragment.LinesBySearchListFragment;
 import net.plastboks.android.ruteravvik.fragment.StopVisitFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsByFavoriteFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsByLineIdFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsByMapFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsBySearchFragment;
-import net.plastboks.android.ruteravvik.storage.PersistentCache;
 import net.plastboks.android.ruteravvik.storage.Settings;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
             NavigationView.OnNavigationItemSelectedListener,
-            LoadScreenFragment.OnLoadScreenDoneListener,
-            LinesBySearchFragment.OnLineInteraction,
+            LinesBySearchListFragment.OnLineInteraction,
             StopsByLineIdFragment.OnStopByLineInteraction,
             StopsBySearchFragment.OnStopBySearchInteraction,
             StopsByMapFragment.OnStopByMapInteraction,
@@ -37,40 +35,31 @@ public class MainActivity extends AppCompatActivity implements
             StopsByFavoriteFragment.OnStopByFavoriteInteraction
 {
 
-    private static Context mContext;
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    protected NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_navigation);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mContext = this;
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        if (savedInstanceState == null) {
-            if (!PersistentCache.hasLines() && !PersistentCache.hasStops()) {
-                getFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, LoadScreenFragment.newInstance())
-                        .commit();
-            } else {
-                loadFragment(true);
-            }
-        }
+        loadFragment(true);
     }
 
     private void loadFragment(boolean emptyStack)
@@ -81,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (Settings.getString("default_page")) {
             case "1":
-                fragment = LinesBySearchFragment.newInstance(getString(R.string.search_line));
+                fragment = LinesBySearchListFragment.newInstance(getString(R.string.search_line));
                 break;
             case "2":
                 fragment = StopsBySearchFragment.newInstance(getString(R.string.search_loc));
@@ -90,19 +79,13 @@ public class MainActivity extends AppCompatActivity implements
                 fragment = StopsByFavoriteFragment.newInstance(getString(R.string.favorites));
                 break;
             default:
-                fragment = LinesBySearchFragment.newInstance(getString(R.string.search_line));
+                fragment = LinesBySearchListFragment.newInstance(getString(R.string.search_line));
         }
 
         if (emptyStack) ft.add(R.id.fragment_container, fragment);
         else ft.replace(R.id.fragment_container, fragment);
 
         ft.commit();
-    }
-
-    public static void pushToast(int string, int duration)
-    {
-        Toast.makeText(getCurContext(),
-                getCurContext().getString(string), duration).show();
     }
 
     @Override
@@ -149,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.nav_search_line:
                 ft.replace(R.id.fragment_container,
-                        LinesBySearchFragment.newInstance(getString(R.string.search_line)))
-                .addToBackStack(LinesBySearchFragment.TAG)
+                        LinesBySearchListFragment.newInstance(getString(R.string.search_line)))
+                .addToBackStack(LinesBySearchListFragment.TAG)
                 .commit();
                 break;
             case R.id.nav_search_loc:
@@ -185,14 +168,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadScreenDone() { loadFragment(false); }
-
-    @Override
     public void onLineInteraction(String title, int id)
     {
         getFragmentManager()
                 .beginTransaction()
-                .addToBackStack(LinesBySearchFragment.TAG)
+                .addToBackStack(LinesBySearchListFragment.TAG)
                 .replace(R.id.fragment_container, StopsByLineIdFragment.newInstance(title, id))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -252,6 +232,4 @@ public class MainActivity extends AppCompatActivity implements
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
-
-    public static Context getCurContext() { return mContext; }
 }

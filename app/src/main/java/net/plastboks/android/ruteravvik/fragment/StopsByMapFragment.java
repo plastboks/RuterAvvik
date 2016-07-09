@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Stop;
@@ -128,7 +129,7 @@ public class StopsByMapFragment extends Fragment implements OnMapReadyCallback
     {
         ClusterManager<RuterItem> mClusterManager;
         mClusterManager = new ClusterManager<>(
-                MainActivity.getCurContext(), googleMap);
+                App.getInstance().getApplicationContext(), googleMap);
 
         googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mClusterManager);

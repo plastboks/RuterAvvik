@@ -3,6 +3,7 @@ package net.plastboks.android.ruteravvik.api;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -15,6 +16,7 @@ public class Ruter
     public Ruter(HttpUrl url)
     {
         builder.baseUrl(url)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
     }
 

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Deviation;
@@ -34,7 +35,7 @@ public class StopVisitAdapter extends ArrayAdapter<StopVisitAdapter.ListViewStop
     private ArrayList<ListViewStopVisit> fullList;
     private ArrayList<ListViewStopVisit> mOriginalValues;
     private boolean maskedMode = false;
-    private Context mContext = MainActivity.getCurContext();
+    private Context context = App.getInstance().getApplicationContext();
 
     private static class ViewHolder {
         TextView num;
@@ -129,11 +130,11 @@ public class StopVisitAdapter extends ArrayAdapter<StopVisitAdapter.ListViewStop
         }
 
         if (line.deviations != null && !line.deviations.isEmpty()) {
-            viewHolder.maskIcon.setImageDrawable(mContext.getResources()
+            viewHolder.maskIcon.setImageDrawable(context.getResources()
                     .getDrawable(R.drawable.ic_warning_black_48dp));
             viewHolder.maskIcon.setOnClickListener(view ->
             {
-                    new AlertDialog.Builder(mContext)
+                    new AlertDialog.Builder(context)
                             .setTitle(R.string.deviation)
                             .setNegativeButton(R.string.close, null)
                             .setMessage(line.deviations.get(0).getHeader())
@@ -144,7 +145,7 @@ public class StopVisitAdapter extends ArrayAdapter<StopVisitAdapter.ListViewStop
 
         if (maskedMode && line.mask != null) {
 
-            viewHolder.maskIcon.setImageDrawable(mContext.getResources()
+            viewHolder.maskIcon.setImageDrawable(context.getResources()
                     .getDrawable(line.mask.masked
                                         ? R.drawable.ic_visibility_off_black_48dp
                                         : R.drawable.ic_visibility_black_48dp));
@@ -153,11 +154,11 @@ public class StopVisitAdapter extends ArrayAdapter<StopVisitAdapter.ListViewStop
             {
                     String toastText = String.format("%s %s %s",
                             line.num, line.title, viewHolder.isMasked
-                                    ? mContext.getString(R.string.no_longer_mask)
-                                    : mContext.getString(R.string.is_now_masked));
-                    Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT).show();
+                                    ? context.getString(R.string.no_longer_mask)
+                                    : context.getString(R.string.is_now_masked));
+                    Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
 
-                    viewHolder.maskIcon.setImageDrawable(mContext.getResources()
+                    viewHolder.maskIcon.setImageDrawable(context.getResources()
                                     .getDrawable(viewHolder.isMasked
                                                     ? R.drawable.ic_visibility_black_48dp
                                                     : R.drawable.ic_visibility_off_black_48dp));

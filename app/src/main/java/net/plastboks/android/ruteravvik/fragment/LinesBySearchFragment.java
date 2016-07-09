@@ -1,142 +1,82 @@
 package net.plastboks.android.ruteravvik.fragment;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
-import net.plastboks.android.ruteravvik.adapter.LineAdapter;
+import net.plastboks.android.ruteravvik.adapter.recycler.LineRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.model.Line;
-import net.plastboks.android.ruteravvik.repository.LinesRepository;
-import net.plastboks.android.ruteravvik.storage.PersistentCache;
+import net.plastboks.android.ruteravvik.presenter.LinesBySearchPresenter;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.inject.Inject;
+import nucleus.factory.RequiresPresenter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class LinesBySearchFragment extends ListFragment
+@RequiresPresenter(LinesBySearchPresenter.class)
+public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, List<Line>>
 {
-    public static final String TAG = "LinesBySearchFragment";
-    private static final String ARG_TITLE = "title";
 
-    private String title;
+    private OnListFragmentInteractionListener listener;
+    private RecyclerView recyclerView;
 
-    private List<LineAdapter.ListViewLine> mLines;
-    private List<Line> lines = new LinkedList<>();
-    private OnLineInteraction mListener;
-    private View rootView;
-    private LineAdapter lineAdapter;
+    public LinesBySearchFragment() {}
 
-    @BindView(R.id.autocomplete)
-    protected AutoCompleteTextView autoCompleteTextView;
-
-    @BindView(R.id.progressBar)
-    protected ProgressBar progressBar;
-
-    @Inject protected LinesRepository linesRepository;
-
-    public static LinesBySearchFragment newInstance(String title)
+    public static LinesBySearchFragment newInstance()
     {
         LinesBySearchFragment fragment = new LinesBySearchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
-
-    public LinesBySearchFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        App.getInstance().getDiComponent().inject(this);
+        getPresenter().request();
 
-
-        if (getArguments() != null) {
-            title = getArguments().getString(ARG_TITLE);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_line_autocomp, container, false);
+        View view = inflater.inflate(R.layout.fragment_line_list, container, false);
 
-        ButterKnife.bind(this, rootView);
+        Context context = view.getContext();
+        recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        autoCompleteTextView.setThreshold(2);
-        autoCompleteTextView.setDropDownHeight(0);
-
-        getActivity().setTitle(title);
-
-        fetchLines();
-
-        return rootView;
+        return view;
     }
 
-    private void fetchLines()
+    @Override
+    public void loadContent(List<Line> lines)
     {
-        if (!PersistentCache.hasLines()) {
-            linesRepository.getLinesRx()
-                .doOnCompleted(() -> {})
-                .doOnError(throwable -> {
-                    MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
-                            Toast.LENGTH_SHORT);
-                })
-                .subscribe(lines -> {
-                    this.lines = lines;
-                    PersistentCache.setLines(lines);
-                    update();
-                });
+        recyclerView.setAdapter(new LineRecyclerViewAdapter(lines, listener));
+    }
+
+    @Override
+    public void onItemsError(Throwable throwable)
+    {
+        super.onItemsError(throwable);
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            listener = (OnListFragmentInteractionListener) context;
         } else {
-            lines = PersistentCache.getLines();
-            update();
-        }
-    }
-
-    private void update()
-    {
-        mLines = new ArrayList<>();
-
-        for (Line line : lines) {
-            mLines.add(new LineAdapter.ListViewLine(line));
-        }
-
-        lineAdapter = new LineAdapter(getActivity().getBaseContext(), mLines);
-
-        autoCompleteTextView.setAdapter(lineAdapter);
-
-        setListAdapter(lineAdapter);
-
-        progressBar.setVisibility(View.INVISIBLE);
-    }
-
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        try {
-            mListener = (OnLineInteraction) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLineInteraction");
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -144,23 +84,11 @@ public class LinesBySearchFragment extends ListFragment
     public void onDetach()
     {
         super.onDetach();
+        listener = null;
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id)
+    public interface OnListFragmentInteractionListener
     {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-            LineAdapter.ListViewLine viewLine =
-                    (LineAdapter.ListViewLine)l.getAdapter().getItem(position);
-            String title = String.format("%s %s", viewLine.num, viewLine.title);
-            mListener.onLineInteraction(title, viewLine.id);
-        }
-    }
-
-    public interface OnLineInteraction
-    {
-        void onLineInteraction(String title, int id);
+        void onListFragmentInteraction(Line item);
     }
 }

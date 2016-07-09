@@ -119,7 +119,8 @@ public class StopVisitFragment extends ListFragment
     {
         repository.getDeparturesRx(stationID)
                 .doOnError(throwable -> {
-                    MainActivity.pushToast(R.string.failed_lines, Toast.LENGTH_SHORT);
+                    Toast.makeText(App.getInstance().getApplicationContext(),
+                            R.string.failed_lines, Toast.LENGTH_SHORT).show();
                 })
                 .subscribe(stopVisits -> {
                     this.stopVisits = stopVisits;
@@ -206,8 +207,8 @@ public class StopVisitFragment extends ListFragment
         int limit = Settings.getInt("future_departure_limit");
 
         if (limit == -1)
-            limit = MainActivity.getCurContext()
-                    .getResources().getInteger(R.integer.default_departure_limit);
+            limit = App.getInstance().getResources()
+                    .getInteger(R.integer.default_departure_limit);
 
         limit += Settings.getInt("departure_offset");
 

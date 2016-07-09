@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Stop;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class Settings
 {
-    private static final String KEY = MainActivity.getCurContext().getString(R.string.app_name) +"-settings";
+    private static final String KEY = App.getInstance().getString(R.string.app_name) +"-settings";
 
     private static final String FAV_STOPS = "fav_stops";
     private static final String HAS_FAVORITES = "has_favorites";
@@ -28,17 +29,17 @@ public class Settings
 
     private static Gson gson = new Gson();
     private static SharedPreferences sp = PreferenceManager
-            .getDefaultSharedPreferences(MainActivity.getCurContext());
+            .getDefaultSharedPreferences(App.getInstance().getApplicationContext());
 
     private static SharedPreferences.Editor w()
     {
-        return MainActivity.getCurContext().getSharedPreferences(KEY,
+        return App.getInstance().getSharedPreferences(KEY,
                 Context.MODE_PRIVATE).edit();
     }
 
     private static SharedPreferences r()
     {
-        return MainActivity.getCurContext().getSharedPreferences(KEY,
+        return App.getInstance().getSharedPreferences(KEY,
                 Context.MODE_PRIVATE);
     }
 

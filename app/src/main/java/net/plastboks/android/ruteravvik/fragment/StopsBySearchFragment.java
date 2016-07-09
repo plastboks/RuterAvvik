@@ -92,8 +92,8 @@ public class StopsBySearchFragment extends ListFragment
             stopsRepository.getStopsRuterRx()
                     .doOnCompleted(() -> {})
                     .doOnError(throwable -> {
-                        MainActivity.pushToast(R.string.unable_to_connect_to_ruter,
-                                Toast.LENGTH_SHORT);
+                        Toast.makeText(App.getInstance().getApplicationContext(),
+                                R.string.unable_to_connect_to_ruter, Toast.LENGTH_SHORT).show();
                     })
                     .subscribe(stops -> {
                         this.stops = stops;

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Stop;
@@ -91,9 +92,9 @@ public class StopAdapter extends ArrayAdapter<StopAdapter.ListViewStop>
         viewHolder.isFavorite = viewStop.favorite;
         viewHolder.favoriteIcon.setImageDrawable(
                 viewHolder.isFavorite
-                        ? MainActivity.getCurContext().getResources()
+                        ? App.getInstance().getResources()
                                     .getDrawable(R.drawable.ic_favorite_black_48dp)
-                        : MainActivity.getCurContext().getResources()
+                        : App.getInstance().getResources()
                                     .getDrawable(R.drawable.ic_favorite_border_black_48dp));
 
         final String title = viewStop.title;
@@ -102,22 +103,22 @@ public class StopAdapter extends ArrayAdapter<StopAdapter.ListViewStop>
         viewHolder.favoriteIcon.setOnClickListener(view ->
         {
                 if (viewHolder.isFavorite) {
-                    Toast.makeText(MainActivity.getCurContext(),
-                            title + " " + MainActivity.getCurContext().getText(R.string.no_longer_fav),
+                    Toast.makeText(App.getInstance().getApplicationContext(),
+                            title + " " + App.getInstance().getString(R.string.no_longer_fav),
                             Toast.LENGTH_SHORT).show();
                     Settings.removeFavorite(stop);
                     viewHolder.favoriteIcon.setImageDrawable(
-                            MainActivity.getCurContext().getResources()
+                            App.getInstance().getResources()
                                     .getDrawable(R.drawable.ic_favorite_border_black_48dp));
                     viewHolder.isFavorite = false;
 
                 } else {
-                    Toast.makeText(MainActivity.getCurContext(),
-                            title + " " + MainActivity.getCurContext().getText(R.string.is_now_fav),
+                    Toast.makeText(App.getInstance().getApplicationContext(),
+                            title + " " + App.getInstance().getText(R.string.is_now_fav),
                             Toast.LENGTH_SHORT).show();
                     Settings.setFavorite(stop);
                     viewHolder.favoriteIcon.setImageDrawable(
-                            MainActivity.getCurContext().getResources()
+                            App.getInstance().getResources()
                                     .getDrawable(R.drawable.ic_favorite_black_48dp));
                     viewHolder.isFavorite = true;
                 }

@@ -4,9 +4,9 @@ import net.plastboks.android.ruteravvik.model.Stop;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public interface StopService

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Deviation;
@@ -36,7 +37,7 @@ public class LineAdapter extends ArrayAdapter<LineAdapter.ListViewLine>
     private ArrayList<ListViewLine> fullList;
     private ArrayList<ListViewLine> mOriginalValues;
     private boolean maskedMode = false;
-    private Context mContext = MainActivity.getCurContext();
+    private Context mContext = App.getInstance().getBaseContext();
 
     private static class ViewHolder {
         TextView num;

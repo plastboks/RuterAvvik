@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Line;
@@ -18,7 +19,8 @@ import java.util.List;
 
 public class PersistentCache
 {
-    private static final String KEY = MainActivity.getCurContext().getString(R.string.app_name) +"-cache";
+    private static final String KEY = App.getInstance().getApplicationContext()
+            .getString(R.string.app_name) +"-cache";
 
     private static final String STOPS = "stops";
     private static final String COLORS = "colors";
@@ -30,13 +32,13 @@ public class PersistentCache
 
     private static SharedPreferences.Editor e()
     {
-        return MainActivity.getCurContext().getSharedPreferences(KEY,
+        return App.getInstance().getApplicationContext().getSharedPreferences(KEY,
                 Context.MODE_PRIVATE).edit();
     }
 
     private static SharedPreferences r()
     {
-        return MainActivity.getCurContext().getSharedPreferences(KEY,
+        return App.getInstance().getApplicationContext().getSharedPreferences(KEY,
                 Context.MODE_PRIVATE);
     }
 

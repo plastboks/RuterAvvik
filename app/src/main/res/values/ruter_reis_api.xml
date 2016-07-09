@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ruter_api_scheme" translatable="false">http</string>
+    <string name="ruter_api_host" translatable="false">reisapi.ruter.no</string>
+    <string name="ruter_api_port" translatable="false">80</string>
+</resources>
