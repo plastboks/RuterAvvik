@@ -10,14 +10,12 @@
           <set>
             <option value="/mnt/homedisk/alex/development/private/Ruteravvik" />
             <option value="/mnt/homedisk/alex/development/private/Ruteravvik/app" />
-            <option value="/mnt/homedisk/alex/development/private/Ruteravvik/library" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="/mnt/homedisk/alex/development/private/Ruteravvik" />
             <option value="/mnt/homedisk/alex/development/private/Ruteravvik/app" />
-            <option value="/mnt/homedisk/alex/development/private/Ruteravvik/library" />
           </set>
         </option>
       </GradleProjectSettings>

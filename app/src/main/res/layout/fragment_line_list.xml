@@ -10,5 +10,16 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment"
-    tools:listitem="@layout/fragment_line2"/>
+    tools:context=".fragment.LinesBySearchFragment"
+    tools:listitem="@layout/list_item_line"
+    >
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+</android.support.v7.widget.RecyclerView>

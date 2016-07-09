@@ -7,36 +7,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.adapter.LineRecyclerViewAdapter;
-import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
-import net.plastboks.android.ruteravvik.model.Line;
-import net.plastboks.android.ruteravvik.presenter.LinesBySearchPresenter;
+import net.plastboks.android.ruteravvik.adapter.StopRecyclerViewAdapter;
+import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
+import net.plastboks.android.ruteravvik.model.Stop;
+import net.plastboks.android.ruteravvik.presenter.StopsByLocationPresenter;
+import net.plastboks.android.ruteravvik.storage.Settings;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
-@RequiresPresenter(LinesBySearchPresenter.class)
-public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, List<Line>>
+@RequiresPresenter(StopsByLocationPresenter.class)
+public class StopsByLocationFragment extends BaseFragment<StopsByLocationPresenter, List<Stop>>
 {
-    public static final String TAG = LinesBySearchFragment.class.getSimpleName();
+    public static final String TAG = StopsByLocationFragment.class.getSimpleName();
 
-    private OnLineInteractionListener listener;
     private RecyclerView recyclerView;
+    private OnStopInteractionListener listener;
 
-    @BindView(android.R.id.empty)
-    protected TextView empty;
-
-    public LinesBySearchFragment() {}
-
-    public static LinesBySearchFragment newInstance()
+    public StopsByLocationFragment()
     {
-        LinesBySearchFragment fragment = new LinesBySearchFragment();
+    }
+
+    public static StopsByLocationFragment newInstance()
+    {
+        StopsByLocationFragment fragment = new StopsByLocationFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -47,6 +44,9 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
     {
         super.onCreate(savedInstanceState);
 
+        if (getArguments() != null) {
+        }
+
         getPresenter().request();
     }
 
@@ -54,21 +54,12 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_line_list, container, false);
-
-        ButterKnife.bind(this, view);
+        View view = inflater.inflate(R.layout.fragment_stop_list, container, false);
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
         return view;
-    }
-
-    @Override
-    public void loadContent(List<Line> lines)
-    {
-        recyclerView.setAdapter(new LineRecyclerViewAdapter(lines, listener));
     }
 
     @Override
@@ -78,11 +69,17 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
     }
 
     @Override
+    public void loadContent(List<Stop> stops)
+    {
+        recyclerView.setAdapter(new StopRecyclerViewAdapter(stops, listener));
+    }
+
+    @Override
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof OnLineInteractionListener) {
-            listener = (OnLineInteractionListener) context;
+        if (context instanceof OnStopInteractionListener) {
+            listener = (OnStopInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnStopInteractionListener");
@@ -95,6 +92,4 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
         super.onDetach();
         listener = null;
     }
-
-
 }

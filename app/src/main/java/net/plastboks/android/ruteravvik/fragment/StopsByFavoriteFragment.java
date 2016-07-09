@@ -1,54 +1,43 @@
 package net.plastboks.android.ruteravvik.fragment;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.adapter.StopAdapter;
+import net.plastboks.android.ruteravvik.adapter.StopRecyclerViewAdapter;
+import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
 import net.plastboks.android.ruteravvik.model.Stop;
+import net.plastboks.android.ruteravvik.presenter.StopsByFavoritePresenter;
 import net.plastboks.android.ruteravvik.storage.Settings;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import nucleus.factory.RequiresPresenter;
 
-public class StopsByFavoriteFragment extends ListFragment
-        implements SwipeRefreshLayout.OnRefreshListener
+@RequiresPresenter(StopsByFavoritePresenter.class)
+public class StopsByFavoriteFragment extends BaseFragment<StopsByFavoritePresenter, List<Stop>>
 {
-    public static final String TAG = "StopsByLineIdFragment";
-    private static final String ARG_TITLE = "title";
+    public static final String TAG = StopsByFavoriteFragment.class.getSimpleName();
 
-    private String title;
+    private RecyclerView recyclerView;
+    private OnStopInteractionListener listener;
 
-    private List<StopAdapter.ListViewStop> mStops;
-    private OnStopByFavoriteInteraction mListener;
-    private View rootView;
-    private List<Stop> favorites;
+    public StopsByFavoriteFragment()
+    {
+    }
 
-    @BindView(R.id.swipe_container)
-    protected SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(android.R.id.empty)
-    protected TextView empty;
-
-    public static StopsByFavoriteFragment newInstance(String title)
+    public static StopsByFavoriteFragment newInstance()
     {
         StopsByFavoriteFragment fragment = new StopsByFavoriteFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
-
-    public StopsByFavoriteFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -56,63 +45,46 @@ public class StopsByFavoriteFragment extends ListFragment
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            title = getArguments().getString(ARG_TITLE);
         }
+
+        // TODO refactor this, and make use of the presenter
+        // getPresenter().request()
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_line_swipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_stop_list, container, false);
 
-        ButterKnife.bind(this, rootView);
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        getActivity().setTitle(title);
-
-        showLoader(true);
-
-        update();
-
-        return rootView;
+        Context context = view.getContext();
+        recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new StopRecyclerViewAdapter(Settings.getFavorites(), listener)); // TODO refactor away this
+        return view;
     }
 
-    private void showLoader(final boolean bool)
+    @Override
+    public void onItemsError(Throwable throwable)
     {
-        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(bool));
+        super.onItemsError(throwable);
     }
 
-    private void update()
+    @Override
+    public void loadContent(List<Stop> stops)
     {
-        mStops = new ArrayList<>();
+        recyclerView.setAdapter(new StopRecyclerViewAdapter(stops, listener));
+    }
 
-        favorites = Settings.getFavorites();
-
-        if (favorites.isEmpty()) {
-            empty.setText(getActivity().getString(R.string.empty_list));
-
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (context instanceof OnStopInteractionListener) {
+            listener = (OnStopInteractionListener) context;
         } else {
-            for (Stop stop : favorites) {
-                mStops.add(new StopAdapter.ListViewStop(stop, true));
-            }
-            setListAdapter(new StopAdapter(getActivity().getBaseContext(), mStops));
-        }
-
-        showLoader(false);
-
-    }
-
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        try {
-            mListener = (OnStopByFavoriteInteraction) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnStopVisitInteraction");
+            throw new RuntimeException(context.toString()
+                    + " must implement OnStopInteractionListener");
         }
     }
 
@@ -120,28 +92,7 @@ public class StopsByFavoriteFragment extends ListFragment
     public void onDetach()
     {
         super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id)
-    {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener)
-            mListener.onStopByFavoriteInteraction(favorites.get(position).getName(),
-                    favorites.get(position).getId());
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        update();
-    }
-
-    public interface OnStopByFavoriteInteraction
-    {
-        public void onStopByFavoriteInteraction(String title, int id);
+        listener = null;
     }
 
 }

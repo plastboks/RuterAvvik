@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik.api.util;
+package net.plastboks.android.ruteravvik.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ public class RuterDateParser
 {
     public static Date toDate(String source)
     {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             return format.parse(source);
         } catch (ParseException pe) {

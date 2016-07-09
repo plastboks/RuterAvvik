@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:id="@+id/line_wrapper"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/item_title"
+                android:id="@+id/stop_title"
                 android:text="title - placeholder"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
@@ -31,15 +31,16 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="subtitle - placeholder"
-                android:id="@+id/item_subtitle"
-                android:layout_below="@+id/item_title"
-                android:layout_alignStart="@+id/item_title"/>
+                android:id="@+id/stop_subtitle"
+                android:layout_below="@+id/stop_title"
+                android:layout_alignStart="@+id/stop_title"/>
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="8dp"
                 android:id="@+id/favorite_icon"
+                android:src="@drawable/ic_favorite_border_black_48dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"/>
 

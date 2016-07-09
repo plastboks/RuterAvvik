@@ -1,235 +1,90 @@
 package net.plastboks.android.ruteravvik.fragment;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
-import net.plastboks.android.ruteravvik.adapter.StopVisitAdapter;
+import net.plastboks.android.ruteravvik.adapter.StopVisitRecyclerViewAdapter;
+import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
-import net.plastboks.android.ruteravvik.model.MonitoredVehicleJourney;
-import net.plastboks.android.ruteravvik.repository.MonitoredStopVisitsRepository;
-import net.plastboks.android.ruteravvik.storage.Settings;
-import net.plastboks.android.ruteravvik.util.Datehelper;
-import net.plastboks.android.ruteravvik.util.Mask;
+import net.plastboks.android.ruteravvik.presenter.StopVisitPresenter;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
+import nucleus.factory.RequiresPresenter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class StopVisitFragment extends ListFragment
-        implements SwipeRefreshLayout.OnRefreshListener
+@RequiresPresenter(StopVisitPresenter.class)
+public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<MonitoredStopVisit>>
 {
-    public static final String TAG = "StopVisitFragment";
-    private static final String ARG_ID = "stopID";
-    private static final String ARG_TITLE = "title";
+    public static final String TAG = StopVisitFragment.class.getSimpleName();
 
-    private int stationID;
-    private String title;
+    private static final String ARGS_STATION_ID = "stationId";
 
-    private List<StopVisitAdapter.ListViewStopVisit> mStopsVisits;
-    private OnStopVisitInteraction mListener;
-    private List<MonitoredStopVisit> stopVisits;
-    private View rootView;
+    private OnLineInteractionListener listener;
+    private RecyclerView recyclerView;
 
-    @BindView(R.id.swipe_container)
-    protected SwipeRefreshLayout swipeRefreshLayout;
+    public StopVisitFragment()
+    {
+    }
 
-    @BindView(R.id.detail_left)
-    protected TextView detailLeft;
-    @BindView(R.id.detail_middle)
-    protected TextView detailMiddle;
-    @BindView(R.id.detail_right)
-    protected TextView detailRight;
-    @BindView(android.R.id.empty)
-    protected TextView empty;
-    @BindView(R.id.detail_container)
-    protected RelativeLayout detailContainer;
-
-    @Inject public MonitoredStopVisitsRepository repository;
-
-    public static StopVisitFragment newInstance(String title, int id)
+    public static StopVisitFragment newInstance(int stationId)
     {
         StopVisitFragment fragment = new StopVisitFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ID, id);
-        args.putString(ARG_TITLE, title);
+        args.putInt(ARGS_STATION_ID, stationId);
         fragment.setArguments(args);
         return fragment;
     }
-
-    public StopVisitFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
-        App.getInstance().getDiComponent().inject(this);
 
         if (getArguments() != null) {
-            title = getArguments().getString(ARG_TITLE);
-            stationID = getArguments().getInt(ARG_ID);
+            getPresenter().request(getArguments().getInt(ARGS_STATION_ID));
         }
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_line_detailswipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_stopvisit_list, container, false);
 
-        ButterKnife.bind(this, rootView);
-
-        empty = (TextView)rootView.findViewById(android.R.id.empty);
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        if (!Settings.getBool("show_stats")) detailContainer.setVisibility(View.GONE);
-
-        getActivity().setTitle(title);
-        showSpinner(true);
-
-        fetchDepartures();
-
-        return rootView;
-    }
-
-    private void fetchDepartures()
-    {
-        repository.getDeparturesRx(stationID)
-                .doOnError(throwable -> {
-                    Toast.makeText(App.getInstance().getApplicationContext(),
-                            R.string.failed_lines, Toast.LENGTH_SHORT).show();
-                })
-                .subscribe(stopVisits -> {
-                    this.stopVisits = stopVisits;
-                    update();
-                });
-    }
-
-    private void showSpinner(final boolean bool)
-    {
-        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(bool));
-    }
-
-    private void update()
-    {
-        showSpinner(false);
-
-        if (stopVisits == null || stopVisits.isEmpty()) {
-            empty.setText(getActivity().getString(R.string.empty_list));
-            return;
-        }
-
-        mStopsVisits = new ArrayList<>();
-
-        List<String> masks = Settings.getMasks();
-        boolean filterMode = Settings.getMaskedMode();
-
-        List<Integer> delays = new ArrayList<>();
-
-        List<MonitoredStopVisit> filteredList = filterList(stopVisits);
-
-        for (MonitoredStopVisit stop : filteredList) {
-            MonitoredVehicleJourney transport = stop.getMonitoredVehicleJourney();
-            String maskedRef = String.format("%d:%s_%s", stationID,
-                    transport.getPublishedLineName(), transport.getDestinationName());
-
-            int secDiff = Datehelper.getSecondsDiff(
-                        stop.getMonitoredVehicleJourney()
-                                .getMonitoredCall().getAimedDepartureTime(),
-                        stop.getMonitoredVehicleJourney()
-                                .getMonitoredCall().getExpectedDepartureTime());
-
-            if (secDiff < -1000) break; // weird ruter api trash data bug...
-
-            if (filterMode) {
-                mStopsVisits.add(new StopVisitAdapter.ListViewStopVisit(stop,
-                        new Mask(maskedRef, masks.contains(maskedRef)), stationID));
-                delays.add(secDiff);
-            } else if (!masks.contains(maskedRef)) {
-                    mStopsVisits.add(new StopVisitAdapter
-                            .ListViewStopVisit(stop, null, stationID));
-                    delays.add(secDiff);
-            }
-        }
-
-        if (delays.size() > 0) {
-
-            int delaySum = 0;
-            for (Integer i : delays) delaySum += i;
-
-            int avgSum = delaySum/delays.size();
-
-            int deviationSquares = 0;
-            for (Integer i : delays) deviationSquares += Math.pow(i - avgSum, 2);
-
-            int variance = deviationSquares/delays.size();
-
-            detailLeft.setText(String.format("%s %d/s", "Tot: ", delaySum));
-            detailMiddle.setText(String.format("%s %.1f/s", "Avg: ", avgSum + 0.0));
-            detailRight.setText(String.format("σ: %.1f", Math.sqrt(variance)));
-        }
-
-        StopVisitAdapter stopVisitAdapter = new StopVisitAdapter(
-                getActivity().getBaseContext(), mStopsVisits);
-
-        stopVisitAdapter.setMaskedMode(filterMode);
-        setListAdapter(stopVisitAdapter);
-
-    }
-
-    private List<MonitoredStopVisit> filterList(List<MonitoredStopVisit> list)
-    {
-        List<MonitoredStopVisit> newList = new ArrayList<>(list);
-
-        int limit = Settings.getInt("future_departure_limit");
-
-        if (limit == -1)
-            limit = App.getInstance().getResources()
-                    .getInteger(R.integer.default_departure_limit);
-
-        limit += Settings.getInt("departure_offset");
-
-        for (MonitoredStopVisit msv : list) {
-            Date d = msv.getMonitoredVehicleJourney()
-                    .getMonitoredCall().getExpectedDepartureTime();
-            if (Datehelper.after(d, limit)) { newList.remove(msv); }
-        }
-
-        return newList;
+        Context context = view.getContext();
+        recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        return view;
     }
 
     @Override
-    public void onAttach(Activity activity)
+    public void onItemsError(Throwable throwable)
     {
-        super.onAttach(activity);
-        try {
-            mListener = (OnStopVisitInteraction) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnStopVisitInteraction");
+        super.onItemsError(throwable);
+    }
+
+    @Override
+    public void loadContent(List<MonitoredStopVisit> monitoredStopVisitList)
+    {
+        recyclerView.setAdapter(new StopVisitRecyclerViewAdapter(monitoredStopVisitList,
+                listener));
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (context instanceof OnLineInteractionListener) {
+            listener = (OnLineInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -237,56 +92,7 @@ public class StopVisitFragment extends ListFragment
     public void onDetach()
     {
         super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_refresh_filter, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        showSpinner(true);
-
-        switch (id) {
-            case R.id.action_filter_toggle:
-                Toast.makeText(getActivity().getBaseContext(),
-                        getActivity().getResources().getString(R.string.filter_mode_toggled),
-                        Toast.LENGTH_SHORT).show();
-                Settings.setMaskedMode(!Settings.getMaskedMode());
-                break;
-            case R.id.action_refresh:
-                break;
-        }
-        onRefresh();
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id)
-    {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-            StopVisitAdapter.ListViewStopVisit viewLine =
-                    (StopVisitAdapter.ListViewStopVisit)l.getAdapter().getItem(position);
-            String title = String.format("%s %s", viewLine.num, viewLine.title);
-            mListener.onStopVisitInteraction(title, viewLine.id);
-        }
-    }
-
-    @Override
-    public void onRefresh() { fetchDepartures(); }
-
-    public interface OnStopVisitInteraction
-    {
-        void onStopVisitInteraction(String title, int id);
+        listener = null;
     }
 
 }

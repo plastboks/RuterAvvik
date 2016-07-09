@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import net.plastboks.android.ruteravvik.api.util.RuterDateParser;
+import net.plastboks.android.ruteravvik.util.RuterDateParser;
 
 import java.util.Date;
 

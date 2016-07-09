@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_location_searching_black_48dp"
             android:title="@string/search_loc"/>
         <item
-            android:id="@+id/nav_maps"
-            android:icon="@drawable/ic_location_on_black_48dp"
-            android:title="@string/search_map"/>
-        <item
             android:id="@+id/nav_favourites"
             android:icon="@drawable/ic_favorite_black_48dp"
             android:title="@string/favorites"/>

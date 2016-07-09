@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Ruteravvik.iml" filepath="$PROJECT_DIR$/Ruteravvik.iml" />
       <module fileurl="file:///mnt/homedisk/alex/development/private/Ruteravvik/app/app.iml" filepath="/mnt/homedisk/alex/development/private/Ruteravvik/app/app.iml" />
-      <module fileurl="file:///mnt/homedisk/alex/development/private/Ruteravvik/library/library.iml" filepath="/mnt/homedisk/alex/development/private/Ruteravvik/library/library.iml" />
     </modules>
   </component>
 </project>

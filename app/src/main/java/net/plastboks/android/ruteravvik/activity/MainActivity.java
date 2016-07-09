@@ -14,12 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.fragment.LinesBySearchListFragment;
+import net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment;
 import net.plastboks.android.ruteravvik.fragment.StopVisitFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsByFavoriteFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsByLineIdFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsByMapFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsBySearchFragment;
+import net.plastboks.android.ruteravvik.fragment.StopsByLocationFragment;
+import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
+import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
+import net.plastboks.android.ruteravvik.fragment.StopsByLineFragment;
+import net.plastboks.android.ruteravvik.model.Line;
+import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.storage.Settings;
 
 import butterknife.BindView;
@@ -27,12 +30,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
             NavigationView.OnNavigationItemSelectedListener,
-            LinesBySearchListFragment.OnLineInteraction,
-            StopsByLineIdFragment.OnStopByLineInteraction,
-            StopsBySearchFragment.OnStopBySearchInteraction,
-            StopsByMapFragment.OnStopByMapInteraction,
-            StopVisitFragment.OnStopVisitInteraction,
-            StopsByFavoriteFragment.OnStopByFavoriteInteraction
+            OnLineInteractionListener,
+            OnStopInteractionListener
 {
 
     @BindView(R.id.drawer_layout)
@@ -69,17 +68,17 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment;
 
         switch (Settings.getString("default_page")) {
-            case "1":
-                fragment = LinesBySearchListFragment.newInstance(getString(R.string.search_line));
-                break;
             case "2":
-                fragment = StopsBySearchFragment.newInstance(getString(R.string.search_loc));
+                fragment = StopsByLocationFragment.newInstance();
+                setTitle(getString(R.string.search_loc));
                 break;
             case "3":
-                fragment = StopsByFavoriteFragment.newInstance(getString(R.string.favorites));
+                fragment = StopsByFavoriteFragment.newInstance();
+                setTitle(getString(R.string.favorites));
                 break;
             default:
-                fragment = LinesBySearchListFragment.newInstance(getString(R.string.search_line));
+                fragment = LinesBySearchFragment.newInstance();
+                setTitle(getString(R.string.search_line));
         }
 
         if (emptyStack) ft.add(R.id.fragment_container, fragment);
@@ -131,28 +130,22 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (id) {
             case R.id.nav_search_line:
-                ft.replace(R.id.fragment_container,
-                        LinesBySearchListFragment.newInstance(getString(R.string.search_line)))
-                .addToBackStack(LinesBySearchListFragment.TAG)
+                ft.replace(R.id.fragment_container, LinesBySearchFragment.newInstance())
+                .addToBackStack(LinesBySearchFragment.TAG)
                 .commit();
+                setTitle(getString(R.string.search_line));
                 break;
             case R.id.nav_search_loc:
-                ft.replace(R.id.fragment_container,
-                        StopsBySearchFragment.newInstance(getString(R.string.search_loc)))
-                .addToBackStack(StopsBySearchFragment.TAG)
+                ft.replace(R.id.fragment_container, StopsByLocationFragment.newInstance())
+                .addToBackStack(StopsByLocationFragment.TAG)
                 .commit();
-                break;
-            case R.id.nav_maps:
-                ft.replace(R.id.fragment_container,
-                        StopsByMapFragment.newInstance(getString(R.string.search_map)))
-                .addToBackStack(StopsByMapFragment.TAG)
-                .commit();
+                setTitle(getString(R.string.search_loc));
                 break;
             case R.id.nav_favourites:
-                ft.replace(R.id.fragment_container,
-                        StopsByFavoriteFragment.newInstance(getString(R.string.favorites)))
+                ft.replace(R.id.fragment_container, StopsByFavoriteFragment.newInstance())
                 .addToBackStack(StopsByFavoriteFragment.TAG)
                 .commit();
+                setTitle(getString(R.string.favorites));
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -168,68 +161,26 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLineInteraction(String title, int id)
+    public void onLineInteraction(Line item)
     {
         getFragmentManager()
                 .beginTransaction()
-                .addToBackStack(LinesBySearchListFragment.TAG)
-                .replace(R.id.fragment_container, StopsByLineIdFragment.newInstance(title, id))
+                .addToBackStack(LinesBySearchFragment.TAG)
+                .replace(R.id.fragment_container, StopsByLineFragment.newInstance(item.getId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+        setTitle(item.getName());
     }
 
     @Override
-    public void onStopByLineInteraction(String title, int id)
+    public void onStopInteraction(Stop stop)
     {
         getFragmentManager()
                 .beginTransaction()
-                .addToBackStack(StopsByLineIdFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(title, id))
+                .addToBackStack(StopsByLineFragment.TAG)
+                .replace(R.id.fragment_container, StopVisitFragment.newInstance(stop.getId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-    }
-
-    @Override
-    public void onStopBySearchInteraction(String title, int id)
-    {
-        getFragmentManager()
-                .beginTransaction()
-                .addToBackStack(StopsByLineIdFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(title, id))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
-
-    @Override
-    public void onStopByMapInteraction(String title, int id)
-    {
-        getFragmentManager()
-                .beginTransaction()
-                .addToBackStack(StopsByLineIdFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(title, id))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
-
-    @Override
-    public void onStopByFavoriteInteraction(String title, int id)
-    {
-        getFragmentManager()
-                .beginTransaction()
-                .addToBackStack(StopsByLineIdFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(title, id))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
-
-    @Override
-    public void onStopVisitInteraction(String title, int id)
-    {
-        getFragmentManager()
-                .beginTransaction()
-                .addToBackStack(StopVisitFragment.TAG)
-                .replace(R.id.fragment_container, StopsByLineIdFragment.newInstance(title, id))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+        setTitle(stop.getName());
     }
 }

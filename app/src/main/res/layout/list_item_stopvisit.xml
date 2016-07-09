@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:id="@+id/line_wrapper"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/item_title"
+                android:id="@+id/line_title"
                 android:text="title - placeholder"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/line_num"/>
@@ -36,8 +36,8 @@
                 android:id="@+id/subtitle_line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_title"
-                android:layout_alignStart="@+id/item_title"
+                android:layout_below="@+id/line_title"
+                android:layout_alignStart="@+id/line_title"
                 android:layout_toStartOf="@+id/mask_icon"
                 >
 

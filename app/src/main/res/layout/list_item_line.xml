@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:id="@+id/line_wrapper"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -16,23 +16,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textAlignment="center"
                 android:padding="6dp"
-                android:text="####"
                 android:id="@+id/line_num"
                 android:paddingRight="4dp"
                 android:paddingLeft="4dp"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/color_space"
-                android:layout_alignBottom="@+id/item_subtitle"/>
+                android:layout_alignBottom="@+id/line_subtitle"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/item_title"
-                android:text="title - placeholder"
+                android:id="@+id/line_title"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/line_num"/>
 
@@ -40,10 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="subtitle - placeholder"
-                android:id="@+id/item_subtitle"
-                android:layout_below="@+id/item_title"
-                android:layout_alignStart="@+id/item_title"
+                android:id="@+id/line_subtitle"
+                android:layout_below="@+id/line_title"
+                android:layout_alignStart="@+id/line_title"
                 android:layout_toStartOf="@+id/mask_icon"/>
 
             <TextView
@@ -52,10 +49,9 @@
                 android:id="@+id/color_space"
                 android:padding="5dp"
                 android:text="  "
-                android:editable="false"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/item_subtitle"/>
+                android:layout_alignBottom="@+id/line_subtitle"/>
 
             <ImageView
                 android:layout_width="24dp"
@@ -63,7 +59,7 @@
                 android:id="@+id/mask_icon"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@+id/item_subtitle"/>
+                android:layout_alignBottom="@+id/line_subtitle"/>
 
     </RelativeLayout>
 </RelativeLayout>

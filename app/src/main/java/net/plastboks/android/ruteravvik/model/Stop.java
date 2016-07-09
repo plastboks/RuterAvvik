@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import net.plastboks.android.ruteravvik.api.util.RuterDateParser;
+import net.plastboks.android.ruteravvik.util.RuterDateParser;
 
 import java.util.Date;
 
