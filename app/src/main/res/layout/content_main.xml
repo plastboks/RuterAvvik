@@ -8,5 +8,5 @@
     android:id="@+id/fragment_container"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_navigation"
-    tools:context="net.plastboks.android.ruteravvik.MainActivity">
+    tools:context=".activity.MainActivity">
 </RelativeLayout>

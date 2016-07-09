@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken;
 
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.activity.MainActivity;
 import net.plastboks.android.ruteravvik.model.Line;
 import net.plastboks.android.ruteravvik.model.Stop;
 

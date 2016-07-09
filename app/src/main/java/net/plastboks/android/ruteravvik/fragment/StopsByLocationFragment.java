@@ -13,7 +13,6 @@ import net.plastboks.android.ruteravvik.adapter.StopRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
 import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.presenter.StopsByLocationPresenter;
-import net.plastboks.android.ruteravvik.storage.Settings;
 
 import java.util.List;
 
