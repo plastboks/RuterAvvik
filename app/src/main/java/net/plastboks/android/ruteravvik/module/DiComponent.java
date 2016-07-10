@@ -3,6 +3,7 @@ package net.plastboks.android.ruteravvik.module;
 import net.plastboks.android.ruteravvik.presenter.LinesBySearchPresenter;
 import net.plastboks.android.ruteravvik.presenter.SplashPresenter;
 import net.plastboks.android.ruteravvik.presenter.StopVisitPresenter;
+import net.plastboks.android.ruteravvik.presenter.StopsByFavoritePresenter;
 import net.plastboks.android.ruteravvik.presenter.StopsByLinePresenter;
 import net.plastboks.android.ruteravvik.presenter.StopsByLocationPresenter;
 import net.plastboks.android.ruteravvik.repository.LinesRepository;
@@ -27,6 +28,7 @@ public interface DiComponent
     void inject(StopsByLocationPresenter stopsByLocationPresenter);
     void inject(StopsByLinePresenter stopsByLinePresenter);
     void inject(StopVisitPresenter stopVisitPresenter);
+    void inject(StopsByFavoritePresenter stopsByFavoritePresenter);
 
     /**
      * REPOSITORIES

@@ -10,6 +10,9 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "lines")
 public class Line implements Parcelable
 {
+    public static final String FAVORITE_FIELD = "favorite";
+    public static final String UNWANTED_FIELD = "unwanted";
+
     @DatabaseField(id = true)
     @SerializedName("ID")
     private int id;
@@ -25,6 +28,12 @@ public class Line implements Parcelable
     @DatabaseField
     @SerializedName("LineColour")
     private String lineColour;
+
+    @DatabaseField
+    private boolean favorite;
+
+    @DatabaseField
+    private boolean unwanted;
 
     public int getId()
     {
@@ -46,10 +55,35 @@ public class Line implements Parcelable
         return lineColour;
     }
 
+    public boolean isFavorite()
+    {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite)
+    {
+        this.favorite = favorite;
+    }
+
+    public boolean isUnwanted()
+    {
+        return unwanted;
+    }
+
+    public void setUnwanted(boolean unwanted)
+    {
+        this.unwanted = unwanted;
+    }
+
     public String toString()
     {
         return String.format("ID: %d, Name: %s, Transportation %d, Linecolor: %s",
                 id, name.trim(), transportation, lineColour.trim());
+    }
+
+
+    public Line()
+    {
     }
 
     @Override
@@ -65,10 +99,8 @@ public class Line implements Parcelable
         dest.writeString(this.name);
         dest.writeInt(this.transportation);
         dest.writeString(this.lineColour);
-    }
-
-    public Line()
-    {
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.unwanted ? (byte) 1 : (byte) 0);
     }
 
     protected Line(Parcel in)
@@ -77,9 +109,11 @@ public class Line implements Parcelable
         this.name = in.readString();
         this.transportation = in.readInt();
         this.lineColour = in.readString();
+        this.favorite = in.readByte() != 0;
+        this.unwanted = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Line> CREATOR = new Parcelable.Creator<Line>()
+    public static final Creator<Line> CREATOR = new Creator<Line>()
     {
         @Override
         public Line createFromParcel(Parcel source)

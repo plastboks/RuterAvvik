@@ -6,7 +6,6 @@ import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.activity.SplashActivity;
 import net.plastboks.android.ruteravvik.repository.LinesRepository;
 import net.plastboks.android.ruteravvik.repository.StopsRepository;
-import net.plastboks.android.ruteravvik.storage.PersistentCache;
 
 import javax.inject.Inject;
 
@@ -26,15 +25,12 @@ public class SplashPresenter extends BasePresenter<SplashActivity>
 
         restartableLatestCache(REQUEST_ITEMS,
                 () -> linesRepository.getLinesRx(),
-                (activity, response) -> PersistentCache.setLines(response),
+                (activity, response) -> {},
                 (activity, throwable) -> activity.onItemsError(throwable));
 
         restartableLatestCache(REQUEST_ITEMS,
                 () -> stopsRepository.getStopsRuterRx(),
-                (activity, response) ->  {
-                    PersistentCache.setStops(response);
-                    activity.onItemsNext(response);
-                },
+                (activity, response) ->  activity.onItemsNext(response),
                 (activity, throwable) -> activity.onItemsError(throwable));
     }
 

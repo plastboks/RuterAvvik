@@ -33,10 +33,10 @@ public class StopsRepository extends BaseRepository
     public Observable<List<Stop>> getStopsRuterRx()
     {
 
-        if (getStopsFromDb().size() > 0) {
+        if (getAllFromDb().size() > 0) {
             Log.d(TAG, "returning stops from database");
 
-            return makeObservable(this::getStopsFromDb)
+            return makeObservable(this::getAllFromDb)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
@@ -48,7 +48,14 @@ public class StopsRepository extends BaseRepository
             .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Stop> getStopsFromDb()
+    public Observable<List<Stop>> getFavoriteStopsRx()
+    {
+        return makeObservable(() -> getFavoritesFromDb())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private List<Stop> getAllFromDb()
     {
         try {
             List<Stop> stops = stopDao.queryForAll();
@@ -60,6 +67,20 @@ public class StopsRepository extends BaseRepository
 
         return new ArrayList<>();
     }
+
+    private List<Stop> getFavoritesFromDb()
+    {
+        try {
+            List<Stop> stops = stopDao.queryForEq(Stop.FAVORITE_FIELD, true);
+            Log.d(TAG, "favorite lines from database count: " + stops.size());
+            return stops;
+        } catch (SQLException sqle) {
+            Log.d(TAG, sqle.getMessage());
+        }
+
+        return new ArrayList<>();
+    }
+
 
     private void synchronizeDb()
     {

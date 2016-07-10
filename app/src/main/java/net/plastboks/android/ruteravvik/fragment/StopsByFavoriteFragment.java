@@ -13,7 +13,6 @@ import net.plastboks.android.ruteravvik.adapter.StopRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
 import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.presenter.StopsByFavoritePresenter;
-import net.plastboks.android.ruteravvik.storage.Settings;
 
 import java.util.List;
 
@@ -47,8 +46,7 @@ public class StopsByFavoriteFragment extends BaseFragment<StopsByFavoritePresent
         if (getArguments() != null) {
         }
 
-        // TODO refactor this, and make use of the presenter
-        // getPresenter().request()
+        getPresenter().request();
     }
 
     @Override
@@ -60,7 +58,6 @@ public class StopsByFavoriteFragment extends BaseFragment<StopsByFavoritePresent
         Context context = view.getContext();
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new StopRecyclerViewAdapter(Settings.getFavorites(), listener)); // TODO refactor away this
         return view;
     }
 

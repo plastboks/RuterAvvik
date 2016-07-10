@@ -10,7 +10,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import net.plastboks.android.ruteravvik.model.Line;
-import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
 import net.plastboks.android.ruteravvik.model.Stop;
 
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ import dagger.Provides;
 public class DatabaseModule extends OrmLiteSqliteOpenHelper
 {
     private static final String DATABASE_NAME = "ruteravvik.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private Dao<Line, Integer> lineDao = null;
     private Dao<Stop, Integer> stopDao = null;

@@ -14,6 +14,9 @@ import java.util.Date;
 @DatabaseTable(tableName = "stops")
 public class Stop implements Parcelable
 {
+    public final static String FAVORITE_FIELD = "favorite";
+    public final static String UNWANTED_FIELD = "unwanted";
+
     @DatabaseField(id = true) @SerializedName("ID")
     private int id;
 
@@ -52,6 +55,12 @@ public class Stop implements Parcelable
 
     @DatabaseField @SerializedName("DepartureTime")
     private String departureTime;
+
+    @DatabaseField
+    private boolean favorite;
+
+    @DatabaseField
+    private boolean unwanted;
 
     public int getId()
     {
@@ -118,10 +127,34 @@ public class Stop implements Parcelable
         return RuterDateParser.toDate(departureTime);
     }
 
+    public boolean isUnwanted()
+    {
+        return unwanted;
+    }
+
+    public void setUnwanted(boolean unwanted)
+    {
+        this.unwanted = unwanted;
+    }
+
+    public boolean isFavorite()
+    {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite)
+    {
+        this.favorite = favorite;
+    }
+
     public String toString()
     {
         return String.format("ID: %d, Name: %s",
                 id, name);
+    }
+
+    public Stop()
+    {
     }
 
     @Override
@@ -146,10 +179,8 @@ public class Stop implements Parcelable
         dest.writeByte(this.boardingAllowed ? (byte) 1 : (byte) 0);
         dest.writeString(this.arrivalTime);
         dest.writeString(this.departureTime);
-    }
-
-    public Stop()
-    {
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.unwanted ? (byte) 1 : (byte) 0);
     }
 
     protected Stop(Parcel in)
@@ -167,9 +198,11 @@ public class Stop implements Parcelable
         this.boardingAllowed = in.readByte() != 0;
         this.arrivalTime = in.readString();
         this.departureTime = in.readString();
+        this.favorite = in.readByte() != 0;
+        this.unwanted = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Stop> CREATOR = new Parcelable.Creator<Stop>()
+    public static final Creator<Stop> CREATOR = new Creator<Stop>()
     {
         @Override
         public Stop createFromParcel(Parcel source)

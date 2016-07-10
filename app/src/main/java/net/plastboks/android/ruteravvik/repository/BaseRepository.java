@@ -7,6 +7,9 @@ import java.util.concurrent.Callable;
 import rx.Observable;
 import rx.Subscriber;
 
+/**
+ * Copied from: http://stackoverflow.com/questions/32672012/getting-started-with-rxjava-with-sqlite
+ */
 public abstract class BaseRepository
 {
     private static final String TAG = BaseRepository.class.getSimpleName();

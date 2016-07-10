@@ -32,10 +32,10 @@ public class LinesRepository extends BaseRepository
 
     public Observable<List<Line>> getLinesRx()
     {
-        if (getFromDb().size() > 0) {
+        if (getAllFromDb().size() > 0) {
             Log.d(TAG, "returning lines from database");
 
-            return makeObservable(() -> getFromDb())
+            return makeObservable(() -> getAllFromDb())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
@@ -47,11 +47,31 @@ public class LinesRepository extends BaseRepository
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Line> getFromDb()
+    public Observable<List<Line>> getFavoriteLinesRx()
+    {
+        return makeObservable(() -> getFavoritesFromDb())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private List<Line> getAllFromDb()
     {
         try {
             List<Line> lines = lineDao.queryForAll();
             Log.d(TAG, "lines from database count: " + lines.size());
+            return lines;
+        } catch (SQLException sqle) {
+            Log.d(TAG, sqle.getMessage());
+        }
+
+        return new ArrayList<>();
+    }
+
+    private List<Line> getFavoritesFromDb()
+    {
+        try {
+            List<Line> lines = lineDao.queryForEq(Line.FAVORITE_FIELD, true);
+            Log.d(TAG, "favorite lines from database count: " + lines.size());
             return lines;
         } catch (SQLException sqle) {
             Log.d(TAG, sqle.getMessage());
