@@ -14,6 +14,7 @@ import net.plastboks.android.ruteravvik.adapter.LineRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.model.Line;
 import net.plastboks.android.ruteravvik.presenter.LinesBySearchPresenter;
+import net.plastboks.android.ruteravvik.util.ItemDividerDecorator;
 
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
 
         return view;
     }

@@ -13,6 +13,7 @@ import net.plastboks.android.ruteravvik.adapter.StopVisitRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
 import net.plastboks.android.ruteravvik.presenter.StopVisitPresenter;
+import net.plastboks.android.ruteravvik.util.ItemDividerDecorator;
 
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<Mon
         Context context = view.getContext();
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
+
         return view;
     }
 
