@@ -29,13 +29,10 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
     private static final int DATABASE_VERSION = 1;
 
     private Dao<Line, Integer> lineDao = null;
+    private Dao<Stop, Integer> stopDao = null;
     private RuntimeExceptionDao<Line, Integer> lineRuntimeDao = null;
 
-    private List<Class> classes = Arrays.asList(
-            Line.class,
-            Stop.class,
-            MonitoredStopVisit.class
-    );
+    private List<Class> classes = Arrays.asList(Line.class, Stop.class);
 
     public DatabaseModule(Context context)
     {
@@ -46,7 +43,9 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource)
     {
         try {
-            for (Class c : classes) TableUtils.createTable(connectionSource, c);
+            for (Class c : classes) {
+                TableUtils.createTableIfNotExists(connectionSource, c);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -65,15 +64,26 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
 
     @Provides
     @Singleton
-    public Dao<Line, Integer> producesDao()
+    public Dao<Line, Integer> producesLineDao()
     {
-
         if (lineDao == null) {
             try {
                 lineDao = getDao(Line.class);
             } catch (SQLException sqle) {}
         }
         return lineDao;
+    }
+
+    @Provides
+    @Singleton
+    public Dao<Stop, Integer> producesStopDao()
+    {
+        if (stopDao == null) {
+            try {
+                stopDao = getDao(Stop.class);
+            } catch (SQLException sqle) {}
+        }
+        return stopDao;
     }
 
     public RuntimeExceptionDao<Line, Integer> getSimpleDataDao()
