@@ -1,11 +1,12 @@
 package net.plastboks.android.ruteravvik.activity;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,16 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.fragment.LinesBySearchFragment;
+import net.plastboks.android.ruteravvik.adapter.pager.LinesPagerAdapter;
+import net.plastboks.android.ruteravvik.fragment.LinesFragment;
 import net.plastboks.android.ruteravvik.fragment.StopVisitFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsByFavoriteFragment;
 import net.plastboks.android.ruteravvik.fragment.StopsByLineFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsByLocationFragment;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
 import net.plastboks.android.ruteravvik.model.Line;
 import net.plastboks.android.ruteravvik.model.Stop;
-import net.plastboks.android.ruteravvik.storage.Settings;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,13 +37,17 @@ public class MainActivity extends AppCompatActivity implements
     protected DrawerLayout drawer;
     @BindView(R.id.nav_view)
     protected NavigationView navigationView;
+    @BindView(R.id.tabs)
+    protected TabLayout tabLayout;
+    @BindView(R.id.main_viewpager)
+    protected ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_navigation);
+        setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
 
@@ -58,33 +61,14 @@ public class MainActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        loadFragment(true);
+        loadPager();
     }
 
-    private void loadFragment(boolean emptyStack)
+    private void loadPager()
     {
+        viewPager.setAdapter(new LinesPagerAdapter(getSupportFragmentManager(), this));
+        tabLayout.setupWithViewPager(viewPager);
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment fragment;
-
-        switch (Settings.getString("default_page")) {
-            case "2":
-                fragment = StopsByLocationFragment.newInstance();
-                setTitle(getString(R.string.search_loc));
-                break;
-            case "3":
-                fragment = StopsByFavoriteFragment.newInstance();
-                setTitle(getString(R.string.favorites));
-                break;
-            default:
-                fragment = LinesBySearchFragment.newInstance();
-                setTitle(getString(R.string.search_line));
-        }
-
-        if (emptyStack) ft.add(R.id.fragment_container, fragment);
-        else ft.replace(R.id.fragment_container, fragment);
-
-        ft.commit();
     }
 
     @Override
@@ -126,25 +110,14 @@ public class MainActivity extends AppCompatActivity implements
     {
         int id = item.getItemId();
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
         switch (id) {
             case R.id.nav_search_line:
-                ft.replace(R.id.fragment_container, LinesBySearchFragment.newInstance())
-                .addToBackStack(LinesBySearchFragment.TAG)
-                .commit();
                 setTitle(getString(R.string.search_line));
                 break;
             case R.id.nav_search_loc:
-                ft.replace(R.id.fragment_container, StopsByLocationFragment.newInstance())
-                .addToBackStack(StopsByLocationFragment.TAG)
-                .commit();
                 setTitle(getString(R.string.search_loc));
                 break;
             case R.id.nav_favourites:
-                ft.replace(R.id.fragment_container, StopsByFavoriteFragment.newInstance())
-                .addToBackStack(StopsByFavoriteFragment.TAG)
-                .commit();
                 setTitle(getString(R.string.favorites));
                 break;
             case R.id.nav_manage:
@@ -163,18 +136,21 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLineInteraction(Line item)
     {
+        /*
         getFragmentManager()
                 .beginTransaction()
-                .addToBackStack(LinesBySearchFragment.TAG)
+                .addToBackStack(LinesFragment.TAG)
                 .replace(R.id.fragment_container, StopsByLineFragment.newInstance(item.getId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         setTitle(item.getName());
+        */
     }
 
     @Override
     public void onStopInteraction(Stop stop)
     {
+        /*
         getFragmentManager()
                 .beginTransaction()
                 .addToBackStack(StopsByLineFragment.TAG)
@@ -182,5 +158,6 @@ public class MainActivity extends AppCompatActivity implements
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         setTitle(stop.getName());
+        */
     }
 }

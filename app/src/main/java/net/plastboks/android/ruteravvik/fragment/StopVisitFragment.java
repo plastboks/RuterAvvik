@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.adapter.StopVisitRecyclerViewAdapter;
+import net.plastboks.android.ruteravvik.adapter.recycler.StopVisitRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.model.MonitoredStopVisit;
 import net.plastboks.android.ruteravvik.presenter.StopVisitPresenter;

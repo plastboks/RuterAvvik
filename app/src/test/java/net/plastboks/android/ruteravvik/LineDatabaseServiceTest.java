@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-public class LineServiceTest extends BaseTest
+public class LineDatabaseServiceTest extends BaseTest
 {
     @Test
     public void getLines() throws IOException

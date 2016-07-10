@@ -9,6 +9,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import net.plastboks.android.ruteravvik.database.LineDatabase;
 import net.plastboks.android.ruteravvik.model.Line;
 import net.plastboks.android.ruteravvik.model.Stop;
 
@@ -71,6 +72,13 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
             } catch (SQLException sqle) {}
         }
         return lineDao;
+    }
+
+    @Provides
+    @Singleton
+    public LineDatabase providesLineDatabase()
+    {
+        return new LineDatabase();
     }
 
     @Provides

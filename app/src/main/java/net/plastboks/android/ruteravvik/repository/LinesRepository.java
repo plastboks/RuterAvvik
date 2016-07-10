@@ -2,14 +2,11 @@ package net.plastboks.android.ruteravvik.repository;
 
 import android.util.Log;
 
-import com.j256.ormlite.dao.Dao;
-
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.api.service.LineService;
+import net.plastboks.android.ruteravvik.database.LineDatabase;
 import net.plastboks.android.ruteravvik.model.Line;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +20,7 @@ public class LinesRepository extends BaseRepository
     private static final String TAG = LinesRepository.class.getSimpleName();
 
     @Inject protected LineService lineService;
-    @Inject protected Dao<Line, Integer> lineDao;
+    @Inject protected LineDatabase lineDatabase;
 
     public LinesRepository()
     {
@@ -32,10 +29,10 @@ public class LinesRepository extends BaseRepository
 
     public Observable<List<Line>> getLinesRx()
     {
-        if (getAllFromDb().size() > 0) {
+        if (lineDatabase.getAll().size() > 0) {
             Log.d(TAG, "returning lines from database");
 
-            return makeObservable(() -> getAllFromDb())
+            return makeObservable(() -> lineDatabase.getAll())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
@@ -47,52 +44,29 @@ public class LinesRepository extends BaseRepository
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Line>> getFavoriteLinesRx()
+    public Observable<List<Line>> getLinesByTypeRx(int type)
     {
-        return makeObservable(() -> getFavoritesFromDb())
+        return makeObservable(() -> lineDatabase.getByType(type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Line> getAllFromDb()
-    {
-        try {
-            List<Line> lines = lineDao.queryForAll();
-            Log.d(TAG, "lines from database count: " + lines.size());
-            return lines;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
 
-        return new ArrayList<>();
+    public Observable<List<Line>> getFavoriteLinesRx()
+    {
+        return makeObservable(() -> lineDatabase.getFavorites())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Line> getFavoritesFromDb()
-    {
-        try {
-            List<Line> lines = lineDao.queryForEq(Line.FAVORITE_FIELD, true);
-            Log.d(TAG, "favorite lines from database count: " + lines.size());
-            return lines;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
 
-        return new ArrayList<>();
-    }
 
     private void synchronizeDb()
     {
         lineService.getLinesRx()
                 .subscribeOn(Schedulers.computation())
                 .subscribe(response -> {
-                    for (Line line: response) {
-                        try {
-                            lineDao.createIfNotExists(line);
-                        } catch (SQLException sqle) {
-                            Log.d(TAG, sqle.getMessage());
-                        }
-                    }
-                    Log.d(TAG, "Done inserting lines");
+                    for (Line line: response) lineDatabase.add(line);
                 });
     }
 }

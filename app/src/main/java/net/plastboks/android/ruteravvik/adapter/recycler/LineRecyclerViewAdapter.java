@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik.adapter;
+package net.plastboks.android.ruteravvik.adapter.recycler;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +39,6 @@ public class LineRecyclerViewAdapter extends RecyclerView.Adapter<LineViewHolder
     {
         holder.item = lines.get(position);
         Line line = holder.item;
-
 
         String title = String.format("%s",
                 TransportationType.getType(line.getTransportation()).getValue());

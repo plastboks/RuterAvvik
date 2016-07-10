@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.plastboks.android.ruteravvik.R;
-import net.plastboks.android.ruteravvik.adapter.LineRecyclerViewAdapter;
+import net.plastboks.android.ruteravvik.adapter.recycler.LineRecyclerViewAdapter;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.model.Line;
-import net.plastboks.android.ruteravvik.presenter.LinesBySearchPresenter;
+import net.plastboks.android.ruteravvik.presenter.LinesPresenter;
 import net.plastboks.android.ruteravvik.util.ItemDividerDecorator;
 
 import java.util.List;
@@ -22,10 +22,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
-@RequiresPresenter(LinesBySearchPresenter.class)
-public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, List<Line>>
+@RequiresPresenter(LinesPresenter.class)
+public class LinesFragment extends BaseSupportFragment<LinesPresenter, List<Line>>
 {
-    public static final String TAG = LinesBySearchFragment.class.getSimpleName();
+    public static final String TAG = LinesFragment.class.getSimpleName();
+
+    private static final String ARGS_TRANSPORTATION_TYPE = "transportationType";
+
+    private int transportationType;
 
     private OnLineInteractionListener listener;
     private RecyclerView recyclerView;
@@ -33,12 +37,13 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
     @BindView(android.R.id.empty)
     protected TextView empty;
 
-    public LinesBySearchFragment() {}
+    public LinesFragment() {}
 
-    public static LinesBySearchFragment newInstance()
+    public static LinesFragment newInstance(int transportationType)
     {
-        LinesBySearchFragment fragment = new LinesBySearchFragment();
+        LinesFragment fragment = new LinesFragment();
         Bundle args = new Bundle();
+        args.putInt(ARGS_TRANSPORTATION_TYPE, transportationType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +53,10 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
     {
         super.onCreate(savedInstanceState);
 
-        getPresenter().request();
+        if (getArguments() != null)
+            transportationType = getArguments().getInt(ARGS_TRANSPORTATION_TYPE);
+
+        getPresenter().request(transportationType);
     }
 
     @Override
@@ -60,7 +68,7 @@ public class LinesBySearchFragment extends BaseFragment<LinesBySearchPresenter, 
         ButterKnife.bind(this, view);
 
         Context context = view.getContext();
-        recyclerView = (RecyclerView) view;
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
 

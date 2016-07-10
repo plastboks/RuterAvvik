@@ -10,8 +10,9 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "lines")
 public class Line implements Parcelable
 {
-    public static final String FAVORITE_FIELD = "favorite";
-    public static final String UNWANTED_FIELD = "unwanted";
+    public static final String FIELD_FAVORITE = "favorite";
+    public static final String FIELD_UNWANTED = "unwanted";
+    public static final String FIELD_TRANSPORTATION = "transportation";
 
     @DatabaseField(id = true)
     @SerializedName("ID")

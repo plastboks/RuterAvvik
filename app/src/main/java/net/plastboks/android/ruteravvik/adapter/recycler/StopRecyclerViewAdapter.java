@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik.adapter;
+package net.plastboks.android.ruteravvik.adapter.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

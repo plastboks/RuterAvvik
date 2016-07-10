@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik.adapter;
+package net.plastboks.android.ruteravvik.adapter.recycler;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -58,13 +58,15 @@ public class StopVisitRecyclerViewAdapter extends RecyclerView.Adapter<StopVisit
                 transport.getMonitoredCall().getExpectedDepartureTime()
         ));
 
-        String bgColor = colors.get(transport.getPublishedLineName());
+        /*
+        String bgColor = colors.getByType(transport.getPublishedLineName());
 
         if (bgColor != null) {
             try {
                 holder.colorSpace.setBackgroundColor(Color.parseColor("#" + bgColor));
             } catch (NumberFormatException nfe) {}
         }
+        */
 
         holder.view.setOnClickListener((view) ->
         {
