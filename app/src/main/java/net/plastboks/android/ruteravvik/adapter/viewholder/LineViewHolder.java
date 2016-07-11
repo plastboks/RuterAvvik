@@ -17,14 +17,10 @@ public class LineViewHolder extends RecyclerView.ViewHolder
 
     @BindView(R.id.line_num)
     public TextView num;
-    @BindView(R.id.line_title)
-    public TextView title;
-    @BindView(R.id.line_subtitle)
-    public TextView subtitle;
     @BindView(R.id.color_space)
     public TextView colorSpace;
-    @BindView(R.id.mask_icon)
-    public ImageView maskIcon;
+    @BindView(R.id.line_icon)
+    public ImageView lineIcon;
 
     public Line item;
 
@@ -34,11 +30,5 @@ public class LineViewHolder extends RecyclerView.ViewHolder
         this.view = view;
 
         ButterKnife.bind(this, view);
-    }
-
-    @Override
-    public String toString()
-    {
-        return super.toString() + " '" + title.getText() + "'";
     }
 }

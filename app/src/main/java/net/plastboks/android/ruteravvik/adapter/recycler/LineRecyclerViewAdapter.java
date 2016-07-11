@@ -40,15 +40,12 @@ public class LineRecyclerViewAdapter extends RecyclerView.Adapter<LineViewHolder
         holder.item = lines.get(position);
         Line line = holder.item;
 
-        String title = String.format("%s",
-                TransportationType.getType(line.getTransportation()).getValue());
-
         holder.num.setText(String.valueOf(line.getName()));
-        holder.title.setText(title);
+        holder.lineIcon.setImageDrawable(TransportationType.getType(line.getTransportation()).getDrawable());
 
         if (line.getLineColour() != null) {
             try {
-                holder.colorSpace.setBackgroundColor(Color.parseColor("#" + line.getLineColour()));
+                holder.colorSpace.setBackgroundColor(Color.parseColor("#aa" + line.getLineColour()));
             } catch (NumberFormatException nfe) {}
         }
 

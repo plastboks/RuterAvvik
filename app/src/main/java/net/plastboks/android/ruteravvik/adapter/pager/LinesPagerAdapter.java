@@ -8,9 +8,22 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import net.plastboks.android.ruteravvik.fragment.LinesFragment;
 import net.plastboks.android.ruteravvik.util.TransportationType;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LinesPagerAdapter extends FragmentStatePagerAdapter
 {
     private Context context;
+
+    private List<TransportationType> tabs = Arrays.asList(
+            TransportationType.BUS,
+            TransportationType.TRAM,
+            TransportationType.TRAIN,
+            TransportationType.METRO,
+            TransportationType.BOAT,
+            TransportationType.AIR_PORT_BUS,
+            TransportationType.AIR_PORT_TRAIN
+    );
 
     public LinesPagerAdapter(FragmentManager fm, Context context)
     {
@@ -23,19 +36,19 @@ public class LinesPagerAdapter extends FragmentStatePagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        return LinesFragment.newInstance(position);
+        return LinesFragment.newInstance(tabs.get(position).getKey());
     }
 
     @Override
     public int getCount()
     {
-        return TransportationType.values().length;
+        return tabs.size();
     }
 
 
     @Override
     public CharSequence getPageTitle(int position)
     {
-        return TransportationType.getType(position).getValue();
+        return tabs.get(position).getValue();
     }
 }
