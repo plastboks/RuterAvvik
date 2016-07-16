@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements
         getFragmentManager()
                 .beginTransaction()
                 .addToBackStack(LinesFragment.TAG)
-                .replace(R.id.fragment_container, StopsByLineFragment.newInstance(item.getId()))
+                .replace(R.id.fragment_container, StopsByLineFragment.newInstance(item.getRuterId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         setTitle(item.getName());
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
         getFragmentManager()
                 .beginTransaction()
                 .addToBackStack(StopsByLineFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(stop.getId()))
+                .replace(R.id.fragment_container, StopVisitFragment.newInstance(stop.getRuterId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         setTitle(stop.getName());

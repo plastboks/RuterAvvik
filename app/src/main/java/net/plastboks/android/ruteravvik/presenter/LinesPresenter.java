@@ -27,7 +27,7 @@ public class LinesPresenter extends BasePresenter<LinesFragment>
         App.getInstance().getDiComponent().inject(this);
 
         restartableLatestCache(REQUEST_ITEMS,
-                () -> linesRepository.getLinesByTypeRx(transportationType),
+                () -> linesRepository.getByTypeRx(transportationType),
                 (activity, response) ->  activity.onItemsNext(response),
                 (activity, throwable) -> activity.onItemsError(throwable));
     }

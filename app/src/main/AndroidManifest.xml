@@ -25,7 +25,7 @@
         <uses-library android:name="com.google.android.maps"/>
 
         <activity android:name=".activity.SplashActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+                  android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

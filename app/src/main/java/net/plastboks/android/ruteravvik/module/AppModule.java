@@ -1,6 +1,10 @@
 package net.plastboks.android.ruteravvik.module;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import net.plastboks.android.ruteravvik.storage.PersistentStorage;
 
 import javax.inject.Singleton;
 
@@ -23,6 +27,20 @@ public class AppModule
     public Application providesApplication()
     {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    public SharedPreferences providesSharedPreferences(Application application)
+    {
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    @Singleton
+    public PersistentStorage persistentStorage()
+    {
+        return new PersistentStorage();
     }
 }
 

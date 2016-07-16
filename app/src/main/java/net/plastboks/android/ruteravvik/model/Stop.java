@@ -14,11 +14,15 @@ import java.util.Date;
 @DatabaseTable(tableName = "stops")
 public class Stop implements Parcelable
 {
-    public final static String FAVORITE_FIELD = "favorite";
-    public final static String UNWANTED_FIELD = "unwanted";
+    public final static String FIELD_FAVORITE = "favorite";
+    public final static String FIELD_UNWANTED = "unwanted";
 
-    @DatabaseField(id = true) @SerializedName("ID")
+    @DatabaseField(generatedId = true)
     private int id;
+
+    @SerializedName("ID")
+    @DatabaseField
+    private int ruterId;
 
     @DatabaseField @SerializedName("X")
     private int x;
@@ -62,9 +66,9 @@ public class Stop implements Parcelable
     @DatabaseField
     private boolean unwanted;
 
-    public int getId()
+    public int getRuterId()
     {
-        return id;
+        return ruterId;
     }
 
     public int getX()
@@ -150,7 +154,7 @@ public class Stop implements Parcelable
     public String toString()
     {
         return String.format("ID: %d, Name: %s",
-                id, name);
+                ruterId, name);
     }
 
     public Stop()
@@ -166,7 +170,7 @@ public class Stop implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeInt(this.id);
+        dest.writeInt(this.ruterId);
         dest.writeInt(this.x);
         dest.writeInt(this.y);
         dest.writeString(this.zone);
@@ -185,7 +189,7 @@ public class Stop implements Parcelable
 
     protected Stop(Parcel in)
     {
-        this.id = in.readInt();
+        this.ruterId = in.readInt();
         this.x = in.readInt();
         this.y = in.readInt();
         this.zone = in.readString();

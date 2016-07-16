@@ -14,9 +14,12 @@ public class Line implements Parcelable
     public static final String FIELD_UNWANTED = "unwanted";
     public static final String FIELD_TRANSPORTATION = "transportation";
 
-    @DatabaseField(id = true)
-    @SerializedName("ID")
+    @DatabaseField(generatedId = true)
     private int id;
+
+    @SerializedName("ID")
+    @DatabaseField
+    private int ruterId;
 
     @DatabaseField
     @SerializedName("Name")
@@ -36,9 +39,9 @@ public class Line implements Parcelable
     @DatabaseField
     private boolean unwanted;
 
-    public int getId()
+    public int getRuterId()
     {
-        return id;
+        return ruterId;
     }
 
     public String getName()
@@ -79,7 +82,7 @@ public class Line implements Parcelable
     public String toString()
     {
         return String.format("ID: %d, Name: %s, Transportation %d, Linecolor: %s",
-                id, name.trim(), transportation, lineColour.trim());
+                ruterId, name.trim(), transportation, lineColour.trim());
     }
 
 
@@ -96,7 +99,7 @@ public class Line implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeInt(this.id);
+        dest.writeInt(this.ruterId);
         dest.writeString(this.name);
         dest.writeInt(this.transportation);
         dest.writeString(this.lineColour);
@@ -106,7 +109,7 @@ public class Line implements Parcelable
 
     protected Line(Parcel in)
     {
-        this.id = in.readInt();
+        this.ruterId = in.readInt();
         this.name = in.readString();
         this.transportation = in.readInt();
         this.lineColour = in.readString();

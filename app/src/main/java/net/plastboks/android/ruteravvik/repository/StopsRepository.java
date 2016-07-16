@@ -1,15 +1,11 @@
 package net.plastboks.android.ruteravvik.repository;
 
-import android.util.Log;
-
-import com.j256.ormlite.dao.Dao;
 
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.api.service.StopService;
+import net.plastboks.android.ruteravvik.database.StopDatabase;
 import net.plastboks.android.ruteravvik.model.Stop;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +19,7 @@ public class StopsRepository extends BaseRepository
     private static final String TAG = StopsRepository.class.getSimpleName();
 
     @Inject protected StopService stopService;
-    @Inject protected Dao<Stop, Integer> stopDao;
+    @Inject protected StopDatabase stopDatabase;
 
     public StopsRepository()
     {
@@ -33,69 +29,34 @@ public class StopsRepository extends BaseRepository
     public Observable<List<Stop>> getStopsRuterRx()
     {
 
-        if (getAllFromDb().size() > 0) {
-            Log.d(TAG, "returning stops from database");
+        Observable<List<Stop>> stopsFromDb = stopDatabase.getAllRx();
+        Observable<List<Stop>> stopsFromNetwork = stopService.getStopsRuterRx()
+                .doOnNext((stops) -> {
+                    if (stopDatabase.isUpToDate()) stopDatabase.addAllRx(stops)
+                            .subscribe((dbStops) -> {
+                                // TODO send out event?
+                            });
+                });
 
-            return makeObservable(this::getAllFromDb)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-        }
-
-        synchronizeDb();
-
-        return stopService.getStopsRuterRx()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<List<Stop>> getFavoriteStopsRx()
-    {
-        return makeObservable(() -> getFavoritesFromDb())
+        return Observable
+                .concat(stopsFromDb, stopsFromNetwork)
+                .first()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Stop> getAllFromDb()
+    public Observable<List<Stop>> getFavoriteStopsRx()
     {
-        try {
-            List<Stop> stops = stopDao.queryForAll();
-            Log.d(TAG, "stops from database count: " + stops.size());
-            return stops;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return new ArrayList<>();
+        return stopDatabase.getFavoritesRx()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private List<Stop> getFavoritesFromDb()
+    private Observable<List<Stop>> getFavoritesRx()
     {
-        try {
-            List<Stop> stops = stopDao.queryForEq(Stop.FAVORITE_FIELD, true);
-            Log.d(TAG, "favorite lines from database count: " + stops.size());
-            return stops;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return new ArrayList<>();
-    }
-
-
-    private void synchronizeDb()
-    {
-         stopService.getStopsRuterRx()
-                .subscribeOn(Schedulers.computation())
-                .subscribe(response -> {
-                    for (Stop stop: response) {
-                        try {
-                            stopDao.createIfNotExists(stop);
-                        } catch (SQLException sqle) {
-                            Log.d(TAG, sqle.getMessage());
-                        }
-                    }
-                    Log.d(TAG, "Done inserting stops");
-                });
+        return stopDatabase.getFavoritesRx()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<Stop>> getStopsByLineIdRx(int id)
@@ -104,6 +65,4 @@ public class StopsRepository extends BaseRepository
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
-
 }

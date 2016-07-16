@@ -10,6 +10,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import net.plastboks.android.ruteravvik.database.LineDatabase;
+import net.plastboks.android.ruteravvik.database.StopDatabase;
 import net.plastboks.android.ruteravvik.model.Line;
 import net.plastboks.android.ruteravvik.model.Stop;
 
@@ -26,11 +27,10 @@ import dagger.Provides;
 public class DatabaseModule extends OrmLiteSqliteOpenHelper
 {
     private static final String DATABASE_NAME = "ruteravvik.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     private Dao<Line, Integer> lineDao = null;
     private Dao<Stop, Integer> stopDao = null;
-    private RuntimeExceptionDao<Line, Integer> lineRuntimeDao = null;
 
     private List<Class> classes = Arrays.asList(Line.class, Stop.class);
 
@@ -93,19 +93,16 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
         return stopDao;
     }
 
-    public RuntimeExceptionDao<Line, Integer> getSimpleDataDao()
+    @Provides
+    @Singleton
+    public StopDatabase providesStopDatabase()
     {
-        if (lineRuntimeDao == null) {
-            lineRuntimeDao = getRuntimeExceptionDao(Line.class);
-        }
-        return lineRuntimeDao;
+        return new StopDatabase();
     }
 
-    @Override
     public void close()
     {
         super.close();
         lineDao = null;
-        lineRuntimeDao = null;
     }
 }
