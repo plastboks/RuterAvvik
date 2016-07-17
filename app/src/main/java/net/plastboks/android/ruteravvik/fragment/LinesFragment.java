@@ -72,7 +72,7 @@ public class LinesFragment extends BaseSupportFragment<LinesPresenter, List<Line
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         //recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-        recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
+        //recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
 
         return view;
     }

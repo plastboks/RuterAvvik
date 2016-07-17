@@ -1,6 +1,8 @@
 package net.plastboks.android.ruteravvik.repository;
 
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.App;
 import net.plastboks.android.ruteravvik.api.DateList;

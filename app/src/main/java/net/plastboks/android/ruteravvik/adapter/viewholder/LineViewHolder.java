@@ -3,6 +3,7 @@ package net.plastboks.android.ruteravvik.adapter.viewholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.plastboks.android.ruteravvik.R;
@@ -15,10 +16,10 @@ public class LineViewHolder extends RecyclerView.ViewHolder
 {
     public final View view;
 
+    @BindView(R.id.line_wrapper)
+    public RelativeLayout relativeLayout;
     @BindView(R.id.line_num)
     public TextView num;
-    @BindView(R.id.color_space)
-    public TextView colorSpace;
     @BindView(R.id.line_icon)
     public ImageView lineIcon;
 

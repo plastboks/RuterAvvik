@@ -15,7 +15,7 @@ public class Line implements Parcelable, ExpirationDate
     public static final String FIELD_UNWANTED = "unwanted";
     public static final String FIELD_TRANSPORTATION = "transportation";
 
-    public static final Long expiration = 1000*1000*10L;
+    public static final Long expiration = (864*100*1000L) * 30; // 30 days in milliseconds...
 
     private int id;
 

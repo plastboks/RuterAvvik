@@ -1,6 +1,8 @@
 package net.plastboks.android.ruteravvik.adapter.recycler;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +47,10 @@ public class LineRecyclerViewAdapter extends RecyclerView.Adapter<LineViewHolder
 
         if (line.getLineColour() != null) {
             try {
-                holder.colorSpace.setBackgroundColor(Color.parseColor("#aa" + line.getLineColour()));
+                GradientDrawable drawable = (GradientDrawable) holder.relativeLayout.getBackground();
+                drawable.setColor(Color.parseColor("#aa" + line.getLineColour()));
+                //holder.relativeLayout.setBackgroundColor(Color.parseColor("#aa" + line.getLineColour()));
+                //holder.relativeLayout.setBackgroundResource(R.drawable.rounded_corners);
             } catch (NumberFormatException nfe) {}
         }
 
