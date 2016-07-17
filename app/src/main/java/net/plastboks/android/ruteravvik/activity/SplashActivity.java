@@ -19,11 +19,11 @@ public class SplashActivity extends BaseActivity<SplashPresenter, Object>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        getPresenter().request();
+        //getPresenter().request();
 
-        //Intent intent = new Intent(this, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

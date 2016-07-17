@@ -3,6 +3,7 @@ package net.plastboks.android.ruteravvik;
 import android.app.Application;
 import android.util.Log;
 
+import net.danlew.android.joda.JodaTimeAndroid;
 import net.plastboks.android.ruteravvik.module.AppModule;
 import net.plastboks.android.ruteravvik.module.DaggerDiComponent;
 import net.plastboks.android.ruteravvik.module.DatabaseModule;
@@ -25,6 +26,7 @@ public class App extends Application
     public void onCreate()
     {
         super.onCreate();
+        JodaTimeAndroid.init(this);
 
         inst = this;
 
@@ -35,8 +37,9 @@ public class App extends Application
                         .host(getString(R.string.ruter_api_host))
                         .port(Integer.parseInt(getString(R.string.ruter_api_port)))
                         .build()))
-                .databaseModule(new DatabaseModule(this))
+                .databaseModule(new DatabaseModule())
                 .build();
+
 
         Log.d("APP", "Main app class");
     }

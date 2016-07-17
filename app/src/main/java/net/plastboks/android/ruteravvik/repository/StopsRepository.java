@@ -2,11 +2,10 @@ package net.plastboks.android.ruteravvik.repository;
 
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.api.DateList;
 import net.plastboks.android.ruteravvik.api.service.StopService;
 import net.plastboks.android.ruteravvik.database.StopDatabase;
 import net.plastboks.android.ruteravvik.model.Stop;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,13 +25,13 @@ public class StopsRepository extends BaseRepository
         App.getInstance().getDiComponent().inject(this);
     }
 
-    public Observable<List<Stop>> getStopsRuterRx()
+    public Observable<DateList<Stop>> getStopsRuterRx()
     {
 
-        Observable<List<Stop>> stopsFromDb = stopDatabase.getAllRx();
-        Observable<List<Stop>> stopsFromNetwork = stopService.getStopsRuterRx()
+        Observable<DateList<Stop>> stopsFromDb = stopDatabase.getAllRx();
+        Observable<DateList<Stop>> stopsFromNetwork = stopService.getStopsRuterRx()
                 .doOnNext((stops) -> {
-                    if (stopDatabase.isUpToDate()) stopDatabase.addAllRx(stops)
+                    if (!stops.isUpToDate()) stopDatabase.addAllRx(stops)
                             .subscribe((dbStops) -> {
                                 // TODO send out event?
                             });
@@ -45,21 +44,21 @@ public class StopsRepository extends BaseRepository
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Stop>> getFavoriteStopsRx()
+    public Observable<DateList<Stop>> getFavoriteStopsRx()
     {
         return stopDatabase.getFavoritesRx()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Observable<List<Stop>> getFavoritesRx()
+    private Observable<DateList<Stop>> getFavoritesRx()
     {
         return stopDatabase.getFavoritesRx()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Stop>> getStopsByLineIdRx(int id)
+    public Observable<DateList<Stop>> getStopsByLineIdRx(int id)
     {
         return stopService.getStopsByLineIdRx(id)
                 .subscribeOn(Schedulers.io())

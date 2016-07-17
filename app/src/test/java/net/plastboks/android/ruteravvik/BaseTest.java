@@ -28,7 +28,7 @@ public class BaseTest
     public BaseTest()
     {
         ruter = new Ruter(new HttpUrl.Builder()
-                .scheme("https")
+                .scheme("http")
                 .host("reisapi.ruter.no")
                 .build());
 

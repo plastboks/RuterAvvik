@@ -1,19 +1,12 @@
 package net.plastboks.android.ruteravvik.database;
 
-import android.util.Log;
-
-import com.j256.ormlite.dao.Dao;
-
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.api.DateList;
 import net.plastboks.android.ruteravvik.model.Stop;
 import net.plastboks.android.ruteravvik.storage.PersistentStorage;
 import net.plastboks.android.ruteravvik.util.ObservableUtil;
 
 import org.joda.time.DateTime;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,91 +17,45 @@ public class StopDatabase extends BaseDatabase<Stop>
     private static final String TAG = StopDatabase.class.getSimpleName();
 
     private static final String DB_STOP_LAST_SYNC = "dbStopLastSync";
-    private static final int OUTDATED_TIME = 100*100; // TODO implement real timeout;
 
-    @Inject protected Dao<Stop, Integer> stopDao;
+    private StopContract stopContract = new StopContract();
+
     @Inject protected PersistentStorage persistentStorage;
+    @Inject protected DbHelper dbHelper;
 
     public StopDatabase()
     {
         App.getInstance().getDiComponent().inject(this);
     }
 
-    @Override
-    protected List<Stop> getAll()
+    protected DbHelper getDbHelper()
     {
-        try {
-            List<Stop> lines = stopDao.queryForAll();
-            Log.d(TAG, "stops from database count: " + lines.size());
-            return lines;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return null;
+        return dbHelper;
     }
 
-    private List<Stop> getFavorites()
+    protected BaseContract<Stop> getContract()
     {
-        try {
-            List<Stop> lines = stopDao.queryForEq(Stop.FIELD_FAVORITE, true);
-            Log.d(TAG, "favorite lines from database count: " + lines.size());
-            return lines;
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return null;
+        return stopContract;
     }
 
-    public Observable<List<Stop>> getFavoritesRx()
+    private DateList<Stop> getFavorites()
+    {
+        return super.getBy(StopContract.COLUMN_NAME_FAVORITE, String.valueOf(1));
+    }
+
+    public Observable<DateList<Stop>> getFavoritesRx()
     {
         return ObservableUtil.makeObservable(() -> getFavorites());
     }
 
     @Override
-    protected Stop get(int id)
+    protected Stop get(int ruterId)
     {
-        try {
-            return stopDao.queryForId(id);
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return null;
+        return super.get(StopContract.COLUMN_NAME_RUTER_ID, String.valueOf(ruterId));
     }
 
     @Override
-    protected Stop add(Stop line)
-    {
-        try {
-            return stopDao.createIfNotExists(line);
-        } catch (SQLException sqle) {
-            Log.d(TAG, sqle.getMessage());
-        }
-
-        return null;
-    }
-
-    @Override
-    protected List<Stop> addAll(List<Stop> stops)
-    {
-        List<Stop> stopList = new ArrayList<>();
-
-        for (Stop stop : stops) stopList.add(add(stop));
-
-        setLastSync();
-
-        return stopList;
-    }
-
-    @Override
-    public boolean isUpToDate()
-    {
-        return DateTime.now().getMillis() - persistentStorage.getLong(DB_STOP_LAST_SYNC) < OUTDATED_TIME;
-    }
-
-    private void setLastSync()
+    protected void setLastSync()
     {
         persistentStorage.setLong(DB_STOP_LAST_SYNC, DateTime.now().getMillis());
     }

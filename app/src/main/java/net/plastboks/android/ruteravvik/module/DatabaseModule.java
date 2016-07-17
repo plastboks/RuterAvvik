@@ -1,22 +1,10 @@
 package net.plastboks.android.ruteravvik.module;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.app.Application;
 
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-
+import net.plastboks.android.ruteravvik.database.DbHelper;
 import net.plastboks.android.ruteravvik.database.LineDatabase;
 import net.plastboks.android.ruteravvik.database.StopDatabase;
-import net.plastboks.android.ruteravvik.model.Line;
-import net.plastboks.android.ruteravvik.model.Stop;
-
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -24,54 +12,13 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DatabaseModule extends OrmLiteSqliteOpenHelper
+public class DatabaseModule
 {
-    private static final String DATABASE_NAME = "ruteravvik.db";
-    private static final int DATABASE_VERSION = 5;
-
-    private Dao<Line, Integer> lineDao = null;
-    private Dao<Stop, Integer> stopDao = null;
-
-    private List<Class> classes = Arrays.asList(Line.class, Stop.class);
-
-    public DatabaseModule(Context context)
-    {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource)
-    {
-        try {
-            for (Class c : classes) {
-                TableUtils.createTableIfNotExists(connectionSource, c);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion)
-    {
-        try {
-            for (Class c : classes) TableUtils.dropTable(connectionSource, c, true);
-            onCreate(db, connectionSource);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Provides
     @Singleton
-    public Dao<Line, Integer> producesLineDao()
+    public DbHelper providesDbHelper(Application application)
     {
-        if (lineDao == null) {
-            try {
-                lineDao = getDao(Line.class);
-            } catch (SQLException sqle) {}
-        }
-        return lineDao;
+        return new DbHelper(application.getApplicationContext());
     }
 
     @Provides
@@ -83,26 +30,8 @@ public class DatabaseModule extends OrmLiteSqliteOpenHelper
 
     @Provides
     @Singleton
-    public Dao<Stop, Integer> producesStopDao()
-    {
-        if (stopDao == null) {
-            try {
-                stopDao = getDao(Stop.class);
-            } catch (SQLException sqle) {}
-        }
-        return stopDao;
-    }
-
-    @Provides
-    @Singleton
     public StopDatabase providesStopDatabase()
     {
         return new StopDatabase();
-    }
-
-    public void close()
-    {
-        super.close();
-        lineDao = null;
     }
 }

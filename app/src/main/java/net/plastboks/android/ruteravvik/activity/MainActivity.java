@@ -1,6 +1,5 @@
 package net.plastboks.android.ruteravvik.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,9 +15,6 @@ import android.view.MenuItem;
 
 import net.plastboks.android.ruteravvik.R;
 import net.plastboks.android.ruteravvik.adapter.pager.LinesPagerAdapter;
-import net.plastboks.android.ruteravvik.fragment.LinesFragment;
-import net.plastboks.android.ruteravvik.fragment.StopVisitFragment;
-import net.plastboks.android.ruteravvik.fragment.StopsByLineFragment;
 import net.plastboks.android.ruteravvik.fragment.listener.OnLineInteractionListener;
 import net.plastboks.android.ruteravvik.fragment.listener.OnStopInteractionListener;
 import net.plastboks.android.ruteravvik.model.Line;

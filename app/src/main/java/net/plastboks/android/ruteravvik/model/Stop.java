@@ -4,67 +4,65 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
+import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
 import net.plastboks.android.ruteravvik.util.RuterDateParser;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
-@DatabaseTable(tableName = "stops")
-public class Stop implements Parcelable
+public class Stop implements Parcelable, ExpirationDate
 {
     public final static String FIELD_FAVORITE = "favorite";
     public final static String FIELD_UNWANTED = "unwanted";
 
-    @DatabaseField(generatedId = true)
     private int id;
 
     @SerializedName("ID")
-    @DatabaseField
     private int ruterId;
 
-    @DatabaseField @SerializedName("X")
+    @SerializedName("X")
     private int x;
 
-    @DatabaseField @SerializedName("Y")
+    @SerializedName("Y")
     private int y;
 
-    @DatabaseField @SerializedName("Zone")
+    @SerializedName("Zone")
     private String zone;
 
-    @DatabaseField @SerializedName("ShortName")
+    @SerializedName("ShortName")
     private String shortName;
 
-    @DatabaseField @SerializedName("IsHub")
+    @SerializedName("IsHub")
     private boolean isHub;
 
-    @DatabaseField @SerializedName("Name")
+    @SerializedName("Name")
     private String name;
 
-    @DatabaseField @SerializedName("District")
+    @SerializedName("District")
     private String district;
 
-    @DatabaseField @SerializedName("PlaceType")
+    @SerializedName("PlaceType")
     private String placeType;
 
-    @DatabaseField @SerializedName("AlightingAllowed")
+    @SerializedName("AlightingAllowed")
     private boolean alightingAllowed;
 
-    @DatabaseField @SerializedName("BoardingAllowed")
+    @SerializedName("BoardingAllowed")
     private boolean boardingAllowed;
 
-    @DatabaseField @SerializedName("ArrivalTime")
+    @SerializedName("ArrivalTime")
     private String arrivalTime;
 
-    @DatabaseField @SerializedName("DepartureTime")
+    @SerializedName("DepartureTime")
     private String departureTime;
 
-    @DatabaseField
     private boolean favorite;
 
-    @DatabaseField
     private boolean unwanted;
+
+    private DateTime created;
 
     public int getRuterId()
     {
@@ -136,9 +134,19 @@ public class Stop implements Parcelable
         return unwanted;
     }
 
+    public int getUnwanted()
+    {
+        return unwanted ? 1 : 0;
+    }
+
     public void setUnwanted(boolean unwanted)
     {
         this.unwanted = unwanted;
+    }
+
+    public void setUnwanted(int unwanted)
+    {
+        this.unwanted = unwanted == 1;
     }
 
     public boolean isFavorite()
@@ -146,9 +154,103 @@ public class Stop implements Parcelable
         return favorite;
     }
 
+    public int getFavorite()
+    {
+        return favorite ? 1 : 0;
+    }
     public void setFavorite(boolean favorite)
     {
         this.favorite = favorite;
+    }
+
+    public void setFavorite(int favorite)
+    {
+        this.favorite = favorite == 1;
+    }
+
+    public void setRuterId(int ruterId)
+    {
+        this.ruterId = ruterId;
+    }
+
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+
+    public void setZone(String zone)
+    {
+        this.zone = zone;
+    }
+
+    public void setShortName(String shortName)
+    {
+        this.shortName = shortName;
+    }
+
+    public void setHub(boolean hub)
+    {
+        isHub = hub;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setDistrict(String district)
+    {
+        this.district = district;
+    }
+
+    public void setPlaceType(String placeType)
+    {
+        this.placeType = placeType;
+    }
+
+    public void setAlightingAllowed(boolean alightingAllowed)
+    {
+        this.alightingAllowed = alightingAllowed;
+    }
+
+    public void setBoardingAllowed(boolean boardingAllowed)
+    {
+        this.boardingAllowed = boardingAllowed;
+    }
+
+    public void setArrivalTime(String arrivalTime)
+    {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public void setDepartureTime(String departureTime)
+    {
+        this.departureTime = departureTime;
+    }
+
+    public void setCreated(DateTime created)
+    {
+        this.created = created;
+    }
+
+    public void setDate(Long date)
+    {
+        this.created = new DateTime(date);
+    }
+
+    public boolean isExpired()
+    {
+        return false;
+    }
+
+    public Long getDate()
+    {
+        return created.getMillis();
     }
 
     public String toString()

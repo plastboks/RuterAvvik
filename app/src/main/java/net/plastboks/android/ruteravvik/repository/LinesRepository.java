@@ -3,13 +3,12 @@ package net.plastboks.android.ruteravvik.repository;
 import android.util.Log;
 
 import net.plastboks.android.ruteravvik.App;
+import net.plastboks.android.ruteravvik.api.DateList;
 import net.plastboks.android.ruteravvik.api.service.LineService;
 import net.plastboks.android.ruteravvik.database.LineDatabase;
 import net.plastboks.android.ruteravvik.model.Line;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -27,33 +26,34 @@ public class LinesRepository extends BaseRepository
     @Inject protected LineService lineService;
     @Inject protected LineDatabase lineDatabase;
 
+    @Inject
     public LinesRepository()
     {
         App.getInstance().getDiComponent().inject(this);
     }
 
-    public Observable<List<Line>> getLinesRx()
+    public Observable<DateList<Line>> getLinesRx()
     {
-        Observable<List<Line>> linesFromNetwork = lineService.getLinesRx()
+        Observable<DateList<Line>> linesFromNetwork = lineService.getLinesRx()
                 .doOnNext((lines) -> {
-                    if (lineDatabase.isUpToDate()) lineDatabase.addAllRx(lines)
+                    if (!lines.isUpToDate()) lineDatabase.addAllRx(lines)
                             .subscribe((dbLines) -> {
                                 // TODO implement event?
                             });
                 });
 
-        Observable<List<Line>> linesFromDb = lineDatabase.getAllRx();
+        Observable<DateList<Line>> linesFromDb = lineDatabase.getAllRx();
 
         return Observable
                 .concat(linesFromDb, linesFromNetwork)
-                .first(data -> lineDatabase.isUpToDate())
+                .first(data -> lineDatabase.isUpToDate(data))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Line>> getByTypeRx(int type)
+    public Observable<DateList<Line>> getByTypeRx(int type)
     {
-        Observable<List<Line>> linesFromNetwork = lineService.getLinesRx()
+        Observable<DateList<Line>> linesFromNetwork = lineService.getLinesRx()
                 .doOnNext((lines) -> {
                     Log.d(TAG, "linesFromNetwork");
                     lineDatabase.addAllRx(lines)
@@ -69,17 +69,17 @@ public class LinesRepository extends BaseRepository
                 });*/
 
 
-        Observable<List<Line>> linesFromDb = lineDatabase.getByTypeRx(type);
+        Observable<DateList<Line>> linesFromDb = lineDatabase.getByTypeRx(type);
 
         return Observable
                 .concat(linesFromDb, linesFromNetwork)
-                .first(data -> lineDatabase.isUpToDate())
+                .first(data -> lineDatabase.isUpToDate(data))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
 
-    public Observable<List<Line>> getFavoriteRx()
+    public Observable<DateList<Line>> getFavoriteRx()
     {
         return lineDatabase.getFavoritesRx()
                 .subscribeOn(Schedulers.io())

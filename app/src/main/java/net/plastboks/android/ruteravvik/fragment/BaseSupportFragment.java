@@ -4,7 +4,6 @@ import android.widget.Toast;
 
 import net.plastboks.android.ruteravvik.presenter.BasePresenter;
 
-import nucleus.view.NucleusFragment;
 import nucleus.view.NucleusSupportFragment;
 
 public abstract class BaseSupportFragment<T extends BasePresenter, S> extends NucleusSupportFragment<T>

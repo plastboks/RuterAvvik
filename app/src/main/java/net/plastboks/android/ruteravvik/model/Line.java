@@ -4,40 +4,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "lines")
-public class Line implements Parcelable
+import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
+
+import org.joda.time.DateTime;
+
+public class Line implements Parcelable, ExpirationDate
 {
     public static final String FIELD_FAVORITE = "favorite";
     public static final String FIELD_UNWANTED = "unwanted";
     public static final String FIELD_TRANSPORTATION = "transportation";
 
-    @DatabaseField(generatedId = true)
+    public static final Long expiration = 100*100L;
+
     private int id;
 
     @SerializedName("ID")
-    @DatabaseField
     private int ruterId;
 
-    @DatabaseField
     @SerializedName("Name")
     private String name;
 
-    @DatabaseField
     @SerializedName("Transportation")
     private int transportation;
 
-    @DatabaseField
     @SerializedName("LineColour")
     private String lineColour;
 
-    @DatabaseField
     private boolean favorite;
 
-    @DatabaseField
     private boolean unwanted;
+
+    private DateTime created;
 
     public int getRuterId()
     {
@@ -64,6 +62,11 @@ public class Line implements Parcelable
         return favorite;
     }
 
+    public int getFavorite()
+    {
+        return favorite ? 1 : 0;
+    }
+
     public void setFavorite(boolean favorite)
     {
         this.favorite = favorite;
@@ -74,9 +77,60 @@ public class Line implements Parcelable
         return unwanted;
     }
 
+    public int getUnwanted()
+    {
+        return unwanted ? 1 : 0;
+    }
+
     public void setUnwanted(boolean unwanted)
     {
         this.unwanted = unwanted;
+    }
+
+    public void setUnwanted(int unwanted)
+    {
+        this.unwanted = unwanted == 1;
+    }
+
+    public void setFavorite(int favorite)
+    {
+        this.favorite = favorite == 1;
+    }
+
+    public boolean isExpired()
+    {
+        return (created != null) &&
+                (DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration);
+    }
+
+    public void setRuterId(int ruterId)
+    {
+        this.ruterId = ruterId;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setTransportation(int transportation)
+    {
+        this.transportation = transportation;
+    }
+
+    public void setLineColour(String lineColour)
+    {
+        this.lineColour = lineColour;
+    }
+
+    public Long getDate()
+    {
+        return created.getMillis();
+    }
+
+    public void setDate(Long date)
+    {
+        created = new DateTime(date);
     }
 
     public String toString()
