@@ -115,15 +115,15 @@ public abstract class BaseDatabase<T extends ExpirationDate>
     {
         SQLiteDatabase db = getDbHelper().getWritableDatabase();
 
-        //db.beginTransaction();
+        db.beginTransaction();
 
         Long id = db.insert(
                 getContract().TABLE_NAME,
                 null,
                 getContract().contentValues(item));
 
-        //db.setTransactionSuccessful();
-        //db.endTransaction();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return id;
     }
 

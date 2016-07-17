@@ -17,6 +17,8 @@ public class Stop implements Parcelable, ExpirationDate
     public final static String FIELD_FAVORITE = "favorite";
     public final static String FIELD_UNWANTED = "unwanted";
 
+    public static final Long expiration = 1000*1000L;
+
     private int id;
 
     @SerializedName("ID")
@@ -243,13 +245,16 @@ public class Stop implements Parcelable, ExpirationDate
         this.created = new DateTime(date);
     }
 
+    @Override
     public boolean isExpired()
     {
-        return false;
+        if (created == null) return false;
+        else return DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration;
     }
 
     public Long getDate()
     {
+        if (created == null) return DateTime.now().getMillis();
         return created.getMillis();
     }
 

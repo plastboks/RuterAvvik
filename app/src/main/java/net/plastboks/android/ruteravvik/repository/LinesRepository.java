@@ -36,9 +36,11 @@ public class LinesRepository extends BaseRepository
     {
         Observable<DateList<Line>> linesFromNetwork = lineService.getLinesRx()
                 .doOnNext((lines) -> {
-                    if (!lines.isUpToDate()) lineDatabase.addAllRx(lines)
+                    if (!lines.isUpToDate())
+                        lineDatabase.addAllRx(lines)
                             .subscribe((dbLines) -> {
                                 // TODO implement event?
+                                Log.d(TAG, "Finished inserting lines");
                             });
                 });
 
@@ -46,7 +48,7 @@ public class LinesRepository extends BaseRepository
 
         return Observable
                 .concat(linesFromDb, linesFromNetwork)
-                .first(data -> lineDatabase.isUpToDate(data))
+                .first(data -> data.isUpToDate())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -56,11 +58,13 @@ public class LinesRepository extends BaseRepository
         Observable<DateList<Line>> linesFromNetwork = lineService.getLinesRx()
                 .doOnNext((lines) -> {
                     Log.d(TAG, "linesFromNetwork");
-                    lineDatabase.addAllRx(lines)
-                            .subscribeOn(Schedulers.computation())
-                            .subscribe((dbLines) -> {
-                                // TODO implement event?
-                                Log.d(TAG, "Finished inserting to database");
+                    if (!lines.isUpToDate())
+                        Log.d(TAG, "Starting inserting lines to database");
+                        lineDatabase.addAllRx(lines)
+                                .subscribeOn(Schedulers.computation())
+                                .subscribe((dbLines) -> {
+                                    // TODO implement event?
+                                    Log.d(TAG, "Finished inserting to database");
                             });
                 });
                 /*.map((lines) -> {
@@ -73,7 +77,7 @@ public class LinesRepository extends BaseRepository
 
         return Observable
                 .concat(linesFromDb, linesFromNetwork)
-                .first(data -> lineDatabase.isUpToDate(data))
+                .first(data -> data.isUpToDate())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

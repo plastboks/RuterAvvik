@@ -15,7 +15,7 @@ public class Line implements Parcelable, ExpirationDate
     public static final String FIELD_UNWANTED = "unwanted";
     public static final String FIELD_TRANSPORTATION = "transportation";
 
-    public static final Long expiration = 100*100L;
+    public static final Long expiration = 1000*1000*10L;
 
     private int id;
 
@@ -97,12 +97,6 @@ public class Line implements Parcelable, ExpirationDate
         this.favorite = favorite == 1;
     }
 
-    public boolean isExpired()
-    {
-        return (created != null) &&
-                (DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration);
-    }
-
     public void setRuterId(int ruterId)
     {
         this.ruterId = ruterId;
@@ -123,22 +117,23 @@ public class Line implements Parcelable, ExpirationDate
         this.lineColour = lineColour;
     }
 
+    @Override
+    public boolean isExpired()
+    {
+        if (created == null) return false;
+        else return DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration;
+    }
+
     public Long getDate()
     {
-        return created.getMillis();
+        if (created == null) return DateTime.now().getMillis();
+        else return created.getMillis();
     }
 
     public void setDate(Long date)
     {
         created = new DateTime(date);
     }
-
-    public String toString()
-    {
-        return String.format("ID: %d, Name: %s, Transportation %d, Linecolor: %s",
-                ruterId, name.trim(), transportation, lineColour.trim());
-    }
-
 
     public Line()
     {

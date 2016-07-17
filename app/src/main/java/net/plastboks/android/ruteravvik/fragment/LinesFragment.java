@@ -2,6 +2,7 @@ package net.plastboks.android.ruteravvik.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,7 +70,8 @@ public class LinesFragment extends BaseSupportFragment<LinesPresenter, List<Line
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
 
         return view;

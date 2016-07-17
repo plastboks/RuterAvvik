@@ -5,7 +5,7 @@ import android.database.Cursor;
 
 abstract class BaseContract<T>
 {
-    public static String TABLE_NAME;
+    public final String TABLE_NAME;
 
     public abstract ContentValues contentValues(T t);
     public abstract String[] projection();

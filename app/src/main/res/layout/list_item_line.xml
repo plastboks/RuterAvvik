@@ -8,7 +8,7 @@
 
             <TextView
                 android:layout_width="20dp"
-                android:layout_height="72dp"
+                android:layout_height="90dp"
                 android:id="@+id/color_space"
                 android:padding="5dp"
                 android:layout_alignParentStart="true"
@@ -24,19 +24,19 @@
         android:textStyle="bold|italic"
         android:id="@+id/line_num"
         android:text="1"
+        android:paddingBottom="@dimen/text_margin"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
-        android:layout_marginStart="36dp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/line_icon"/>
+        android:paddingTop="@dimen/text_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/line_icon"
         android:padding="@dimen/text_margin"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/color_space"
-        android:layout_marginStart="46dp"/>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
