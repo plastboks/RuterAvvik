@@ -1,10 +1,10 @@
 package net.plastboks.android.ruteravvik.api;
 
-import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
+import net.plastboks.android.ruteravvik.model.contract.Expires;
 
 import java.util.ArrayList;
 
-public class DateList<T extends ExpirationDate> extends ArrayList<T>
+public class DateList<T extends Expires> extends ArrayList<T>
 {
     public boolean isUpToDate()
     {

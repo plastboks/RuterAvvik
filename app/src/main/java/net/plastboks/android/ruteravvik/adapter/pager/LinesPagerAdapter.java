@@ -36,7 +36,9 @@ public class LinesPagerAdapter extends FragmentStatePagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        return LinesFragment.newInstance(tabs.get(position).getKey());
+        int columnCount = 3;
+        if (position == 0) columnCount = 5;
+        return LinesFragment.newInstance(tabs.get(position).getKey(), columnCount);
     }
 
     @Override

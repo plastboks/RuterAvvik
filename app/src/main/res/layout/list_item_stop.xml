@@ -2,8 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:id="@+id/line_wrapper"
     android:layout_height="wrap_content">
 
@@ -40,7 +44,6 @@
                 android:layout_height="40dp"
                 android:padding="8dp"
                 android:id="@+id/favorite_icon"
-                android:src="@drawable/ic_favorite_border_black_48dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"/>
 

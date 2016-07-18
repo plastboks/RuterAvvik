@@ -54,7 +54,7 @@ public class StopsByFavoriteFragment extends BaseFragment<StopsByFavoritePresent
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_stop_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_stop, container, false);
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view;

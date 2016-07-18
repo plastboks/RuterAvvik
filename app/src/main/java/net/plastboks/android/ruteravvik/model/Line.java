@@ -5,17 +5,13 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
-
-import org.joda.time.DateTime;
-
-public class Line implements Parcelable, ExpirationDate
+public class Line extends ExpirationDate implements Parcelable
 {
     public static final String FIELD_FAVORITE = "favorite";
     public static final String FIELD_UNWANTED = "unwanted";
     public static final String FIELD_TRANSPORTATION = "transportation";
 
-    public static final Long expiration = (864*100*1000L) * 30; // 30 days in milliseconds...
+    public static final int EXPIRATION_DAYS = 10;
 
     private int id;
 
@@ -34,8 +30,6 @@ public class Line implements Parcelable, ExpirationDate
     private boolean favorite;
 
     private boolean unwanted;
-
-    private DateTime created;
 
     public int getRuterId()
     {
@@ -118,21 +112,9 @@ public class Line implements Parcelable, ExpirationDate
     }
 
     @Override
-    public boolean isExpired()
+    public int getExpirationDays()
     {
-        if (created == null) return false;
-        else return DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration;
-    }
-
-    public Long getDate()
-    {
-        if (created == null) return DateTime.now().getMillis();
-        else return created.getMillis();
-    }
-
-    public void setDate(Long date)
-    {
-        created = new DateTime(date);
+        return EXPIRATION_DAYS;
     }
 
     public Line()

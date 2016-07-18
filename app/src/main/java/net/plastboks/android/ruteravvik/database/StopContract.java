@@ -76,7 +76,7 @@ final class StopContract extends BaseContract<Stop> implements BaseColumns
 
         values.put(COLUMN_NAME_FAVORITE, stop.getFavorite());
         values.put(COLUMN_NAME_UNWANTED, stop.getUnwanted());
-        values.put(COLUMN_NAME_CREATED, stop.getDate());
+        values.put(COLUMN_NAME_CREATED, stop.getCreatedLong());
 
         return values;
     }
@@ -121,7 +121,7 @@ final class StopContract extends BaseContract<Stop> implements BaseColumns
 
         stop.setFavorite(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_FAVORITE)));
         stop.setUnwanted(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_UNWANTED)));
-        stop.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_NAME_CREATED)));
+        stop.setCreatedLong(cursor.getLong(cursor.getColumnIndex(COLUMN_NAME_CREATED)));
 
         return stop;
     }

@@ -107,10 +107,10 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_search_line:
+            case R.id.nav_lines:
                 setTitle(getString(R.string.search_line));
                 break;
-            case R.id.nav_search_loc:
+            case R.id.nav_locations:
                 setTitle(getString(R.string.search_loc));
                 break;
             case R.id.nav_favourites:
@@ -132,15 +132,10 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLineInteraction(Line item)
     {
-        /*
-        getFragmentManager()
-                .beginTransaction()
-                .addToBackStack(LinesFragment.TAG)
-                .replace(R.id.fragment_container, StopsByLineFragment.newInstance(item.getRuterId()))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-        setTitle(item.getName());
-        */
+        Intent intent = new Intent(this, LineActivity.class);
+        intent.putExtra(LineActivity.ARGS_LINE_ID, item.getRuterId());
+        intent.putExtra(LineActivity.ARGS_TITLE, item.getName());
+        startActivity(intent);
     }
 
     @Override
@@ -150,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements
         getFragmentManager()
                 .beginTransaction()
                 .addToBackStack(StopsByLineFragment.TAG)
-                .replace(R.id.fragment_container, StopVisitFragment.newInstance(stop.getRuterId()))
+                .replace(R.id.fragment_container, StopsByStationFragment.newInstance(stop.getRuterId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         setTitle(stop.getName());

@@ -57,7 +57,7 @@ final class LineContract extends BaseContract<Line> implements BaseColumns
         values.put(COLUMN_NAME_COLOR, line.getLineColour());
         values.put(COLUMN_NAME_FAVORITE, line.getFavorite());
         values.put(COLUMN_NAME_UNWANTED, line.getUnwanted());
-        values.put(COLUMN_NAME_CREATED, line.getDate());
+        values.put(COLUMN_NAME_CREATED, line.getCreatedLong());
 
         return values;
     }
@@ -89,7 +89,7 @@ final class LineContract extends BaseContract<Line> implements BaseColumns
         line.setLineColour(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_COLOR)));
         line.setFavorite(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_FAVORITE)));
         line.setUnwanted(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_UNWANTED)));
-        line.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_NAME_CREATED)));
+        line.setCreatedLong(cursor.getLong(cursor.getColumnIndex(COLUMN_NAME_CREATED)));
 
         return line;
     }

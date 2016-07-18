@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import net.plastboks.android.ruteravvik.api.DateList;
-import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
+import net.plastboks.android.ruteravvik.model.contract.Expires;
 import net.plastboks.android.ruteravvik.util.ObservableUtil;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import rx.Observable;
 
-public abstract class BaseDatabase<T extends ExpirationDate>
+public abstract class BaseDatabase<T extends Expires>
 {
     protected abstract T get(int id);
     protected abstract DbHelper getDbHelper();

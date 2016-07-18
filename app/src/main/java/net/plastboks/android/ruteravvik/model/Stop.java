@@ -5,19 +5,16 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import net.plastboks.android.ruteravvik.api.contract.ExpirationDate;
 import net.plastboks.android.ruteravvik.util.RuterDateParser;
-
-import org.joda.time.DateTime;
 
 import java.util.Date;
 
-public class Stop implements Parcelable, ExpirationDate
+public class Stop extends ExpirationDate implements Parcelable
 {
     public final static String FIELD_FAVORITE = "favorite";
     public final static String FIELD_UNWANTED = "unwanted";
 
-    public static final Long expiration = 1000*1000L;
+    private static final int EXPIRATION_DAYS = 10;
 
     private int id;
 
@@ -63,8 +60,6 @@ public class Stop implements Parcelable, ExpirationDate
     private boolean favorite;
 
     private boolean unwanted;
-
-    private DateTime created;
 
     public int getRuterId()
     {
@@ -235,33 +230,11 @@ public class Stop implements Parcelable, ExpirationDate
         this.departureTime = departureTime;
     }
 
-    public void setCreated(DateTime created)
-    {
-        this.created = created;
-    }
-
-    public void setDate(Long date)
-    {
-        this.created = new DateTime(date);
-    }
 
     @Override
-    public boolean isExpired()
+    protected int getExpirationDays()
     {
-        if (created == null) return false;
-        else return DateTime.now().getMillis() - new DateTime(created).getMillis() > expiration;
-    }
-
-    public Long getDate()
-    {
-        if (created == null) return DateTime.now().getMillis();
-        return created.getMillis();
-    }
-
-    public String toString()
-    {
-        return String.format("ID: %d, Name: %s",
-                ruterId, name);
+        return EXPIRATION_DAYS;
     }
 
     public Stop()

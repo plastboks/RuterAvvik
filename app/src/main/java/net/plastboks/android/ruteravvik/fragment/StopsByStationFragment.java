@@ -2,6 +2,7 @@ package net.plastboks.android.ruteravvik.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,25 +18,34 @@ import net.plastboks.android.ruteravvik.util.ItemDividerDecorator;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(StopVisitPresenter.class)
-public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<MonitoredStopVisit>>
+public class StopsByStationFragment extends BaseFragment<StopVisitPresenter, List<MonitoredStopVisit>>
 {
-    public static final String TAG = StopVisitFragment.class.getSimpleName();
+    public static final String TAG = StopsByStationFragment.class.getSimpleName();
 
     private static final String ARGS_STATION_ID = "stationId";
 
     private OnLineInteractionListener listener;
-    private RecyclerView recyclerView;
 
-    public StopVisitFragment()
+    private int stationId = 0;
+
+
+    @BindView(R.id.swipe_refresh)
+    protected SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.list)
+    protected RecyclerView recyclerView;
+
+    public StopsByStationFragment()
     {
     }
 
-    public static StopVisitFragment newInstance(int stationId)
+    public static StopsByStationFragment newInstance(int stationId)
     {
-        StopVisitFragment fragment = new StopVisitFragment();
+        StopsByStationFragment fragment = new StopsByStationFragment();
         Bundle args = new Bundle();
         args.putInt(ARGS_STATION_ID, stationId);
         fragment.setArguments(args);
@@ -48,18 +58,25 @@ public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<Mon
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            getPresenter().request(getArguments().getInt(ARGS_STATION_ID));
+            stationId = getArguments().getInt(ARGS_STATION_ID);
         }
+
+        getPresenter().request(stationId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_stopvisit_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_stopvisit, container, false);
+
+        ButterKnife.bind(this, view);
 
         Context context = view.getContext();
-        recyclerView = (RecyclerView) view;
+
+        swipeRefresh.post(() -> swipeRefresh.setRefreshing(true));
+        swipeRefresh.setOnRefreshListener(() -> getPresenter().request(stationId));
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
 
@@ -77,6 +94,7 @@ public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<Mon
     {
         recyclerView.setAdapter(new StopVisitRecyclerViewAdapter(monitoredStopVisitList,
                 listener));
+        swipeRefresh.post(() -> swipeRefresh.setRefreshing(false));
     }
 
     @Override
@@ -87,7 +105,7 @@ public class StopVisitFragment extends BaseFragment<StopVisitPresenter, List<Mon
             listener = (OnLineInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnLineInteractionListener");
         }
     }
 

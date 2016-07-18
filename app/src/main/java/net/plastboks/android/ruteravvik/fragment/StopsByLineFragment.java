@@ -2,6 +2,7 @@ package net.plastboks.android.ruteravvik.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import net.plastboks.android.ruteravvik.util.ItemDividerDecorator;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(StopsByLinePresenter.class)
@@ -25,8 +28,14 @@ public class StopsByLineFragment extends BaseFragment<StopsByLinePresenter, List
     public static final String TAG = StopsByLineFragment.class.getSimpleName();
     private static final String ARGS_LINE_ID = "lineId";
 
-    private RecyclerView recyclerView;
     private OnStopInteractionListener listener;
+
+    private int lineId = 0;
+
+    @BindView(R.id.swipe_refresh)
+    protected SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.list)
+    protected RecyclerView recyclerView;
 
     public StopsByLineFragment()
     {
@@ -47,19 +56,25 @@ public class StopsByLineFragment extends BaseFragment<StopsByLinePresenter, List
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            getPresenter().request(getArguments().getInt(ARGS_LINE_ID));
+            lineId = getArguments().getInt(ARGS_LINE_ID);
         }
 
+        getPresenter().request(lineId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_stop_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_stop, container, false);
+
+        ButterKnife.bind(this, view);
 
         Context context = view.getContext();
-        recyclerView = (RecyclerView) view;
+
+        swipeRefresh.post(() -> swipeRefresh.setRefreshing(true));
+        swipeRefresh.setOnRefreshListener(() -> getPresenter().request(lineId));
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new ItemDividerDecorator(getContext()));
         return view;
@@ -75,6 +90,7 @@ public class StopsByLineFragment extends BaseFragment<StopsByLinePresenter, List
     public void loadContent(List<Stop> stops)
     {
         recyclerView.setAdapter(new StopRecyclerViewAdapter(stops, listener));
+        swipeRefresh.post(() -> swipeRefresh.setRefreshing(false));
     }
 
     @Override
