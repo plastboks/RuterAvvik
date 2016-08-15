@@ -23,6 +23,8 @@
     <string name="close">Close</string>
 
     <string name="platform">Platform</string>
+    <string name="lines">Lines</string>
+    <string name="locations">Locations</string>
 
     <string name="transportation_walking">Walking</string>
     <string name="transportation_airportbus">Airport bus</string>
@@ -54,7 +56,6 @@
 
     <string name="empty_list">Empty list</string>
     <string name="unable_to_connect_to_ruter">Unable to connect to Ruter</string>
-
 
     <!-- Strings related to Settings -->
 
