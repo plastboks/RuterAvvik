@@ -1,7 +1,6 @@
-package net.plastboks.android.ruteravvik;
+package net.plastboks.android.ruteravvik.api;
 
 
-import net.plastboks.android.ruteravvik.api.DateList;
 import net.plastboks.android.ruteravvik.model.Line;
 
 import org.junit.Assert;

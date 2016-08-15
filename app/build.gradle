@@ -65,7 +65,6 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.5'
     provided 'javax.annotation:jsr250-api:1.0'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
-
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -74,7 +73,7 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.google.android.gms:play-services-maps:9.2.0'
+    compile 'com.google.android.gms:play-services-maps:9.2.1'
     compile 'com.google.dagger:dagger:2.5'
     compile 'com.jakewharton:butterknife:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'
@@ -89,4 +88,5 @@ dependencies {
     compile 'info.android15.nucleus:nucleus:2.0.6'
     compile 'info.android15.nucleus:nucleus-support-v4:2.0.6'
     compile 'info.android15.nucleus:nucleus-support-v7:2.0.6'
+    compile 'org.mockito:mockito-core:2.0.87-beta'
 }

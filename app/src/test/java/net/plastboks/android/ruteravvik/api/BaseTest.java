@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik;
+package net.plastboks.android.ruteravvik.api;
 
 import net.plastboks.android.ruteravvik.api.Ruter;
 import net.plastboks.android.ruteravvik.api.service.DepartureFavouriteService;

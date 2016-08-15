@@ -1,4 +1,4 @@
-package net.plastboks.android.ruteravvik;
+package net.plastboks.android.ruteravvik.api;
 
 import net.plastboks.android.ruteravvik.model.Stop;
 
