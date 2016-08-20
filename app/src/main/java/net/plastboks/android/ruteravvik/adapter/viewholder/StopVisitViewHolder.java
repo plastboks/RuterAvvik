@@ -24,10 +24,6 @@ public class StopVisitViewHolder extends RecyclerView.ViewHolder
     public TextView departure;
     @BindView(R.id.item_deviation)
     public TextView deviation;
-    @BindView(R.id.color_space)
-    public TextView colorSpace;
-    @BindView(R.id.mask_icon)
-    public ImageView maskIcon;
 
     public MonitoredStopVisit item;
 

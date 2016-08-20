@@ -1,53 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingLeft="@dimen/fragment_horizontal_margin"
-    android:paddingRight="@dimen/fragment_horizontal_margin"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:orientation="horizontal"
+    android:padding="@dimen/text_margin"
     android:id="@+id/line_wrapper"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <TextView
             android:layout_width="wrap_content"
-            android:minHeight="@dimen/min_list_item_height"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/stop_title"
+            android:text="title - placeholder"
+            />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/stop_title"
-                android:text="title - placeholder"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="subtitle - placeholder"
+            android:id="@+id/stop_subtitle"
+            />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="subtitle - placeholder"
-                android:id="@+id/stop_subtitle"
-                android:layout_below="@+id/stop_title"
-                android:layout_alignStart="@+id/stop_title"/>
+    <view
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:id="@+id/favorite_icon"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"/>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:id="@+id/favorite_icon"
+        />
 
-        </RelativeLayout>
-
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

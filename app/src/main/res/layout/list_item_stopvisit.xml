@@ -1,64 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="@dimen/list_item_padding"
+    android:padding="@dimen/text_margin"
+    android:orientation="horizontal"
     android:id="@+id/line_wrapper"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="fill_parent"
+        android:textSize="18sp"
+        android:text="####"
+        android:id="@+id/line_num"
+        android:gravity="center_vertical"/>
 
-            <TextView
-                android:layout_width="56dp"
-                android:layout_height="fill_parent"
-                android:textSize="18dp"
-                android:text="####"
-                android:id="@+id/line_num"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/color_space"
-                android:layout_alignBottom="@+id/color_space"
-                android:gravity="center_vertical|center_horizontal"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="LineTitle"
                 android:id="@+id/line_title"
-                android:text="title - placeholder"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/line_num"/>
+                />
 
-            <RelativeLayout
-                android:id="@+id/subtitle_line"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line_title"
-                android:layout_alignStart="@+id/line_title"
-                android:layout_toStartOf="@+id/mask_icon"
-                >
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/platform"
                     android:id="@+id/item_platform_title"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
                     android:textStyle="italic"
                     android:textAlignment="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
                     android:id="@+id/item_platform"
                     android:paddingStart="4dp"
                     android:textStyle="italic"
                     android:textAlignment="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/item_platform_title"/>
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -67,40 +57,23 @@
                     android:layout_marginLeft="4dp"
                     android:id="@+id/item_deviation"
                     android:textColor="@color/red"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"/>
+                    />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/color_space"
-                android:padding="5dp"
-                android:text="  "
-                android:editable="false"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/subtitle_line"/>
+        </LinearLayout>
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:id="@+id/mask_icon"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@+id/subtitle_line"/>
-
+        <view
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="##:##:##"
             android:id="@+id/item_departure"
-            android:layout_marginLeft="4dp"
-            android:layout_above="@+id/subtitle_line"
-            android:layout_toStartOf="@+id/mask_icon"/>
-
-
-    </RelativeLayout>
-</RelativeLayout>
+            android:layout_gravity="center_vertical"
+            />
+</LinearLayout>
